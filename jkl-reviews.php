@@ -29,6 +29,10 @@ function jkl_add_metabox() {
  */
 function jkl_review_info() {
     $value = get_post_custom($post->ID);
+    
+    $cover = esc_attr($value['jkl_review_cover'][0]);
+    echo '<label for="review_info">Cover Image: </lable><input type="text" id="jkl_review_cover" name="jkl_review_cover" value="'.$cover.'" /><br />';
+    
     $rating = esc_attr($value['jkl_review_rating'][0]);
     echo '<label for="review_info">Rating: </label><input type="text" id="jkl_review_rating" name="jkl_review_rating" value="'.$rating.'" />';
 } 
@@ -48,7 +52,7 @@ function jkl_save_metabox($post_id) {
     }
     
     if( isset($_POST['jkl_review_rating'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_rating' esc_attr($_POST['jkl_review_rating']));
+        // update_post_meta( $post_id, 'jkl_review_rating' esc_url($_POST['jkl_review_rating']));
     }
 }
 
