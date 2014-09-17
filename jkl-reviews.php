@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Plugin Name: JKL Reviews
  * Plugin URI: http://www.jekkilekki.com
@@ -7,8 +6,17 @@
  * Version: 0.1
  * Author: Aaron Snowberger
  * Author URI: http://www.aaronsnowberger.com
+ * Text Domain: jkl-reviews
  * License: GPL2
  */
+
+/*
+ * Text Domain: (above) is used for Internationalization and must match the 'slug' of the plugin.
+ * Doc: http://codex.wordpress.org/I18n_for_WordPress_Developers
+ * 
+ * Complex Meta boxes in WP (Reference): http://www.wproots.com/complex-meta-boxes-in-wordpress/
+ */
+
 
 // Show metabox in Post editing page
 add_action( 'add_meta_boxes', 'jkl_add_metabox' );
@@ -20,21 +28,48 @@ add_action( 'save_post', 'jkl_save_metabox' );
 add_action( 'widgets_init', 'jkl_review_widget_init' );
 
 function jkl_add_metabox() {
-    // Doc https://codex.wordpress.org/Function_Reference/add_meta_box/
-    add_meta_box( 'review_info', 'Review Information', 'jkl_review_info', 'post');
+    /* 
+     * Doc http://codex.wordpress.org/Function_Reference/add_meta_box/
+     * add_meta_box( $id, $title, $callback, $post_type, $context*, $priority*, $callback_args* ); 
+     * $post_type cannot take an array of values
+     * $context, $priority, $callback_args are optional values
+     */ 
+    add_meta_box( 
+            'review_info', 
+            __('Review Information', 'jkl-reviews'), 
+            'jkl_review_info', 
+            'post' 
+    );
 }
 
 /*
- * Metabox handler
+ * Meta box handler (i.e. Display Meta box)
  */
 function jkl_review_info() {
     $value = get_post_custom($post->ID);
     
+    /*
+     * Documentation on nonces: 
+     * http://markjaquith.wordpress.com/2006/06/02/wordpress-203-nonces/
+     * http://www.prelovac.com/vladimir/improving-security-in-wordpress-plugins-using-nonces
+     */
+    wp_nonce_field( plugins_url(__FILE__), 'jkl_noncename' ); // Add two hidden fields to protect against cross-site scripting.
+    
+    ?> <p> 
+        <label for="jklrv_cover"><?php _e('Cover Image: ', 'jkl-reviews'); ?>: </label>
+        <input type="url" name="jklrv_cover" value="<?php echo get_post_meta($value, 'jklrv_cover', true); ?>" />
+        <em>Must be a URL</em>
+    </p>
+    <?php
+    /*
+     * From Zenva Academy
+     * 
     $cover = esc_attr($value['jkl_review_cover'][0]);
-    echo '<label for="review_info">Cover Image: </lable><input type="text" id="jkl_review_cover" name="jkl_review_cover" value="'.$cover.'" /><br />';
+    echo '<label for="review_info">'._e('Cover Image: ', 'jkl-reviews').'</lable><input type="text" id="jkl_review_cover" name="jkl_review_cover" value="'.$cover.'" /><br />';
     
     $rating = esc_attr($value['jkl_review_rating'][0]);
-    echo '<label for="review_info">Rating: </label><input type="text" id="jkl_review_rating" name="jkl_review_rating" value="'.$rating.'" />';
+    echo '<label for="review_info">'._e('Rating: ', 'jkl-reviews').'</label><input type="text" id="jkl_review_rating" name="jkl_review_rating" value="'.$rating.'" />';
+     */
 } 
 
 /*
