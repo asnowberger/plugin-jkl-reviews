@@ -144,14 +144,39 @@ function jkl_save_metabox($post_id) {
         return;
     }
     
-    // Checks for input and sanitizes/saves if needed
-    if( isset($_POST['jkl_review_title'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_title', sanitize_text_field( $_POST['jkl_review_title'] ) );
-    }
-    
-    // Checks for input and saves image if needed
+    // Save the Cover: Checks for input and saves image if needed
     if( isset($_POST[ 'jkl_review_cover' ] ) ) {
         update_post_meta( $post_id, 'jkl_review_cover', $_POST[ 'jkl_review_cover' ] );
+    }
+    
+    // Save the Title: Checks for input and sanitizes/saves if needed
+    if( isset($_POST['jkl_review_title'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_title', wp_kses( $_POST['jkl_review_title'] ) );
+    }
+    
+    // Save the Author:
+    if( isset($_POST['jkl_review_title'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_title', wp_kses( $_POST['jkl_review_title'] ) );
+    }
+    
+    // Save the Rating:
+    if( isset($_POST['jkl_review_title'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_title', esc_attr( $_POST['jkl_review_title'] ) );
+    }
+    
+    // Save the Series:
+    if( isset($_POST['jkl_review_title'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_title', esc_attr( $_POST['jkl_review_title'] ) );
+    }
+    
+    // Save the Category:
+    if( isset($_POST['jkl_review_title'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_title', esc_attr( $_POST['jkl_review_title'] ) );
+    }
+    
+    // Save the Links:
+    if( isset($_POST['jkl_review_title'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_title', esc_attr( $_POST['jkl_review_title'] ) );
     }
 }
 
