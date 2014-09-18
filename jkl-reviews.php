@@ -17,6 +17,13 @@
  * Complex Meta boxes in WP (Reference): http://www.wproots.com/complex-meta-boxes-in-wordpress/
  */
 
+/*
+ * Reference Section: (Custom Meta Boxes)
+ * http://www.smashingmagazine.com/2011/10/04/create-custom-post-meta-boxes-wordpress/
+ * http://themefoundation.com/wordpress-meta-boxes-guide/
+ * http://code.tutsplus.com/tutorials/how-to-create-custom-wordpress-writemeta-boxes--wp-20336
+ */
+
 
 // Show metabox in Post editing page
 add_action( 'add_meta_boxes', 'jkl_add_metabox' );
@@ -26,6 +33,10 @@ add_action( 'save_post', 'jkl_save_metabox' );
 
 // Register widgets
 add_action( 'widgets_init', 'jkl_review_widget_init' );
+
+// Add the Image Manager
+add_action( 'admin_enqueue_scripts', 'jklrv_image_enqueue');
+
 
 function jkl_add_metabox() {
     /* 
@@ -37,7 +48,7 @@ function jkl_add_metabox() {
     add_meta_box( 
             'review_info', 
             __('Review Information', 'jkl-reviews'), 
-            'jkl_review_info', 
+            'display_jkl_review_metabox', 
             'post' 
     );
 }
@@ -45,49 +56,122 @@ function jkl_add_metabox() {
 /*
  * Meta box handler (i.e. Display Meta box)
  */
-function jkl_review_info() {
-    $value = get_post_custom($post->ID);
-    
+function display_jkl_review_metabox() {
     /*
      * Documentation on nonces: 
      * http://markjaquith.wordpress.com/2006/06/02/wordpress-203-nonces/
      * http://www.prelovac.com/vladimir/improving-security-in-wordpress-plugins-using-nonces
      */
-    wp_nonce_field( plugins_url(__FILE__), 'jkl_noncename' ); // Add two hidden fields to protect against cross-site scripting.
+    wp_nonce_field( basename(__FILE__), 'jklrv_nonce' ); // Add two hidden fields to protect against cross-site scripting.
     
-    ?> <p> 
-        <label for="jklrv_cover"><?php _e('Cover Image: ', 'jkl-reviews'); ?>: </label>
-        <input type="url" name="jklrv_cover" value="<?php echo get_post_meta($value, 'jklrv_cover', true); ?>" />
-        <em>Must be a URL</em>
-    </p>
+    // Retrieve the current data based on Post ID
+    $jklrv_stored_meta = get_post_meta($post->ID);
+    
+    ?>
+
+    <div class="wrap"> 
+        <!-- Cover image. This should accept and display an image (like a Featured Image) using WP's image Uploader/chooser. -->
+        <p> 
+            <label for="jkl_review_cover" class="jkl_review_cover"><?php _e('Cover Image: ', 'jkl-reviews')?></label>
+            <input type="text" id="jkl_review_cover" name="jkl_review_cover" 
+                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_cover'] ) ) echo $jklrv_stored_meta['jkl_review_cover'][0]; ?>" />
+            <input type="button" id="jkl_review_cover_button" class="button" value="<?php _e( 'Choose or Upload an Image', 'jkl_review_cover' )?>" />
+        </p>
+
+        <!-- Title -->
+        <p>
+            <label for="jkl_review_title"><?php _e('Title: ', 'jkl-reviews')?></label>
+            <input type="text" id="jkl_review_title" name="jkl_review_title" 
+                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_title'] ) ) echo $jklrv_stored_meta['jkl_review_title'][0]; ?>" />
+        </p>
+
+        <!-- Author. Should accept a String input, or also be able to select from a list of "most used" authors in a checkbox list. -->
+        <p>
+            <label for="jkl_review_author"><?php _e('Author: ', 'jkl-reviews')?></label>
+            <input type="checkbox" id="jkl_review_author" name="jkl_review_author" 
+                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_author'] ) ) echo $jklrv_stored_meta['jkl_review_author'][0]; ?>" />
+        </p>
+
+        <!-- 
+            Rating. This should be a range - able to accept numbers at least up to 5, possibly up to 10. 
+            Create a range slider with JS as well: http://www.developerdrive.com/2012/07/creating-a-slider-control-with-the-html5-range-input/
+        -->
+        <p>
+            <label for="jkl_review_rating"><?php _e('Rating: ', 'jkl-reviews')?></label>
+            <input type="range" min="0" max="5" step="0.5" onchange="updateSlider(this.value)" 
+                       id="jkl_review_rating" name="jkl_review_rating" 
+                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_rating'] ) ) echo $jklrv_stored_meta['jkl_review_rating'][0]; ?>" />
+        </p>
+
+        <!-- Series. Similar to Author. Accepts a String, or also a checkbox input of "most used" series. -->
+        <p>
+            <label for="jkl_review_series"><?php _e('Series: ', 'jkl-reviews')?></label>
+            <input type="text" id="jkl_review_series" name="jkl_review_series" 
+                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_series'] ) ) echo $jklrv_stored_meta['jkl_review_series'][0]; ?>" />
+        </p>
+
+        <!-- Category. Similar to Author and Series. Actual functionality is like WP's native Categories. -->
+        <p>
+            <label for="jkl_review_category"><?php _e('Category: ', 'jkl-reviews')?></label>
+            <input type="text" id="jkl_review_category" name="jkl_review_category" 
+                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_category'] ) ) echo $jklrv_stored_meta['jkl_review_category'][0]; ?>" />
+        </p>
+
+        <!-- Links. Should be able to select from a checkbox list of available links (like Amazon, product page, author's site, resources site, etc) and also accept a URL to those sites. -->
+        <p>
+            <label for="jkl_review_links"><?php _e('Links: ', 'jkl-reviews')?></label>
+            <input type="checkbox" id="jkl_review_links" name="jkl_review_links" 
+                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_links'] ) ) echo $jklrv_stored_meta['jkl_review_links'][0]; ?>" />
+        </p>
+    </div>
+
     <?php
-    /*
-     * From Zenva Academy
-     * 
-    $cover = esc_attr($value['jkl_review_cover'][0]);
-    echo '<label for="review_info">'._e('Cover Image: ', 'jkl-reviews').'</lable><input type="text" id="jkl_review_cover" name="jkl_review_cover" value="'.$cover.'" /><br />';
-    
-    $rating = esc_attr($value['jkl_review_rating'][0]);
-    echo '<label for="review_info">'._e('Rating: ', 'jkl-reviews').'</label><input type="text" id="jkl_review_rating" name="jkl_review_rating" value="'.$rating.'" />';
-     */
 } 
 
 /*
- * Save metadata
+ * Save the custom metadata
  */
 function jkl_save_metabox($post_id) {
-    // Don't save metadata if it's autosave
-    if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+    
+    // Check save status
+    // Helpful doc: http://themefoundation.com/wordpress-meta-boxes-guide/
+    $is_autosave = wp_is_post_autosave( $post_id );
+    $is_revision = wp_is_post_revision( $post_id );
+    $is_valid_nonce = ( isset( $_POST[ 'jklrv_nonce' ] ) && wp_verify_nonce( $_POST[ 'jklrv_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
+    
+    // Exits if current user can't edit post or depending on save status
+    if( !current_user_can( 'edit_post' ) || $is_autosave || $is_revision || $is_valid_nonce ) {
         return;
     }
     
-    // Check if user can edit the post
-    if( !current_user_can( 'edit_post' ) ) {
-        return;
+    // Checks for input and sanitizes/saves if needed
+    if( isset($_POST['jkl_review_title'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_title', sanitize_text_field( $_POST['jkl_review_title'] ) );
     }
     
-    if( isset($_POST['jkl_review_rating'] ) ) {
-        // update_post_meta( $post_id, 'jkl_review_rating' esc_url($_POST['jkl_review_rating']));
+    // Checks for input and saves image if needed
+    if( isset($_POST[ 'jkl_review_cover' ] ) ) {
+        update_post_meta( $post_id, 'jkl_review_cover', $_POST[ 'jkl_review_cover' ] );
+    }
+}
+
+/*
+ * Loads the image management JS
+ */
+function jklrv_image_enqueue() {
+    global $typenow;
+    if( $typenow == 'post' ) {
+        wp_enqueue_media();
+        
+        // Registers and enqueues the required JS
+        wp_register_script( 'jkl-upload-image', plugin_dir_url( __FILE__ ) . 'js/jkl-upload-image.js', array( 'jquery' ) );
+        wp_localize_script( 'jkl-upload-image', 'jkl_review_cover',
+                array(
+                    'title' => __( 'Choose or Upload an Image', 'jkl-reviews' ),
+                    'button' => __( 'Use this image', 'jkl-reviews' ),
+                )
+        );
+        wp_enqueue_script( 'jkl-upload-image' );
     }
 }
 
