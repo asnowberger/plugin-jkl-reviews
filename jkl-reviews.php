@@ -140,7 +140,7 @@ function jkl_save_metabox($post_id) {
     $is_valid_nonce = ( isset( $_POST[ 'jklrv_nonce' ] ) && wp_verify_nonce( $_POST[ 'jklrv_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
     
     // Exits if current user can't edit post or depending on save status
-    if( !current_user_can( 'edit_post' ) || $is_autosave || $is_revision || $is_valid_nonce ) {
+    if( !current_user_can( 'edit_post' ) || $is_autosave || $is_revision || !$is_valid_nonce ) {
         return;
     }
     
