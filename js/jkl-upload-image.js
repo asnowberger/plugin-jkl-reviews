@@ -2,6 +2,15 @@
  * Attaches the image uploader to the input field
  */
 
+/*
+ * Checkout this stuff for Image Uploader Help:
+ * https://github.com/kharissulistiyo/7K-Image-Uploader-Meta-Box/blob/master/7k-image-uploader-meta-box.php
+ * https://github.com/WebDevStudios/Custom-Metaboxes-and-Fields-for-WordPress/blob/master/js/cmb.js
+ * http://code.tutsplus.com/tutorials/reusable-custom-meta-boxes-part-1-intro-and-basic-fields--wp-23259
+ * http://www.wproots.com/upload-media-in-meta-boxes/
+ * http://www.krishnakantsharma.com/image-uploads-on-wordpress-admin-screens-using-jquery-and-new-plupload/#.VCH3sCuSwxt
+ */
+
 jQuery(document).ready(function($) {
     
     // Instantiates the variable that holds the media library frame

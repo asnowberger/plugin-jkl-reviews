@@ -25,26 +25,35 @@
  */
 
 
-// Show metabox in Post editing page
-add_action( 'add_meta_boxes', 'jkl_add_metabox' );
+// ##1 : Create metabox in Post editing page
+add_action( 'add_meta_boxes', 'jkl_add_review_metabox' );
 
-// Save metabox data
-add_action( 'save_post', 'jkl_save_metabox' );
+// ##2 : Display the actual Metabox and fields
+// ##3 : Add and Use the WP Image Manager
+add_action( 'admin_enqueue_scripts', 'jklrv_image_enqueue' );
+
+// ##4 : Save metabox data
+add_action( 'save_post', 'jkl_save_review_metabox' );
+
+// ##5 : Add a shortcode to display the content box on the page
+add_shortcode( 'review', 'jkl_review_box' );
 
 // Register widgets
 add_action( 'widgets_init', 'jkl_review_widget_init' );
 
-// Add the Image Manager
-add_action( 'admin_enqueue_scripts', 'jklrv_image_enqueue');
+/*
+ * ##### 1 #####
+ * First, ADD the metabox
+ */
 
-
-function jkl_add_metabox() {
+function jkl_add_review_metabox() {
     /* 
      * Doc http://codex.wordpress.org/Function_Reference/add_meta_box/
      * add_meta_box( $id, $title, $callback, $post_type, $context*, $priority*, $callback_args* ); 
      * $post_type cannot take an array of values
      * $context, $priority, $callback_args are optional values
      */ 
+    
     add_meta_box( 
             'review_info', 
             __('Review Information', 'jkl-reviews'), 
@@ -53,10 +62,15 @@ function jkl_add_metabox() {
     );
 }
 
+
 /*
- * Meta box handler (i.e. Display Meta box)
+ * ##### 2 #####
+ * Second, DISPLAY Metabox (i.e. This is the Metabox handler)
+ * 
+ * @param WP_Post $post The object for the current post/page
  */
-function display_jkl_review_metabox() {
+
+function display_jkl_review_metabox( $post ) {
     /*
      * Documentation on nonces: 
      * http://markjaquith.wordpress.com/2006/06/02/wordpress-203-nonces/
@@ -65,7 +79,7 @@ function display_jkl_review_metabox() {
     wp_nonce_field( basename(__FILE__), 'jklrv_nonce' ); // Add two hidden fields to protect against cross-site scripting.
     
     // Retrieve the current data based on Post ID
-    $jklrv_stored_meta = get_post_meta($post->ID);
+    $jklrv_stored_meta = get_post_meta( $post->ID );
     
     ?>
 
@@ -128,61 +142,12 @@ function display_jkl_review_metabox() {
     <?php
 } 
 
-/*
- * Save the custom metadata
- */
-function jkl_save_metabox($post_id) {
-    
-    // Check save status
-    // Helpful doc: http://themefoundation.com/wordpress-meta-boxes-guide/
-    $is_autosave = wp_is_post_autosave( $post_id );
-    $is_revision = wp_is_post_revision( $post_id );
-    $is_valid_nonce = ( isset( $_POST[ 'jklrv_nonce' ] ) && wp_verify_nonce( $_POST[ 'jklrv_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
-    
-    // Exits if current user can't edit post or depending on save status
-    if( !current_user_can( 'edit_post' ) || $is_autosave || $is_revision || !$is_valid_nonce ) {
-        return;
-    }
-    
-    // Save the Cover: Checks for input and saves image if needed
-    if( isset($_POST[ 'jkl_review_cover' ] ) ) {
-        update_post_meta( $post_id, 'jkl_review_cover', $_POST[ 'jkl_review_cover' ] );
-    }
-    
-    // Save the Title: Checks for input and sanitizes/saves if needed
-    if( isset($_POST['jkl_review_title'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_title', wp_kses( $_POST['jkl_review_title'] ) );
-    }
-    
-    // Save the Author:
-    if( isset($_POST['jkl_review_title'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_title', wp_kses( $_POST['jkl_review_title'] ) );
-    }
-    
-    // Save the Rating:
-    if( isset($_POST['jkl_review_title'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_title', esc_attr( $_POST['jkl_review_title'] ) );
-    }
-    
-    // Save the Series:
-    if( isset($_POST['jkl_review_title'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_title', esc_attr( $_POST['jkl_review_title'] ) );
-    }
-    
-    // Save the Category:
-    if( isset($_POST['jkl_review_title'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_title', esc_attr( $_POST['jkl_review_title'] ) );
-    }
-    
-    // Save the Links:
-    if( isset($_POST['jkl_review_title'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_title', esc_attr( $_POST['jkl_review_title'] ) );
-    }
-}
 
 /*
- * Loads the image management JS
+ * ##### 3 #####
+ * Third, use the WP IMAGE MANAGER (i.e. load Image Management JS)
  */
+
 function jklrv_image_enqueue() {
     global $typenow;
     if( $typenow == 'post' ) {
@@ -198,6 +163,86 @@ function jklrv_image_enqueue() {
         );
         wp_enqueue_script( 'jkl-upload-image' );
     }
+}
+
+
+/*
+ * ##### 4 #####
+ * Fourth, Save the custom metadata
+ */
+function jkl_save_review_metabox($post_id) {
+    
+    /*
+     * Verify this came from our screen and with proper authorization and that we're ready to save.
+     */
+    
+    // Check if nonce is set
+    if ( !isset( $_POST['jklrv_nonce'] ) ) return;
+    
+    // Verify the nonce is valid
+    if ( !wp_verify_nonce( $_POST['jklrv_nonce'], basename(__FILE__) ) ) return;
+    
+    // Check for autosave (don't save metabox on autosave)
+    if ( defined ('DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+    
+    // Check user's editing permissions
+    if ( !current_user_can( 'edit_page', $post_id ) ) return;
+    
+    /*
+     * OK, after all those checks, now it's OK to save our data
+     */
+    
+    // Save the Cover: Checks for input and saves image if needed
+    if( isset($_POST[ 'jkl_review_cover' ] ) ) {
+        update_post_meta();
+    } 
+    
+    // Save the Title: Checks for input and sanitizes/saves if needed
+    if( isset($_POST['jkl_review_title'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_title', $_POST['jkl_review_title'] );
+    } 
+    
+    // Save the Author:
+    if( isset($_POST['jkl_review_author'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_author', $_POST['jkl_review_author'] );
+    } 
+    
+    // Save the Rating:
+    if( isset($_POST['jkl_review_rating'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_rating', $_POST['jkl_review_rating'] );
+    } 
+    
+    // Save the Series:
+    if( isset($_POST['jkl_review_series'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_series', $_POST['jkl_review_series'] );
+    }
+    
+    // Save the Category:
+    if( isset($_POST['jkl_review_category'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_category', $_POST['jkl_review_category'] );
+    } 
+    
+    // Save the Links:
+    if( isset($_POST['jkl_review_links'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_links', $_POST['jkl_review_links'] );
+    } 
+}
+
+
+/*
+ * Shortcode Function
+ */
+function jkl_review_box($atts, $content) {
+    $options = shortcode_atts(      // can also call this variable $atts if you want and just override the original - it'll work, but possibly not so clear as to what it's doing
+        array(
+            'size' => 'big',
+            'content' => !empty($content) ? $content : ''
+        ), $atts
+    );
+    
+    extract($options);  // This extracts all the variables from the array to $size and $content, etc
+    
+    return ""; // Here is the actual (responsive) page styling for the box
 }
 
 /*
