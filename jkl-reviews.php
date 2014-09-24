@@ -55,10 +55,12 @@ function jkl_add_review_metabox() {
      */ 
     
     add_meta_box( 
-            'review_info', 
-            __('Review Information', 'jkl-reviews'), 
-            'display_jkl_review_metabox', 
-            'post' 
+            'review_info',                              // Unique ID
+            __('Review Information', 'jkl-reviews'),    // Title
+            'display_jkl_review_metabox',               // Callback function
+            'post'                                      // Post type to display on
+                                                        // Context
+                                                        // Priority
     );
 }
 
@@ -81,12 +83,30 @@ function display_jkl_review_metabox( $post ) {
     // Retrieve the current data based on Post ID
     $jklrv_stored_meta = get_post_meta( $post->ID );
     
+    /*
+     * Metabox fields
+     * 1. Cover Image
+     * 2. Title
+     * 3. Author
+     * 4. Series
+     * 5. Category
+     * 6. Rating
+     * 7. Affiliate Link Option 
+     * 8. Affiliate Link
+     * 9. Product Link Option
+     * 10. Product Link
+     * 11. Author Link Option
+     * 12. Author Link
+     * 13. Resources Link Option
+     * 14. Resources Link
+     */
+    
     ?>
 
     <div class="wrap"> 
         <!-- Cover image. This should accept and display an image (like a Featured Image) using WP's image Uploader/chooser. -->
         <p> 
-            <label for="jkl_review_cover" class="jkl_review_cover"><?php _e('Cover Image: ', 'jkl-reviews')?></label>
+            <label for="jkl_review_cover" class="jkl_review_cover"><?php _e('Product Image: ', 'jkl-reviews/languages')?></label>
             <input type="text" id="jkl_review_cover" name="jkl_review_cover" 
                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_cover'] ) ) echo $jklrv_stored_meta['jkl_review_cover'][0]; ?>" />
             <input type="button" id="jkl_review_cover_button" class="button" value="<?php _e( 'Choose or Upload an Image', 'jkl_review_cover' )?>" />
@@ -94,27 +114,16 @@ function display_jkl_review_metabox( $post ) {
 
         <!-- Title -->
         <p>
-            <label for="jkl_review_title"><?php _e('Title: ', 'jkl-reviews')?></label>
+            <label for="jkl_review_title"><?php _e('Title: ', 'jkl-reviews/languages')?></label>
             <input type="text" id="jkl_review_title" name="jkl_review_title" 
                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_title'] ) ) echo $jklrv_stored_meta['jkl_review_title'][0]; ?>" />
         </p>
 
-        <!-- Author. Should accept a String input, or also be able to select from a list of "most used" authors in a checkbox list. -->
+        <!-- Author -->
         <p>
             <label for="jkl_review_author"><?php _e('Author: ', 'jkl-reviews')?></label>
-            <input type="checkbox" id="jkl_review_author" name="jkl_review_author" 
+            <input type="text" id="jkl_review_author" name="jkl_review_author" 
                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_author'] ) ) echo $jklrv_stored_meta['jkl_review_author'][0]; ?>" />
-        </p>
-
-        <!-- 
-            Rating. This should be a range - able to accept numbers at least up to 5, possibly up to 10. 
-            Create a range slider with JS as well: http://www.developerdrive.com/2012/07/creating-a-slider-control-with-the-html5-range-input/
-        -->
-        <p>
-            <label for="jkl_review_rating"><?php _e('Rating: ', 'jkl-reviews')?></label>
-            <input type="range" min="0" max="5" step="0.5" onchange="updateSlider(this.value)" 
-                       id="jkl_review_rating" name="jkl_review_rating" 
-                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_rating'] ) ) echo $jklrv_stored_meta['jkl_review_rating'][0]; ?>" />
         </p>
 
         <!-- Series. Similar to Author. Accepts a String, or also a checkbox input of "most used" series. -->
@@ -131,12 +140,54 @@ function display_jkl_review_metabox( $post ) {
                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_category'] ) ) echo $jklrv_stored_meta['jkl_review_category'][0]; ?>" />
         </p>
 
-        <!-- Links. Should be able to select from a checkbox list of available links (like Amazon, product page, author's site, resources site, etc) and also accept a URL to those sites. -->
+        <!-- 
+            Rating. This should be a range - able to accept numbers at least up to 5, possibly up to 10. 
+            Create a range slider with JS as well: http://www.developerdrive.com/2012/07/creating-a-slider-control-with-the-html5-range-input/
+        -->
         <p>
-            <label for="jkl_review_links"><?php _e('Links: ', 'jkl-reviews')?></label>
-            <input type="checkbox" id="jkl_review_links" name="jkl_review_links" 
-                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_links'] ) ) echo $jklrv_stored_meta['jkl_review_links'][0]; ?>" />
+            <label for="jkl_review_rating"><?php _e('Rating: ', 'jkl-reviews')?></label>
+            <input type="range" min="0" max="5" step="0.5" onchange="updateSlider(this.value)" 
+                       id="jkl_review_rating" name="jkl_review_rating" 
+                       value="<?php if( isset( $jklrv_stored_meta['jkl_review_rating'] ) ) echo $jklrv_stored_meta['jkl_review_rating'][0]; ?>" />
         </p>
+        
+        <!-- Links. Should be able to select from a checkbox list of available links (like Amazon, product page, author's site, resources site, etc) and also accept a URL to those sites. -->
+        <!-- Affiliate Link -->
+        <p>
+            <label for="jkl_review_affiliate_uri"><?php _e('Affiliate Link: ', 'jkl-reviews/languages')?></label>
+            <input type="checkbox" id="jkl_review_use_affiliate_uri" name="jkl_review_use_affiliate_uri" 
+                    value="<?php if( isset( $jklrv_stored_meta['jkl_review_use_affiliate_uri'] ) ) echo $jklrv_stored_meta['jkl_review_use_affiliate_uri'][0]; ?>" />
+            <input type="text" id="jkl_review_affiliate_uri" name="jkl_review_affiliate_uri"
+                    value="<?php if( isset( $jklrv_stored_meta['jkl_review_affiliate_uri'] ) ) echo $jklrv_stored_meta['jkl_review_affiliate_uri'][0]; ?>" />
+        </p>
+        
+        <!-- Product Homepage -->
+        <p>
+            <label for="jkl_review_product_uri"><?php _e('Link to Product Page: ', 'jkl-reviews/languages')?></label>
+            <input type="checkbox" id="jkl_review_use_product_uri" name="jkl_review_use_product_uri" 
+                    value="<?php if( isset( $jklrv_stored_meta['jkl_review_use_product_uri'] ) ) echo $jklrv_stored_meta['jkl_review_use_product_uri'][0]; ?>" />
+            <input type="text" id="jkl_review_product_uri" name="jkl_review_product_uri"
+                    value="<?php if( isset( $jklrv_stored_meta['jkl_review_product_uri'] ) ) echo $jklrv_stored_meta['jkl_review_product_uri'][0]; ?>" />
+        </p>
+        
+        <!-- Author Homepage -->
+        <p>
+            <label for="jkl_review_author_uri"><?php _e('Link to Author Homepage: ', 'jkl-reviews/languages')?></label>
+            <input type="checkbox" id="jkl_review_use_author_uri" name="jkl_review_use_author_uri" 
+                    value="<?php if( isset( $jklrv_stored_meta['jkl_review_use_author_uri'] ) ) echo $jklrv_stored_meta['jkl_review_use_author_uri'][0]; ?>" />
+            <input type="text" id="jkl_review_author_uri" name="jkl_review_author_uri"
+                    value="<?php if( isset( $jklrv_stored_meta['jkl_review_author_uri'] ) ) echo $jklrv_stored_meta['jkl_review_author_uri'][0]; ?>" />
+        </p>
+        
+        <!-- Resources Page -->
+        <p>
+            <label for="jkl_review_resources_uri"><?php _e('Link to Resources Page: ', 'jkl-reviews/languages')?></label>
+            <input type="checkbox" id="jkl_review_use_resources_uri" name="jkl_review_use_resources_uri" 
+                    value="<?php if( isset( $jklrv_stored_meta['jkl_review_use_resources_uri'] ) ) echo $jklrv_stored_meta['jkl_review_use_resources_uri'][0]; ?>" />
+            <input type="text" id="jkl_review_resources_uri" name="jkl_review_resources_uri"
+                    value="<?php if( isset( $jklrv_stored_meta['jkl_review_resources_uri'] ) ) echo $jklrv_stored_meta['jkl_review_resources_uri'][0]; ?>" />
+        </p>
+        
     </div>
 
     <?php
@@ -222,10 +273,32 @@ function jkl_save_review_metabox($post_id) {
         update_post_meta( $post_id, 'jkl_review_category', $_POST['jkl_review_category'] );
     } 
     
+    // Links and Options Below:
+    // Check the Checkbox Options:
+    $chk_affiliate = isset( $_POST['jkl_review_use_affiliate_link'] ) ? 'yes' : 'no';
+    $chk_product = isset( $_POST['jkl_review_use_product_link'] ) ? 'yes' : 'no';
+    $chk_author = isset( $_POST['jkl_review_use_author_link'] ) ? 'yes' : 'no';
+    $chk_resources = isset( $_POST['jkl_review_use_resources_link'] ) ? 'yes' : 'no';
+    
+    // Save Checkbox Statuses:
+    update_post_meta( $post_id, 'jkl_review_use_affiliate_link', $chk_affiliate );
+    update_post_meta( $post_id, 'jkl_review_use_product_link', $chk_product );
+    update_post_meta( $post_id, 'jkl_review_use_author_link', $chk_author );
+    update_post_meta( $post_id, 'jkl_review_use_resources_link', $chk_resources );
+    
     // Save the Links:
-    if( isset($_POST['jkl_review_links'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_links', $_POST['jkl_review_links'] );
-    } 
+    if( isset($_POST['jkl_review_affiliate_link'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_affiliate_link', $_POST['jkl_review_affiliate_link'] );
+    }
+    if( isset($_POST['jkl_review_product_link'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_product_link', $_POST['jkl_review_product_link'] );
+    }
+    if( isset($_POST['jkl_review_author_link'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_author_link', $_POST['jkl_review_author_link'] );
+    }
+    if( isset($_POST['jkl_review_resources_link'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_resources_link', $_POST['jkl_review_resources_link'] );
+    }
 }
 
 
