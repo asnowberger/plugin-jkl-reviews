@@ -1,0 +1,33 @@
+table.jkl_review {
+    border: 1px solid silver;
+    background-color: #fcfcfc;
+    padding: 20px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+th {
+    padding-bottom: 10px;
+    font-size: 1.25em;
+    text-align: left;
+    border-bottom: 1px solid silver;
+}
+.align-top {
+    vertical-align: top;
+    padding-top: 5px;
+}
+.divider {
+    height: 10px;
+}
+.note {
+    color: #999;
+    font-style: oblique;
+    margin: 5px;
+}
+.input-text {
+    width: 300px;
+}
+.jkl_review {
+   width: 150px;
+    
+}
+
