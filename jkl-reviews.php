@@ -206,7 +206,7 @@ function display_jkl_review_metabox( $post ) {
                 <span class="range-number-right">5</span>
                 
                 <output for="jkl_review_rating" id="star-rating">
-                    <?php if( isset( $jklrv_stored_meta['jkl_review_rating'] ) ) echo $jklrv_stored_meta['jkl_review_rating'][0]; ?>
+                    <?php echo isset( $jklrv_stored_meta['jkl_review_rating'] ) ? $jklrv_stored_meta['jkl_review_rating'][0] : 2.5; ?>
                 </output>
                 <span id="star-rating-text">Stars</span>
                 
@@ -223,8 +223,7 @@ function display_jkl_review_metabox( $post ) {
                 <label for=jkl_review_summary" class="jkl_label"><?php _e('Summary: ', 'languages/jkl-reviews')?></label>
             </td>
             <td>
-                <textarea row="4" cols="50" id="jkl_review_summary_area" name="jkl_review_summary_area">
-                    <?php if( isset( $jklrv_stored_meta['jkl_review_summary'] ) ) echo $jklrv_stored_meta['jkl_review_summary'][0]; ?>
+                <textarea id="jkl-review-summary-area" name="jkl_review_summary_area"><?php if( isset( $jklrv_stored_meta['jkl_review_summary'] ) ) echo $jklrv_stored_meta['jkl_review_summary'][0]; ?>
                 </textarea>
             </td>
         </tr>
@@ -403,14 +402,14 @@ function jklrv_image_enqueue() {
         wp_enqueue_media();
         
         // Registers and enqueues the required JS
-        wp_register_script( 'jkl-upload-image', plugin_dir_url( __FILE__ ) . 'js/jkl-upload-image.js', array( 'jquery' ) );
-        wp_localize_script( 'jkl-upload-image', 'jkl_review_cover',
+        wp_register_script( 'jkl-upload-image2', plugin_dir_url( __FILE__ ) . 'js/jkl-upload-image2.js', array( 'jquery' ) );
+        wp_localize_script( 'jkl-upload-image2', 'jkl_review_cover',
                 array(
                     'title' => __( 'Choose or Upload an Image', 'jkl-reviews' ),
                     'button' => __( 'Use this image', 'jkl-reviews' ),
                 )
         );
-        wp_enqueue_script( 'jkl-upload-image' );
+        wp_enqueue_script( 'jkl-upload-image2' );
     }
 }
 
