@@ -120,6 +120,45 @@ function display_jkl_review_metabox( $post ) {
         <tr><th colspan="2">Product Information</th></tr>
         <tr class="divider"></tr>
         
+        <!-- Product Type. Select the radio button corresponding to the product you are reviewing -->
+        <tr>
+            <td class="left-label">
+                <label for="jkl-product-type" class="jkl_label"><?php _e('Product Type: ', 'jkl-reviews/languages')?></label>
+            </td>
+            <td>
+                <label for="jkl-book-type" id="jkl-book-type" class="note">
+                    <input type="radio" name="jkl_radio" id="jkl-radio-book" value="book" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'book' ); ?>>
+                    <?php _e('Book', 'jkl-reviews/languages')?>
+                </label>
+                <label for="jkl-audio-type" id="jkl-audio-type" class="note">
+                    <input type="radio" name="jkl_radio" id="jkl-radio-audio" value="audio" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'audio' ); ?>>
+                    <?php _e('Audio', 'jkl-reviews/languages')?>
+                </label>
+                <label for="jkl-video-type" id="jkl-video-type" class="note">
+                    <input type="radio" name="jkl_radio" id="jkl-radio-video" value="video" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'video' ); ?>>
+                    <?php _e('Video', 'jkl-reviews/languages')?>
+                </label>
+                <label for="jkl-course-type" id="jkl-course-type" class="note">
+                    <input type="radio" name="jkl_radio" id="jkl-radio-course" value="course" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'course' ); ?>>
+                    <?php _e('Course', 'jkl-reviews/languages')?>
+                </label>
+                <label for="jkl-product-type" id="jkl-product-type" class="note">
+                    <input type="radio" name="jkl_radio" id="jkl-radio-product" value="product" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'product' ); ?>>
+                    <?php _e('Product', 'jkl-reviews/languages')?>
+                </label>
+                <label for="jkl-service-type" id="jkl-service-type" class="note">
+                    <input type="radio" name="jkl_radio" id="jkl-radio-service" value="service" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'service' ); ?>>
+                    <?php _e('Service', 'jkl-reviews/languages')?>
+                </label>
+                <label for="jkl-other-type" id="jkl-other-type" class="note">
+                    <input type="radio" name="jkl_radio" id="jkl-radio-other" value="other" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'other' ); ?>>
+                    <?php _e('Other', 'jkl-reviews/languages')?>
+                </label>
+            </td>
+        </tr>
+        
+        <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
+        
         <!-- Cover image. This should accept and display an image (like a Featured Image) using WP's image Uploader/chooser. -->
         <tr>
             <td class="left-label">
@@ -127,7 +166,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="url" id="jkl_review_cover" name="jkl_review_cover" 
-                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_cover'] ) ) echo $jklrv_stored_meta['jkl_review_cover'][0]; ?>" />
+                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_cover'] ) ) echo esc_url( $jklrv_stored_meta['jkl_review_cover'][0] ); ?>" />
                 <input type="button" id="jkl_review_cover_button" class="button" value="<?php _e( 'Choose or Upload an Image', 'jkl_review_cover' )?>" />
             </td>
         </tr>

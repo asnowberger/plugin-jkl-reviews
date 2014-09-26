@@ -11,10 +11,10 @@
 .jkl_review input[type=url] {
     width: 170px;
 }
-.left-label {
+td.left-label {
     width: 200px;
     vertical-align: top;
-    padding-top: 5px;
+    padding: 5px 0;
 }
 .rating-label {
     //padding-top: 12px;
@@ -67,7 +67,7 @@
 }
 #jkl-review-summary-area {
     margin-top: 5px;
-    width: 400px;
+    width: 100%;
     height: 100px;
 }
 

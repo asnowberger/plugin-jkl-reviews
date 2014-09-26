@@ -5,6 +5,8 @@
  * Ref: http://austin.passy.co/2010/creating-custom-metaboxes-and-the-built-in-uploader/
  */
 
+// Check this doc (helpful) : http://code.tutsplus.com/articles/how-to-integrate-the-wordpress-media-uploader-in-theme-and-plugin-options--wp-26052
+
 jQuery(document).ready(function($) {
 
         // save the send_to_editor handler function
