@@ -167,9 +167,23 @@ function display_jkl_review_metabox( $post ) {
             <td>
                 <input type="url" id="jkl_review_cover" name="jkl_review_cover" 
                            value="<?php if( isset( $jklrv_stored_meta['jkl_review_cover'] ) ) echo esc_url( $jklrv_stored_meta['jkl_review_cover'][0] ); ?>" />
-                <input type="button" id="jkl_review_cover_button" class="button" value="<?php _e( 'Choose or Upload an Image', 'jkl_review_cover' )?>" />
+                <input type="button" id="jkl_review_cover_button" class="button" value="<?php _e( 'Choose or Upload an Image', 'jkl_review/languages' )?>" />
             </td>
         </tr>
+        
+        <!-- Cover image preview. This should only display the cover image IF THERE IS ONE. -->
+        <?php if ( $jklrv_stored_meta['jkl_review_cover'] ) { ?>
+        <tr>
+            <td class="left-label">
+                <label for="jkl_review_cover_preview" class="jkl_label"><?php _e('Product Image Preview: ', 'jkl-reviews/languages')?></label>
+            </td>
+            <td>
+                <div id="jkl_cover_preview">
+                    <img src="<?php echo esc_url( $jklrv_stored_meta['jkl_review_cover'][0] ); ?>" />
+                </div>
+            </td>
+        </tr>
+        <?php } ?>
 
         <!-- Title -->
         <tr>
@@ -437,6 +451,7 @@ function display_jkl_review_metabox( $post ) {
 
 function jklrv_image_enqueue() {
     global $typenow;
+    
     if( $typenow == 'post' ) {
         wp_enqueue_media();
         
@@ -450,8 +465,26 @@ function jklrv_image_enqueue() {
         );
         wp_enqueue_script( 'jkl-upload-image2' );
     }
+    
+    //if( 'media-upload.php' == $typenow || 'async-upload.php' == $typenow ) {
+        // Now we'll replace the 'Insert into Post Button' inside Thickbox
+        add_filter( 'gettext', 'jkl_replace_thickbox_text', 1, 3 );
+    //}
 }
 
+// NOT YET WORKING
+// Function to replace the Thickbox text 'Insert into Post' with something more recognizable and usable
+function jkl_replace_thickbox_text( $translated_text, $text, $domain ) {
+    global $typenow;
+    
+    if ( 'Insert into Post' == $text ) {
+        //$referer = strpos( wp_get_referer(), '' );
+        //if ( $referer != '' ) {
+            return __( 'Use this cover image', '' );
+        //}
+    }
+    return $translated_text;
+}
 
 /*
  * ##### 4 #####

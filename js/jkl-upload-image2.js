@@ -16,10 +16,20 @@ jQuery(document).ready(function($) {
 
                 // replace the default send_to_editor handler function with our own
                 window.send_to_editor = window.attach_image;
-                tb_show('', 'media-upload.php?post_id=<?php echo $post->ID ?>&amp;type=image&amp;TB_iframe=true');
+                
+                // THE code that makes the image chooser "Thickbox" pop up.
+                // tb_show ('name_of_window', $url(that handles and validates files), imageGroup
+                // $url (referer(optional), post_id, type, TB_iframe(always TRUE or no frame and no window) 
+                tb_show('Upload a Cover', 'media-upload.php?post_id=<?php echo $post->ID ?>&amp;type=image&amp;TB_iframe=true', false);
 
                 return false;
         });
+        
+        window.send_to_editor = function(html) {
+            var image_url = $('img',html).attr('src');
+            $('#jkl_review_cover').val(image_url);
+            tb_remove();
+        }
 
         // Sets up the media library frame
         meta_image_frame = wp.media.frames.meta_image_frame = wp.media({

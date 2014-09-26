@@ -11,6 +11,9 @@
 .jkl_review input[type=url] {
     width: 170px;
 }
+#jkl_cover_preview img {
+    max-height: 100px;
+}
 td.left-label {
     width: 200px;
     vertical-align: top;
