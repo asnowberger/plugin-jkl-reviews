@@ -41,6 +41,9 @@ add_action( 'save_post', 'jkl_save_review_metabox' );
 // ##5 : Add a shortcode to display the content box on the page
 add_shortcode( 'review', 'jkl_review_box' );
 
+// ##5B : Just display it straight up on a Post (TutsPlus)
+add_action( 'the_content', 'jkl_display_review_box' );
+
 // Register widgets
 add_action( 'widgets_init', 'jkl_review_widget_init' );
 
@@ -54,7 +57,7 @@ function jkl_review_style() {
 }
 
 /*
- * ##### 1 #####
+ * ##### 1 ##### 
  * First, ADD the metabox
  */
 
@@ -113,6 +116,15 @@ function display_jkl_review_metabox( $post ) {
      * 14. Resources Link
      */
     
+    // Ref: TutsPlus Working with Meta Boxes Video Course
+    
+    // If we want to show the values we've stored, there are 2 ways to do that:
+    // 0. $jklrv_stored_meta = get_post_meta( $post->ID );
+    // 1. if ( isset ( $jklrv_stored_meta['identifier'] ) ) echo $jklrv_stored_meta['identifier'][0];
+    // 2. $html .= <input type="text" value="' . get_post_meta( $post->ID, 'identifier', true ) . '" />';
+    
+    // Test your saved values are stripped of tags by trying to save:
+    // <script>alert('Hello world!');</script>
     ?>
 
     <!-- PRODUCT INFORMATION TABLE -->
@@ -172,7 +184,7 @@ function display_jkl_review_metabox( $post ) {
         </tr>
         
         <!-- Cover image preview. This should only display the cover image IF THERE IS ONE. -->
-        <?php if ( $jklrv_stored_meta['jkl_review_cover'] ) { ?>
+        <?php if ( $jklrv_stored_meta['jkl_review_cover'][0] != '' ) { ?>
         <tr>
             <td class="left-label">
                 <label for="jkl_review_cover_preview" class="jkl_label"><?php _e('Product Image Preview: ', 'jkl-reviews/languages')?></label>
@@ -218,7 +230,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
         </tr>
 
-        <!-- Category. Similar to Author and Series. Actual functionality is like WP's native Categories. -->
+        <!-- Category. Should act as WP Tags, separate-able by commas, including the list + X marks to remove categories -->
         <tr>
             <td class="left-label">
                 <label for="jkl_review_category" class="jkl_label"><?php _e('Category: ', 'jkl-reviews')?></label>
@@ -432,8 +444,8 @@ function display_jkl_review_metabox( $post ) {
                 </select>
                 
                 <!-- Give option to display an icon with the link or not -->
-                <input type="checkbox" id="jkl_review_show_homepage_icon" name="jkl_review_show_homepage_icon" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_show_homepage_icon'] ) ) echo $jklrv_stored_meta['jkl_review_show_homepage_icon'][0]; ?>" />
+                <input type="checkbox" id="jkl_review_show_resources_icon" name="jkl_review_show_resources_icon" 
+                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_show_resources_icon'] ) ) echo $jklrv_stored_meta['jkl_review_show_resources_icon'][0]; ?>" />
                 <span class="note">Show icon?</span>
             </td>
         </tr>
@@ -456,25 +468,24 @@ function jklrv_image_enqueue() {
         wp_enqueue_media();
         
         // Registers and enqueues the required JS
-        wp_register_script( 'jkl-upload-image2', plugin_dir_url( __FILE__ ) . 'js/jkl-upload-image2.js', array( 'jquery' ) );
-        wp_localize_script( 'jkl-upload-image2', 'jkl_review_cover',
+        wp_register_script( 'upload-image', plugin_dir_url( __FILE__ ) . 'js/upload-image.js', array( 'jquery' ) );
+        wp_localize_script( 'upload-image', 'jkl_review_cover',
                 array(
-                    'title' => __( 'Choose or Upload an Image', 'jkl-reviews' ),
-                    'button' => __( 'Use this image', 'jkl-reviews' ),
+                    'title' => __( 'Select a Cover', 'jkl-reviews' ),
+                    'button' => __( 'Use this Cover', 'jkl-reviews' ),
                 )
         );
-        wp_enqueue_script( 'jkl-upload-image2' );
+        wp_enqueue_script( 'upload-image' );
     }
     
     //if( 'media-upload.php' == $typenow || 'async-upload.php' == $typenow ) {
         // Now we'll replace the 'Insert into Post Button' inside Thickbox
-        add_filter( 'gettext', 'jkl_replace_thickbox_text', 1, 3 );
+        //add_filter( 'gettext', 'jkl_replace_thickbox_text', 1, 3 );
     //}
 }
 
-// NOT YET WORKING
 // Function to replace the Thickbox text 'Insert into Post' with something more recognizable and usable
-function jkl_replace_thickbox_text( $translated_text, $text, $domain ) {
+/*function jkl_replace_thickbox_text( $translated_text, $text, $domain ) {
     global $typenow;
     
     if ( 'Insert into Post' == $text ) {
@@ -484,7 +495,7 @@ function jkl_replace_thickbox_text( $translated_text, $text, $domain ) {
         //}
     }
     return $translated_text;
-}
+}*/
 
 /*
  * ##### 4 #####
@@ -496,6 +507,7 @@ function jkl_save_review_metabox($post_id) {
      * Verify this came from our screen and with proper authorization and that we're ready to save.
      */
     
+    // The following commented code is found directly on the WP Codex
     // Check if nonce is set
     if ( !isset( $_POST['jklrv_nonce'] ) ) return;
     
@@ -507,54 +519,78 @@ function jkl_save_review_metabox($post_id) {
     
     // Check user's editing permissions
     if ( !current_user_can( 'edit_page', $post_id ) ) return;
+
     
     /*
-     * OK, after all those checks, now it's OK to save our data
+     * After all those checks, save.
      */
     
+    // Save the Review Type (radio button selection)
+    if( isset($_POST[ 'jkl_review_radio' ] ) ) {
+        update_post_meta( $post_id, 'jkl_review_radio', $_POST['jkl_review_radio'] );
+    } // NOT WORKING
+
     // Save the Cover: Checks for input and saves image if needed
     if( isset($_POST[ 'jkl_review_cover' ] ) ) {
-        update_post_meta();
+        update_post_meta( $post_id, 'jkl_review_cover', $_POST['jkl_review_cover'] );
     } 
-    
+
     // Save the Title: Checks for input and sanitizes/saves if needed
     if( isset($_POST['jkl_review_title'] ) ) {
         update_post_meta( $post_id, 'jkl_review_title', $_POST['jkl_review_title'] );
     } 
-    
+
     // Save the Author:
     if( isset($_POST['jkl_review_author'] ) ) {
         update_post_meta( $post_id, 'jkl_review_author', $_POST['jkl_review_author'] );
     } 
-    
-    // Save the Rating:
-    if( isset($_POST['jkl_review_rating'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_rating', $_POST['jkl_review_rating'] );
-    } 
-    
+
     // Save the Series:
     if( isset($_POST['jkl_review_series'] ) ) {
         update_post_meta( $post_id, 'jkl_review_series', $_POST['jkl_review_series'] );
     }
-    
+
     // Save the Category:
     if( isset($_POST['jkl_review_category'] ) ) {
         update_post_meta( $post_id, 'jkl_review_category', $_POST['jkl_review_category'] );
     } 
-    
+
+    // Save the Rating:
+    if( isset($_POST['jkl_review_rating'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_rating', $_POST['jkl_review_rating'] );
+    } 
+
+    // Save the Summary:
+    if( isset($_POST['jkl_review_summary'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_summary', $_POST['jkl_review_summary'] );
+    } // NOT WORKING PLUS LOADS OF SPACE AT THE BEGINNING OF THE BOX
+
+    // BELOW HERE, NOTHING WORKS
     // Links and Options Below:
     // Check the Checkbox Options:
+    // Show link?
     $chk_affiliate = isset( $_POST['jkl_review_use_affiliate_link'] ) && $_POST['jkl_review_use_affiliate_link'] ? 'on' : 'off';
     $chk_product = isset( $_POST['jkl_review_use_product_link'] ) && $_POST['jkl_review_use_product_link'] ? 'on' : 'off';
     $chk_author = isset( $_POST['jkl_review_use_author_link'] ) && $_POST['jkl_review_use_author_link'] ? 'on' : 'off';
     $chk_resources = isset( $_POST['jkl_review_use_resources_link'] ) && $_POST['jkl_review_use_resources_link'] ? 'on' : 'off';
-    
+    // Show icon?
+    $chk_affiliate_icon = isset( $_POST['jkl_review_show_affiliate_icon'] ) && $_POST['jkl_review_show_affiliate_icon'] ? 'on' : 'off';
+    $chk_product_icon = isset( $_POST['jkl_review_show_homepage_icon'] ) && $_POST['jkl_review_show_homepage_icon'] ? 'on' : 'off';
+    $chk_author_icon = isset( $_POST['jkl_review_show_authorpage_icon'] ) && $_POST['jkl_review_show_authorpage_icon'] ? 'on' : 'off';
+    $chk_resources_icon = isset( $_POST['jkl_review_show_resources_icon'] ) && $_POST['jkl_review_show_resources_icon'] ? 'on' : 'off';
+
     // Save Checkbox Statuses:
+    // Show link?
     update_post_meta( $post_id, 'jkl_review_use_affiliate_link', $chk_affiliate );
     update_post_meta( $post_id, 'jkl_review_use_product_link', $chk_product );
     update_post_meta( $post_id, 'jkl_review_use_author_link', $chk_author );
     update_post_meta( $post_id, 'jkl_review_use_resources_link', $chk_resources );
-    
+    // Show icon?
+    update_post_meta( $post_id, 'jkl_review_show_affiliate_icon', $chk_affiliate );
+    update_post_meta( $post_id, 'jkl_review_show_homepage_icon', $chk_product );
+    update_post_meta( $post_id, 'jkl_review_show_authorpage_icon', $chk_author );
+    update_post_meta( $post_id, 'jkl_review_show_resources_icon', $chk_resources );
+
     // Save the Links:
     if( isset($_POST['jkl_review_affiliate_link'] ) ) {
         update_post_meta( $post_id, 'jkl_review_affiliate_link', $_POST['jkl_review_affiliate_link'] );
@@ -568,11 +604,12 @@ function jkl_save_review_metabox($post_id) {
     if( isset($_POST['jkl_review_resources_link'] ) ) {
         update_post_meta( $post_id, 'jkl_review_resources_link', $_POST['jkl_review_resources_link'] );
     }
+    
 }
 
-
 /*
- * Shortcode Function
+ * ##### 5 #####
+ * Fifth, create the Shortcode Function
  */
 function jkl_review_box($atts, $content) {
     $options = shortcode_atts(      // can also call this variable $atts if you want and just override the original - it'll work, but possibly not so clear as to what it's doing
@@ -585,6 +622,26 @@ function jkl_review_box($atts, $content) {
     extract($options);  // This extracts all the variables from the array to $size and $content, etc
     
     return ""; // Here is the actual (responsive) page styling for the box
+}
+
+/*
+ * ##### 5B #####
+ * Fifth Plus, just display the content straight up on a Post
+ */
+function jkl_display_review_box( $content ) {
+    if ( is_single() ) {
+        
+        // $jklrv_stored_meta = get_post_meta( get_the_ID(), 'jkl_review_title', true ); (Help from TutsPlus)
+        $jklrv_stored_meta = get_post_meta( get_the_ID() );
+        
+        ?>
+    
+        <div>The title of the thing is: <?php echo $jklrv_stored_meta['jkl_review_title'][0]; ?></div>
+    
+        <?php
+    }
+    
+    return $content; 
 }
 
 /*
