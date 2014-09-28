@@ -310,34 +310,7 @@ function display_jkl_review_metabox( $post ) {
             <td>
                 <input type="url" id="jkl_affiliate_uri" name="jkl_review_affiliate_uri"
                         value="<?php if( isset( $jklrv_stored_meta['jkl_review_affiliate_uri'] ) ) echo $jklrv_stored_meta['jkl_review_affiliate_uri'][0]; ?>" />
-            
-            <!-- Checkbox option to display the link or not -->
-                <input type="checkbox" id="jkl_affiliate_chkbx" name="jkl_affiliate_chkbx" value="checked" 
-                    <?php if( isset( $jklrv_stored_meta['jkl_affiliate_chkbx'] ) ) checked( $jklrv_stored_meta['jkl_review_use_affiliate_uri'][0] ); ?> />
-                <span class="note">Show link?</span>
-            </td>
-        </tr>        
-        <tr>
-            <!-- Select icon -->
-            <td>
-                <label for="jkl_review_affiliate_icon" class="icon-select"><?php _e('Select Affiliate Icon: ', 'jkl-reviews/languages')?></label>
-            </td>
-            <td> 
-                <select name="jkl_review_affiliate_icon" id="jkl_review_affiliate_icon" class="select-dropdown">
-                    <option value="default" <?php if ( isset ( $jklrv_stored_meta['jkl_review_affiliate_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_affiliate_icon'], 'default' ); ?>><?php _e( 'Default', 'jkl-reviews/languages' )?></option>';
-                    <option value="amazon" <?php if ( isset ( $jklrv_stored_meta['jkl_review_affiliate_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_affiliate_icon'], 'amazon' ); ?>><?php _e( 'Amazon', 'jkl-reviews/languages' )?></option>';
-                    <option value="audible" <?php if ( isset ( $jklrv_stored_meta['jkl_review_affiliate_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_affiliate_icon'], 'audible' ); ?>><?php _e( 'Audible', 'jkl-reviews/languages' )?></option>';
-                    <option value="udemy" <?php if ( isset ( $jklrv_stored_meta['jkl_review_affiliate_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_affiliate_icon'], 'udemy' ); ?>><?php _e( 'Udemy', 'jkl-reviews/languages' )?></option>';
-                </select>
-                
-                <!-- Give option to display an icon with the link or not -->
-                <input type="checkbox" id="jkl_review_show_affiliate_icon" name="jkl_review_show_affiliate_icon" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_show_affiliate_icon'] ) ) echo $jklrv_stored_meta['jkl_review_show_affiliate_icon'][0]; ?>" />
-                <span class="note">Show icon?</span>
-            </td>
         </tr>
-        
-        <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
         
         <!-- Product Homepage -->
         <tr>
@@ -347,37 +320,7 @@ function display_jkl_review_metabox( $post ) {
             <td>
                 <input type="url" id="jkl_review_product_uri" name="jkl_review_product_uri"
                         value="<?php if( isset( $jklrv_stored_meta['jkl_review_product_uri'] ) ) echo $jklrv_stored_meta['jkl_review_product_uri'][0]; ?>" />
-            
-                <!-- Give option to display the link or not -->
-                <input type="checkbox" id="jkl_review_use_product_uri" name="jkl_review_use_product_uri" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_use_product_uri'] ) ) echo $jklrv_stored_meta['jkl_review_use_product_uri'][0]; ?>" />
-                <span class="note">Show link?</span>
-            </td>
-        </tr>        
-        <tr>
-            <!-- Select icon -->
-            <td>
-                <label for="jkl_review_product_icon" class="icon-select"><?php _e('Select Product Icon: ', 'jkl-reviews/languages')?></label>
-            </td>
-            <td> 
-                <select name="jkl_review_product_icon" id="jkl_review_product_icon" class="select-dropdown">
-                    <option value="default" <?php if ( isset ( $jklrv_stored_meta['jkl_review_product_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_product_icon'], 'default' ); ?>><?php _e( 'Default', 'jkl-reviews/languages' )?></option>';
-                    <option value="book" <?php if ( isset ( $jklrv_stored_meta['jkl_review_product_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_product_icon'], 'book' ); ?>><?php _e( 'Book', 'jkl-reviews/languages' )?></option>';
-                    <option value="audio" <?php if ( isset ( $jklrv_stored_meta['jkl_review_product_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_product_icon'], 'audio' ); ?>><?php _e( 'Audio', 'jkl-reviews/languages' )?></option>';
-                    <option value="video" <?php if ( isset ( $jklrv_stored_meta['jkl_review_product_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_product_icon'], 'video' ); ?>><?php _e( 'Video', 'jkl-reviews/languages' )?></option>';
-                    <option value="course" <?php if ( isset ( $jklrv_stored_meta['jkl_review_product_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_product_icon'], 'course' ); ?>><?php _e( 'Course', 'jkl-reviews/languages' )?></option>';
-                    <option value="product" <?php if ( isset ( $jklrv_stored_meta['jkl_review_product_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_product_icon'], 'product' ); ?>><?php _e( 'Product', 'jkl-reviews/languages' )?></option>';
-                    <option value="site" <?php if ( isset ( $jklrv_stored_meta['jkl_review_product_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_product_icon'], 'site' ); ?>><?php _e( 'Site', 'jkl-reviews/languages' )?></option>';
-                </select>
-                
-                <!-- Give option to display an icon with the link or not -->
-                <input type="checkbox" id="jkl_review_show_homepage_icon" name="jkl_review_show_homepage_icon" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_show_homepage_icon'] ) ) echo $jklrv_stored_meta['jkl_review_show_homepage_icon'][0]; ?>" />
-                <span class="note">Show icon?</span>
-            </td>
         </tr>
-        
-        <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
         
         <!-- Author Homepage -->
         <tr>
@@ -387,34 +330,8 @@ function display_jkl_review_metabox( $post ) {
             <td>
                 <input type="url" id="jkl_review_author_uri" name="jkl_review_author_uri"
                         value="<?php if( isset( $jklrv_stored_meta['jkl_review_author_uri'] ) ) echo $jklrv_stored_meta['jkl_review_author_uri'][0]; ?>" />
-            
-                <!-- Give option to display the link or not -->
-                <input type="checkbox" id="jkl_review_use_author_uri" name="jkl_review_use_author_uri" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_use_author_uri'] ) ) echo $jklrv_stored_meta['jkl_review_use_author_uri'][0]; ?>" />
-                <span class="note">Show link?</span>
             </td>
         </tr>       
-        <tr> 
-            <!-- Select icon -->
-            <td>
-                <label for="jkl_review_author_icon" class="icon-select"><?php _e('Select Author Icon: ', 'jkl-reviews/languages')?></label>
-            </td>
-            <td> 
-                <select name="jkl_review_author_icon" id="jkl_review_author_icon" class="select-dropdown">
-                    <option value="default" <?php if ( isset ( $jklrv_stored_meta['jkl_review_author_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_author_icon'], 'default' ); ?>><?php _e( 'Default', 'jkl-reviews/languages' )?></option>';
-                    <option value="male" <?php if ( isset ( $jklrv_stored_meta['jkl_review_author_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_author_icon'], 'male' ); ?>><?php _e( 'Male Author', 'jkl-reviews/languages' )?></option>';
-                    <option value="female" <?php if ( isset ( $jklrv_stored_meta['jkl_review_author_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_author_icon'], 'female' ); ?>><?php _e( 'Female Author', 'jkl-reviews/languages' )?></option>';
-                    <option value="team" <?php if ( isset ( $jklrv_stored_meta['jkl_review_author_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_author_icon'], 'team' ); ?>><?php _e( 'Team', 'jkl-reviews/languages' )?></option>';
-                </select>
-                
-                <!-- Give option to display an icon with the link or not -->
-                <input type="checkbox" id="jkl_review_show_authorpage_icon" name="jkl_review_show_authorpage_icon" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_show_authorpage_icon'] ) ) checked( $jklrv_stored_meta['jkl_review_show_authorpage_icon'][0], 'yes' ); ?>" />
-                <span class="note">Show icon?</span>
-            </td>
-        </tr>
-        
-        <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
         
         <!-- Resources Page -->
         <tr>
@@ -424,33 +341,8 @@ function display_jkl_review_metabox( $post ) {
             <td>
                 <input type="url" id="jkl_review_resources_uri" name="jkl_review_resources_uri"
                         value="<?php if( isset( $jklrv_stored_meta['jkl_review_resources_uri'] ) ) echo $jklrv_stored_meta['jkl_review_resources_uri'][0]; ?>" />
-            
-                <!-- Give option to display the link or not -->
-                <input type="checkbox" id="jkl_review_use_resources_uri" name="jkl_review_use_resources_uri" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_use_resources_uri'] ) ) echo $jklrv_stored_meta['jkl_review_use_resources_uri'][0]; ?>" />
-                <span class="note">Show link?</span>
             </td>
         </tr>        
-        <tr> 
-            <!-- Select Resources icon -->
-            <td>
-                <label for="jkl_review_resources_icon" class="icon-select"><?php _e('Select Resources Icon: ', 'jkl-reviews/languages')?></label>
-            </td>
-            <td> 
-                <select name="jkl_review_resources_icon" id="jkl_review_resources_icon" class="select-dropdown">
-                    <option value="default" <?php if ( isset ( $jklrv_stored_meta['jkl_review_resources_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_resources_icon'], 'default' ); ?>><?php _e( 'Default', 'jkl-reviews/languages' )?></option>';
-                    <option value="website" <?php if ( isset ( $jklrv_stored_meta['jkl_review_resources_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_resources_icon'], 'website' ); ?>><?php _e( 'Website', 'jkl-reviews/languages' )?></option>';
-                    <option value="download" <?php if ( isset ( $jklrv_stored_meta['jkl_review_resources_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_resources_icon'], 'download' ); ?>><?php _e( 'Download', 'jkl-reviews/languages' )?></option>';
-                    <option value="link" <?php if ( isset ( $jklrv_stored_meta['jkl_review_resources_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_resources_icon'], 'link' ); ?>><?php _e( 'Link', 'jkl-reviews/languages' )?></option>';
-                    <option value="forum" <?php if ( isset ( $jklrv_stored_meta['jkl_review_resources_icon'] ) ) selected( $jklrv_stored_meta['jkl_review_resources_icon'], 'forum' ); ?>><?php _e( 'Forum', 'jkl-reviews/languages' )?></option>';
-                </select>
-                
-                <!-- Give option to display an icon with the link or not -->
-                <input type="checkbox" id="jkl_review_show_resources_icon" name="jkl_resources_icons[]" 
-                        value="resources" <?php echo (in_array('resources', $jklrv_stored_meta)) ? 'checked="checked"' : ''; ?> />
-                <span class="note">Show icon?</span>
-            </td>
-        </tr>
         
     </table>
 
@@ -479,25 +371,7 @@ function jklrv_image_enqueue() {
         );
         wp_enqueue_script( 'upload-image' );
     }
-    
-    //if( 'media-upload.php' == $typenow || 'async-upload.php' == $typenow ) {
-        // Now we'll replace the 'Insert into Post Button' inside Thickbox
-        //add_filter( 'gettext', 'jkl_replace_thickbox_text', 1, 3 );
-    //}
 }
-
-// Function to replace the Thickbox text 'Insert into Post' with something more recognizable and usable
-/*function jkl_replace_thickbox_text( $translated_text, $text, $domain ) {
-    global $typenow;
-    
-    if ( 'Insert into Post' == $text ) {
-        //$referer = strpos( wp_get_referer(), '' );
-        //if ( $referer != '' ) {
-            return __( 'Use this cover image', '' );
-        //}
-    }
-    return $translated_text;
-}*/
 
 /*
  * ##### 4 #####
@@ -565,34 +439,9 @@ function jkl_save_review_metabox($post_id) {
     // Save the Summary:
     if( isset($_POST['jkl_review_summary_area'] ) ) {
         update_post_meta( $post_id, 'jkl_review_summary_area', $_POST['jkl_review_summary_area'] );
-    } // NOT WORKING PLUS LOADS OF SPACE AT THE BEGINNING OF THE BOX
+    } 
 
-    // BELOW HERE, NOTHING WORKS
     // Links and Options Below:
-    // Check the Checkbox Options:
-    // Show link?
-    //$chk_affiliate = isset( $_POST['jkl_review_use_affiliate_link'] ) ? 'on' : 'off';
-    $chk_product = isset( $_POST['jkl_review_use_product_link'] ) ? 'yes' : '';
-    $chk_author = isset( $_POST['jkl_review_use_author_link'] ) ? 'yes' : '';
-    $chk_resources = isset( $_POST['jkl_review_use_resources_link'] ) && $_POST['jkl_review_use_resources_link'] ? 'on' : 'off';
-    // Show icon?
-    $chk_affiliate = isset( $_POST['jkl_affiliate_chkbx'] ) && $_POST['jkl_affiliate_chkbx'] ? 'on' : 'off';
-    $chk_product_icon = isset( $_POST['jkl_review_show_homepage_icon'] ) ? 'checked' : 'off';
-    $chk_author_icon = isset( $_POST['jkl_review_show_authorpage_icon'] ) ? 'yes' : '';
-    //$chk_resources_icon = isset( $_POST['jkl_review_show_resources_icon'] ) ? 'on' : '';
-
-    // Save Checkbox Statuses:
-    // Show link?  
-    update_post_meta( $post_id, 'jkl_affiliate_chkbx', $chk_affiliate );
-    update_post_meta( $post_id, 'jkl_review_use_product_link', $chk_product );
-    update_post_meta( $post_id, 'jkl_review_use_author_link', $chk_author );
-    update_post_meta( $post_id, 'jkl_review_use_resources_link', $chk_resources );
-    // Show icon?
-    update_post_meta( $post_id, 'jkl_review_show_affiliate_icon', $chk_affiliate );
-    update_post_meta( $post_id, 'jkl_review_show_homepage_icon', $chk_product );
-    update_post_meta( $post_id, 'jkl_review_show_authorpage_icon', $chk_author );
-    update_post_meta( $post_id, 'jkl_review_show_resources_icon', $chk_resources );
-
     // Save the Links:
     if( isset($_POST['jkl_review_affiliate_uri'] ) ) {
         update_post_meta( $post_id, 'jkl_review_affiliate_uri', $_POST['jkl_review_affiliate_uri'] );
@@ -605,20 +454,6 @@ function jkl_save_review_metabox($post_id) {
     }
     if( isset($_POST['jkl_review_resources_uri'] ) ) {
         update_post_meta( $post_id, 'jkl_review_resources_uri', $_POST['jkl_review_resources_uri'] );
-    }
-    
-    // Save the Icons from the Dropdowns:
-    if( isset($_POST['jkl_review_affiliate_icon'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_affiliate_icon', $_POST['jkl_review_affiliate_icon'] );
-    }
-    if( isset($_POST['jkl_review_product_icon'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_product_icon', $_POST['jkl_review_product_icon'] );
-    }
-    if( isset($_POST['jkl_review_author_icon'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_author_icon', $_POST['jkl_review_author_icon'] );
-    }
-    if( isset($_POST['jkl_review_resources_icon'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_resources_icon', $_POST['jkl_review_resources_icon'] );
     }
 }
 
