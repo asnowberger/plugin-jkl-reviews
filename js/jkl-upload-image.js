@@ -24,25 +24,30 @@ jQuery(document).ready(function($) {
         
         // If the frame already exists, re-open it.
         if ( meta_image_frame ) {
-            wp.media.editor.open();
+            meta_image_frame.open();
             return;
         }
         
         // Sets up the media library frame
         meta_image_frame = wp.media.frames.meta_image_frame = wp.media({
-            title: jkl_review_cover.title,
-            button: { text: jkl_review_cover.button },
-            library: { type: 'image' }
+            title: jQuery( this ).data( 'jkl_review_cover' ),
+            button: { text: jQuery( this ).data( 'jkl_review_cover_button' ) },
+            library: { type: 'image' },
+            multiple: false // Set to true to allow multiple files to be selected
         });
         
         // Runs when an image is selected
         meta_image_frame.on('select', function() {
             
             // Grabs the attachment selection and creates a JSON representation of the model
-            var media_attachment = meta_image_frame.state().get('selection').first().toJSON();
+            var media_attachment = meta_image_frame.state().get('selection');
             
-            // Sends the attachment URL to our custom image input field
-            $('#jkl_review_cover').val(media_attachment.url);
+            media_attachment.map( function( attachment ) {
+               attachment = attachment.toJSON();
+               
+               // Sends the attachment URL to our custom image input field
+                $('#jkl_review_cover').val(media_attachment.url);
+            });
         });
         
         // Opens the media library frame

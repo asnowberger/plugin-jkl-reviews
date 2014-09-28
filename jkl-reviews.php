@@ -288,7 +288,7 @@ function display_jkl_review_metabox( $post ) {
                 <label for=jkl_review_summary" class="jkl_label"><?php _e('Summary: ', 'languages/jkl-reviews')?></label>
             </td>
             <td>
-                <textarea id="jkl-review-summary-area" name="jkl_review_summary_area"><?php if( isset( $jklrv_stored_meta['jkl_review_summary'] ) ) echo $jklrv_stored_meta['jkl_review_summary'][0]; ?>
+                <textarea id="jkl_review_summary_area" name="jkl_review_summary_area"><?php if( isset( $jklrv_stored_meta['jkl_review_summary_area'] ) ) echo $jklrv_stored_meta['jkl_review_summary_area'][0]; ?>
                 </textarea>
             </td>
         </tr>
@@ -299,19 +299,21 @@ function display_jkl_review_metabox( $post ) {
         <tr><th colspan="2">Product Links</th></tr>
         <tr class="divider"></tr>
         
-        <!-- Links. Should be able to select from a checkbox list of available links (like Amazon, product page, author's site, resources site, etc) and also accept a URL to those sites. -->
+        <!-- Links. Should be able to select from a dropdown list of available links (like Amazon, product page, author's site, resources site, etc) and also accept a URL to those sites. -->
         <!-- Affiliate Link -->
         <tr>
             <td class="left-label">
-                <label for="jkl_review_affiliate_uri" class="jkl_label"><?php _e('Affiliate Link: ', 'jkl-reviews/languages')?></label>
+                <label for="jkl_affiliate_uri" class="jkl_label"><?php _e('Affiliate Link: ', 'jkl-reviews/languages')?></label>
             </td>
+            
+            <!-- Affiliate Link URL -->
             <td>
-                <input type="url" id="jkl_review_affiliate_uri" name="jkl_review_affiliate_uri"
+                <input type="url" id="jkl_affiliate_uri" name="jkl_review_affiliate_uri"
                         value="<?php if( isset( $jklrv_stored_meta['jkl_review_affiliate_uri'] ) ) echo $jklrv_stored_meta['jkl_review_affiliate_uri'][0]; ?>" />
             
-                <!-- Give option to display the link or not -->
-                <input type="checkbox" id="jkl_review_use_affiliate_uri" name="jkl_review_use_affiliate_uri" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_use_affiliate_uri'] ) ) echo $jklrv_stored_meta['jkl_review_use_affiliate_uri'][0]; ?>" />
+            <!-- Checkbox option to display the link or not -->
+                <input type="checkbox" id="jkl_affiliate_chkbx" name="jkl_affiliate_chkbx" value="checked" 
+                    <?php if( isset( $jklrv_stored_meta['jkl_affiliate_chkbx'] ) ) checked( $jklrv_stored_meta['jkl_review_use_affiliate_uri'][0] ); ?> />
                 <span class="note">Show link?</span>
             </td>
         </tr>        
@@ -407,7 +409,7 @@ function display_jkl_review_metabox( $post ) {
                 
                 <!-- Give option to display an icon with the link or not -->
                 <input type="checkbox" id="jkl_review_show_authorpage_icon" name="jkl_review_show_authorpage_icon" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_show_authorpage_icon'] ) ) echo $jklrv_stored_meta['jkl_review_show_authorpage_icon'][0]; ?>" />
+                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_show_authorpage_icon'] ) ) checked( $jklrv_stored_meta['jkl_review_show_authorpage_icon'][0], 'yes' ); ?>" />
                 <span class="note">Show icon?</span>
             </td>
         </tr>
@@ -430,7 +432,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
         </tr>        
         <tr> 
-            <!-- Select icon -->
+            <!-- Select Resources icon -->
             <td>
                 <label for="jkl_review_resources_icon" class="icon-select"><?php _e('Select Resources Icon: ', 'jkl-reviews/languages')?></label>
             </td>
@@ -444,8 +446,8 @@ function display_jkl_review_metabox( $post ) {
                 </select>
                 
                 <!-- Give option to display an icon with the link or not -->
-                <input type="checkbox" id="jkl_review_show_resources_icon" name="jkl_review_show_resources_icon" 
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_show_resources_icon'] ) ) echo $jklrv_stored_meta['jkl_review_show_resources_icon'][0]; ?>" />
+                <input type="checkbox" id="jkl_review_show_resources_icon" name="jkl_resources_icons[]" 
+                        value="resources" <?php echo (in_array('resources', $jklrv_stored_meta)) ? 'checked="checked"' : ''; ?> />
                 <span class="note">Show icon?</span>
             </td>
         </tr>
@@ -526,9 +528,9 @@ function jkl_save_review_metabox($post_id) {
      */
     
     // Save the Review Type (radio button selection)
-    if( isset($_POST[ 'jkl_review_radio' ] ) ) {
-        update_post_meta( $post_id, 'jkl_review_radio', $_POST['jkl_review_radio'] );
-    } // NOT WORKING
+    if( isset($_POST[ 'jkl_radio' ] ) ) {
+        update_post_meta( $post_id, 'jkl_radio', $_POST['jkl_radio'] );
+    }
 
     // Save the Cover: Checks for input and saves image if needed
     if( isset($_POST[ 'jkl_review_cover' ] ) ) {
@@ -561,27 +563,27 @@ function jkl_save_review_metabox($post_id) {
     } 
 
     // Save the Summary:
-    if( isset($_POST['jkl_review_summary'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_summary', $_POST['jkl_review_summary'] );
+    if( isset($_POST['jkl_review_summary_area'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_summary_area', $_POST['jkl_review_summary_area'] );
     } // NOT WORKING PLUS LOADS OF SPACE AT THE BEGINNING OF THE BOX
 
     // BELOW HERE, NOTHING WORKS
     // Links and Options Below:
     // Check the Checkbox Options:
     // Show link?
-    $chk_affiliate = isset( $_POST['jkl_review_use_affiliate_link'] ) && $_POST['jkl_review_use_affiliate_link'] ? 'on' : 'off';
-    $chk_product = isset( $_POST['jkl_review_use_product_link'] ) && $_POST['jkl_review_use_product_link'] ? 'on' : 'off';
-    $chk_author = isset( $_POST['jkl_review_use_author_link'] ) && $_POST['jkl_review_use_author_link'] ? 'on' : 'off';
+    //$chk_affiliate = isset( $_POST['jkl_review_use_affiliate_link'] ) ? 'on' : 'off';
+    $chk_product = isset( $_POST['jkl_review_use_product_link'] ) ? 'yes' : '';
+    $chk_author = isset( $_POST['jkl_review_use_author_link'] ) ? 'yes' : '';
     $chk_resources = isset( $_POST['jkl_review_use_resources_link'] ) && $_POST['jkl_review_use_resources_link'] ? 'on' : 'off';
     // Show icon?
-    $chk_affiliate_icon = isset( $_POST['jkl_review_show_affiliate_icon'] ) && $_POST['jkl_review_show_affiliate_icon'] ? 'on' : 'off';
-    $chk_product_icon = isset( $_POST['jkl_review_show_homepage_icon'] ) && $_POST['jkl_review_show_homepage_icon'] ? 'on' : 'off';
-    $chk_author_icon = isset( $_POST['jkl_review_show_authorpage_icon'] ) && $_POST['jkl_review_show_authorpage_icon'] ? 'on' : 'off';
-    $chk_resources_icon = isset( $_POST['jkl_review_show_resources_icon'] ) && $_POST['jkl_review_show_resources_icon'] ? 'on' : 'off';
+    $chk_affiliate = isset( $_POST['jkl_affiliate_chkbx'] ) && $_POST['jkl_affiliate_chkbx'] ? 'on' : 'off';
+    $chk_product_icon = isset( $_POST['jkl_review_show_homepage_icon'] ) ? 'checked' : 'off';
+    $chk_author_icon = isset( $_POST['jkl_review_show_authorpage_icon'] ) ? 'yes' : '';
+    //$chk_resources_icon = isset( $_POST['jkl_review_show_resources_icon'] ) ? 'on' : '';
 
     // Save Checkbox Statuses:
-    // Show link?
-    update_post_meta( $post_id, 'jkl_review_use_affiliate_link', $chk_affiliate );
+    // Show link?  
+    update_post_meta( $post_id, 'jkl_affiliate_chkbx', $chk_affiliate );
     update_post_meta( $post_id, 'jkl_review_use_product_link', $chk_product );
     update_post_meta( $post_id, 'jkl_review_use_author_link', $chk_author );
     update_post_meta( $post_id, 'jkl_review_use_resources_link', $chk_resources );
@@ -592,19 +594,32 @@ function jkl_save_review_metabox($post_id) {
     update_post_meta( $post_id, 'jkl_review_show_resources_icon', $chk_resources );
 
     // Save the Links:
-    if( isset($_POST['jkl_review_affiliate_link'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_affiliate_link', $_POST['jkl_review_affiliate_link'] );
+    if( isset($_POST['jkl_review_affiliate_uri'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_affiliate_uri', $_POST['jkl_review_affiliate_uri'] );
     }
-    if( isset($_POST['jkl_review_product_link'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_product_link', $_POST['jkl_review_product_link'] );
+    if( isset($_POST['jkl_review_product_uri'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_product_uri', $_POST['jkl_review_product_uri'] );
     }
-    if( isset($_POST['jkl_review_author_link'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_author_link', $_POST['jkl_review_author_link'] );
+    if( isset($_POST['jkl_review_author_uri'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_author_uri', $_POST['jkl_review_author_uri'] );
     }
-    if( isset($_POST['jkl_review_resources_link'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_resources_link', $_POST['jkl_review_resources_link'] );
+    if( isset($_POST['jkl_review_resources_uri'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_resources_uri', $_POST['jkl_review_resources_uri'] );
     }
     
+    // Save the Icons from the Dropdowns:
+    if( isset($_POST['jkl_review_affiliate_icon'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_affiliate_icon', $_POST['jkl_review_affiliate_icon'] );
+    }
+    if( isset($_POST['jkl_review_product_icon'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_product_icon', $_POST['jkl_review_product_icon'] );
+    }
+    if( isset($_POST['jkl_review_author_icon'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_author_icon', $_POST['jkl_review_author_icon'] );
+    }
+    if( isset($_POST['jkl_review_resources_icon'] ) ) {
+        update_post_meta( $post_id, 'jkl_review_resources_icon', $_POST['jkl_review_resources_icon'] );
+    }
 }
 
 /*
