@@ -1,0 +1,74 @@
+/* 
+    Created on : Sep 30, 2014, 7:03:12 AM
+    Author     : jekkilekki
+*/
+#jkl_review_box {
+    background-color: #fcfcfc;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    min-height: 300px;
+}
+#jkl_review_box_head {
+    background-color: #00A8EF;
+    margin: 2px;
+    padding: 2px;
+    border-bottom: 1px solid #e1e1e1;
+    height: 75px;
+}
+#jkl_review_box_head img {
+    float: left;
+    border-right: 1px solid #e1e1e1;
+}
+#jkl_review_box_categories {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    color: white;
+    float: left;
+    margin: 25px 0 0 25px;
+}
+#jkl_review_box_body {
+    padding: 2px;
+}
+#jkl_review_box_cover {
+    width: 30%;
+    max-width: 200px;
+    float: left;
+    margin: 25px;
+}
+#jkl_review_box_info {
+    width: 60%;
+    float: right;
+    margin: 25px 25px 25px 0;   
+}
+#jkl_review_box_info p {
+    border-bottom: 1px solid #e1e1e1;
+}
+#jkl_review_box_links_box {
+    width: 300px;
+}
+#jkl_review_box_links_box img {
+    width: 15px;
+    margin-right: 5px;
+    padding-top: 5px;
+}
+#jkl_review_box_links_box a {
+    width: 50%;
+    float: left;
+    text-transform: uppercase;
+    font-size: 0.7em;
+    color: #999999;
+    text-decoration: none;
+}
+#jkl_review_box_links_box a:hover {
+    text-decoration: underline;
+}
+.jkl_clear {
+    clear: both;
+}
+.jkl_summary {
+    margin: 25px 0px;
+    padding: 0 25px;
+    border-bottom: 3px solid #e1e1e1;
+    border-left: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+}

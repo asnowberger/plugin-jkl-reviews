@@ -43,6 +43,7 @@ add_shortcode( 'review', 'jkl_review_box' );
 
 // ##5B : Just display it straight up on a Post (TutsPlus)
 add_action( 'the_content', 'jkl_display_review_box' );
+add_action( 'the_content', 'jkl_get_review_box_style');
 
 // Register widgets
 add_action( 'widgets_init', 'jkl_review_widget_init' );
@@ -54,6 +55,11 @@ add_action( 'widgets_init', 'jkl_review_widget_init' );
 function jkl_review_style() {
     wp_register_style( 'jkl_review_css', plugin_dir_url( __FILE__ ) . '/css/style.css', false, '1.0.0' );
     wp_enqueue_style( 'jkl_review_css' );
+}
+
+function jkl_get_review_box_style() {
+    wp_register_style( 'jkl_review_box_display_css', plugin_dir_url( __FILE__ ) . '/css/boxstyle.css', false, '1.0.0' );
+    wp_enqueue_style( 'jkl_review_box_display_css' );
 }
 
 /*
@@ -479,16 +485,33 @@ function jkl_review_box($atts, $content) {
  * Fifth Plus, just display the content straight up on a Post
  */
 function jkl_display_review_box( $content ) {
+    
     if ( is_single() ) {
         
-        // $jklrv_stored_meta = get_post_meta( get_the_ID(), 'jkl_review_title', true ); (Help from TutsPlus)
-        $jklrv_stored_meta = get_post_meta( get_the_ID() );
-        
-        ?>
+    // $jklrv_stored_meta = get_post_meta( get_the_ID(), 'jkl_review_title', true ); (Help from TutsPlus)
+    $jklrv_stored_meta = get_post_meta( get_the_ID() );
     
-        <div>The title of the thing is: <?php echo $jklrv_stored_meta['jkl_review_title'][0]; ?></div>
+    echo '<div id="jkl_review_box"><div id="jkl_review_box_head">';    
+        echo '<img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '.png', __FILE__ ) . '" alt="' . $jklrv_stored_meta['jkl_radio'][0] . '" />';
+        echo '<p id="jkl_review_box_categories">' . $jklrv_stored_meta['jkl_review_category'][0] . '</p>';
+    echo '</div>'; // End review box head
+    echo '<div id="jkl_review_box_body">';
+        echo '<img id="jkl_review_box_cover" src=' . $jklrv_stored_meta['jkl_review_cover'][0] . ' alt="' . $jklrv_stored_meta['jkl_review_title'][0] . '" />';
+        echo '<div id="jkl_review_box_info">';
+            echo '<p><strong>' . $jklrv_stored_meta['jkl_review_title'][0] . '</strong></p>'; // Title
+            echo '<p><em>by: ' . $jklrv_stored_meta['jkl_review_author'][0] . '</em></p>'; // Author
+            echo '<p>Series: ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
+            echo '<p>' . $jklrv_stored_meta['jkl_review_rating'][0] . '</p>'; // Rating
+            echo '<div id="jkl_review_box_links_box">'; // Links box
+                echo '<a href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"><img src="' . plugins_url( 'imgs/affiliate.png', __FILE__ ) . '" alt="Affiliate link" />Purchase</a>'; // Affiliate link
+                echo '<a href="' . $jklrv_stored_meta['jkl_review_homepage_uri'][0] . '"><img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />Home Page</a>'; // Product link
+                echo '<a href="' . $jklrv_stored_meta['jkl_review_authorpage_uri'][0] . '"><img src="' . plugins_url( 'imgs/author.png', __FILE__ ) . '" alt="Author link" />Author Page</a>'; // Author page link
+                echo '<a href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"><img src="' . plugins_url( 'imgs/resources.png', __FILE__ ) . '" alt="Resources link" />Resources</a>'; // Resources page link
+            echo '</div>'; // End links box
+        echo '</div>'; // End review box info
+    echo '</div><div class="jkl_clear"></div></div>'; // End review box body & box
     
-        <?php
+    echo '<div class="jkl_summary"><h6>3-Sentence Summary</h6><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
     }
     
     return $content; 
