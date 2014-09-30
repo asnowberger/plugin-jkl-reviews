@@ -13,18 +13,20 @@
     margin: 2px;
     padding: 2px;
     border-bottom: 1px solid #e1e1e1;
-    height: 75px;
+    height: 50px;
 }
 #jkl_review_box_head img {
     float: left;
     border-right: 1px solid #e1e1e1;
+    width: 50px;
+    padding: 0 1%;
 }
 #jkl_review_box_categories {
     text-transform: uppercase;
     font-size: 0.8em;
     color: white;
     float: left;
-    margin: 25px 0 0 25px;
+    margin: 15px 0 0 3%;
 }
 #jkl_review_box_body {
     padding: 2px;
@@ -33,15 +35,16 @@
     width: 30%;
     max-width: 200px;
     float: left;
-    margin: 25px;
+    margin: 3%;
 }
 #jkl_review_box_info {
     width: 60%;
     float: right;
-    margin: 25px 25px 25px 0;   
+    margin: 3% 3% 3% 0;   
 }
 #jkl_review_box_info p {
     border-bottom: 1px solid #e1e1e1;
+    margin-bottom: 1em;
 }
 #jkl_review_box_links_box {
     width: 300px;
@@ -66,8 +69,8 @@
     clear: both;
 }
 .jkl_summary {
-    margin: 25px 0px;
-    padding: 0 25px;
+    margin: 3% 0px;
+    padding: 0 3%;
     border-bottom: 3px solid #e1e1e1;
     border-left: 1px solid #e1e1e1;
     border-right: 1px solid #e1e1e1;
