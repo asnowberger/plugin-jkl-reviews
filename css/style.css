@@ -11,8 +11,10 @@
 .jkl_review input[type=url] {
     width: 170px;
 }
-.jkl_review input[type=radio] {
-    margin-left: 15px;
+.radio {
+    display: inline;
+    float: left;
+    margin: 5px 10px 5px 0; 
 }
 .jkl_review input[type=radio]::first-child {
     margin-left: 0px;

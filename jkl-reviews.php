@@ -151,34 +151,48 @@ function display_jkl_review_metabox( $post ) {
                 <label for="jkl-product-type" class="jkl_label"><?php _e('Product Type: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
+                <div class="radio">
                 <label for="jkl-book-type" id="jkl-book-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-book" value="book" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'book' ); ?>>
                     <i class="fa fa-book"></i><span class="note"><?php _e('Book', 'jkl-reviews/languages')?></span>
                 </label>
+                </div>
+                <div class="radio">
                 <label for="jkl-audio-type" id="jkl-audio-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-audio" value="audio" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'audio' ); ?>>
                     <i class="fa fa-headphones"></i><span class="note"><?php _e('Audio', 'jkl-reviews/languages')?></span>
                 </label>
+                </div>
+                <div class="radio">
                 <label for="jkl-video-type" id="jkl-video-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-video" value="video" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'video' ); ?>>
                     <i class="fa fa-play-circle"></i><span class="note"><?php _e('Video', 'jkl-reviews/languages')?></span>
                 </label>
+                </div>
+                <div class="radio">
                 <label for="jkl-course-type" id="jkl-course-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-course" value="course" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'course' ); ?>>
                     <i class="fa fa-pencil-square-o"></i><span class="note"><?php _e('Course', 'jkl-reviews/languages')?></span>
                 </label>
+                </div>
+                <div class="radio">
                 <label for="jkl-product-type" id="jkl-product-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-product" value="product" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'product' ); ?>>
                     <i class="fa fa-archive"></i><span class="note"><?php _e('Product', 'jkl-reviews/languages')?></span>
                 </label>
+                </div>
+                <div class="radio">
                 <label for="jkl-service-type" id="jkl-service-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-service" value="service" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'service' ); ?>>
                     <i class="fa fa-gift"></i><span class="note"><?php _e('Service', 'jkl-reviews/languages')?></span>
                 </label>
+                </div>
+                <div class="radio">
                 <label for="jkl-other-type" id="jkl-other-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-other" value="other" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'other' ); ?>>
                     <i class="fa fa-star"></i><span class="note"><?php _e('Other', 'jkl-reviews/languages')?></span>
                 </label>
+                </div>
             </td>
         </tr>
         
