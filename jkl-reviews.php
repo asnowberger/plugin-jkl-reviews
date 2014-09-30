@@ -55,11 +55,17 @@ add_action( 'widgets_init', 'jkl_review_widget_init' );
 function jkl_review_style() {
     wp_register_style( 'jkl_review_css', plugin_dir_url( __FILE__ ) . '/css/style.css', false, '1.0.0' );
     wp_enqueue_style( 'jkl_review_css' );
+    
+    // Also, add Font Awesome to our back-end styles
+    wp_enqueue_style( 'fontawesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' );
 }
 
 function jkl_get_review_box_style() {
     wp_register_style( 'jkl_review_box_display_css', plugin_dir_url( __FILE__ ) . '/css/boxstyle.css', false, '1.0.0' );
     wp_enqueue_style( 'jkl_review_box_display_css' );
+    
+    // Also, add Font Awesome to our front-end styles
+    wp_enqueue_style( 'fontawesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' );
 }
 
 /*
@@ -103,6 +109,7 @@ function display_jkl_review_metabox( $post ) {
     
     // Retrieve the current data based on Post ID
     $jklrv_stored_meta = get_post_meta( $post->ID );
+    $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl-radio'][0] );
     
     /*
      * Metabox fields
@@ -144,33 +151,33 @@ function display_jkl_review_metabox( $post ) {
                 <label for="jkl-product-type" class="jkl_label"><?php _e('Product Type: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
-                <label for="jkl-book-type" id="jkl-book-type" class="note">
+                <label for="jkl-book-type" id="jkl-book-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-book" value="book" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'book' ); ?>>
-                    <?php _e('Book', 'jkl-reviews/languages')?>
+                    <i class="fa fa-book"></i><span class="note"><?php _e('Book', 'jkl-reviews/languages')?></span>
                 </label>
-                <label for="jkl-audio-type" id="jkl-audio-type" class="note">
+                <label for="jkl-audio-type" id="jkl-audio-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-audio" value="audio" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'audio' ); ?>>
-                    <?php _e('Audio', 'jkl-reviews/languages')?>
+                    <i class="fa fa-headphones"></i><span class="note"><?php _e('Audio', 'jkl-reviews/languages')?></span>
                 </label>
-                <label for="jkl-video-type" id="jkl-video-type" class="note">
+                <label for="jkl-video-type" id="jkl-video-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-video" value="video" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'video' ); ?>>
-                    <?php _e('Video', 'jkl-reviews/languages')?>
+                    <i class="fa fa-play-circle"></i><span class="note"><?php _e('Video', 'jkl-reviews/languages')?></span>
                 </label>
-                <label for="jkl-course-type" id="jkl-course-type" class="note">
+                <label for="jkl-course-type" id="jkl-course-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-course" value="course" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'course' ); ?>>
-                    <?php _e('Course', 'jkl-reviews/languages')?>
+                    <i class="fa fa-pencil-square-o"></i><span class="note"><?php _e('Course', 'jkl-reviews/languages')?></span>
                 </label>
-                <label for="jkl-product-type" id="jkl-product-type" class="note">
+                <label for="jkl-product-type" id="jkl-product-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-product" value="product" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'product' ); ?>>
-                    <?php _e('Product', 'jkl-reviews/languages')?>
+                    <i class="fa fa-archive"></i><span class="note"><?php _e('Product', 'jkl-reviews/languages')?></span>
                 </label>
-                <label for="jkl-service-type" id="jkl-service-type" class="note">
+                <label for="jkl-service-type" id="jkl-service-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-service" value="service" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'service' ); ?>>
-                    <?php _e('Service', 'jkl-reviews/languages')?>
+                    <i class="fa fa-gift"></i><span class="note"><?php _e('Service', 'jkl-reviews/languages')?></span>
                 </label>
-                <label for="jkl-other-type" id="jkl-other-type" class="note">
+                <label for="jkl-other-type" id="jkl-other-type">
                     <input type="radio" name="jkl_radio" id="jkl-radio-other" value="other" <?php if ( isset( $jklrv_stored_meta['jkl_radio'] ) ) checked( $jklrv_stored_meta['jkl_radio'][0], 'other' ); ?>>
-                    <?php _e('Other', 'jkl-reviews/languages')?>
+                    <i class="fa fa-star"></i><span class="note"><?php _e('Other', 'jkl-reviews/languages')?></span>
                 </label>
             </td>
         </tr>
@@ -480,6 +487,100 @@ function jkl_review_box($atts, $content) {
     return ""; // Here is the actual (responsive) page styling for the box
 }
 
+function jkl_get_fa_icon( $name ) {
+    switch( $name ) {
+        case 'book' : return 'book';
+            break;
+        case 'audio' : return 'headphones';
+            break;
+        case 'video' : return 'play-circle';
+            break;
+        case 'course' : return 'pencil-square-o';
+            break;
+        case 'product' : return 'archive';
+            break;
+        case 'service' : return 'gift';
+            break;
+        default : return 'star';
+    }
+}
+
+function jkl_get_fa_rating( $number ) {
+    switch( $number ) {
+        case 0 : return '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 0.5 : return '<i class="fa fa-star-half-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 1 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 1.5 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star-half-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 2 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 2.5 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star-half-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 3 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 3.5 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star-half-o"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 4 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star-o"></i>';
+            break;
+        case 4.5 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star-half-o"></i>';
+            break;
+        case 5 : return '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>'
+                    . '<i class="fa fa-star"></i>';
+            break;
+        default: return '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i>'
+                    . '<i class="fa fa-star-o"></i><span>No rating available.</span>';
+    }
+}
+
 /*
  * ##### 5B #####
  * Fifth Plus, just display the content straight up on a Post
@@ -490,9 +591,14 @@ function jkl_display_review_box( $content ) {
         
     // $jklrv_stored_meta = get_post_meta( get_the_ID(), 'jkl_review_title', true ); (Help from TutsPlus)
     $jklrv_stored_meta = get_post_meta( get_the_ID() );
+    $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
+    $jklrv_fa_rating = jkl_get_fa_rating( $jklrv_stored_meta['jkl_review_rating'][0] );
+    
+    // By the way, don't forget, this is how to add images from your plugin directory
+    // <img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />
     
     echo '<div id="jkl_review_box"><div id="jkl_review_box_head">';    
-        echo '<img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '.png', __FILE__ ) . '" alt="' . $jklrv_stored_meta['jkl_radio'][0] . '" />';
+        echo '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
         echo '<p id="jkl_review_box_categories">' . $jklrv_stored_meta['jkl_review_category'][0] . '</p>';
     echo '</div>'; // End review box head
     echo '<div id="jkl_review_box_body">';
@@ -501,17 +607,17 @@ function jkl_display_review_box( $content ) {
             echo '<p><strong>' . $jklrv_stored_meta['jkl_review_title'][0] . '</strong></p>'; // Title
             echo '<p><em>by: ' . $jklrv_stored_meta['jkl_review_author'][0] . '</em></p>'; // Author
             echo '<p>Series: ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
-            echo '<p>' . $jklrv_stored_meta['jkl_review_rating'][0] . '</p>'; // Rating
+            echo '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' Stars</span></p>'; // Rating
             echo '<div id="jkl_review_box_links_box">'; // Links box
-                echo '<a href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"><img src="' . plugins_url( 'imgs/affiliate.png', __FILE__ ) . '" alt="Affiliate link" />Purchase</a>'; // Affiliate link
-                echo '<a href="' . $jklrv_stored_meta['jkl_review_homepage_uri'][0] . '"><img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />Home Page</a>'; // Product link
-                echo '<a href="' . $jklrv_stored_meta['jkl_review_authorpage_uri'][0] . '"><img src="' . plugins_url( 'imgs/author.png', __FILE__ ) . '" alt="Author link" />Author Page</a>'; // Author page link
-                echo '<a href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"><img src="' . plugins_url( 'imgs/resources.png', __FILE__ ) . '" alt="Resources link" />Resources</a>'; // Resources page link
+                echo '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> Purchase</a>'; // Affiliate link
+                echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_homepage_uri'][0] . '"> Home Page</a>'; // Product link
+                echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_authorpage_uri'][0] . '"> Author Page</a>'; // Author page link
+                echo '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> Resources</a>'; // Resources page link
             echo '</div>'; // End links box
         echo '</div>'; // End review box info
     echo '</div><div class="jkl_clear"></div></div>'; // End review box body & box
     
-    echo '<div class="jkl_summary"><h6>3-Sentence Summary</h6><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
+    echo '<div class="jkl_summary"><p><strong>Summary</strong></p><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
     }
     
     return $content; 
