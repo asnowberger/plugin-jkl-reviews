@@ -1,12 +1,17 @@
-=== Plugin Name ===
-Contributors: jekkilekki
-Donate link: http://example.com/
-Tags: affiliate, content, custom, custom meta box, review, book, music, movies, products, courses, services
-Requires at least: 3.0.1
-Tested up to: 4.0
-Stable tag: 0.1
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+=== JKL Reviews ===
+Contributors:           jekkilekki
+Plugin Name:            JKL Reviews
+Plugin URI:             http://example.com/
+Author:                 Aaron Snowberger
+Author URI:             http://www.aaronsnowberger.com/
+Donate link:            http://example.com/
+Tags:                   content, custom, custom meta box, review, reviews, books, music, movies, products, courses, services
+Requires at least:      3.0.1
+Tested up to:           4.0
+Stable tag:             0.1
+Version:                1.0
+License:                GPLv2 or later
+License URI:            http://www.gnu.org/licenses/gpl-2.0.html
 
 A simple Reviews plugin to review books, music, movies, products, or online courses with Star Ratings and links out to related sites.
 
