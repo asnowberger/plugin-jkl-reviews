@@ -6,26 +6,25 @@
  * Version: 0.1
  * Author: Aaron Snowberger
  * Author URI: http://www.aaronsnowberger.com
- * Text Domain: jkl-reviews
+ * Text Domain: jkl-reviews/languages
  * License: GPL2
  */
 
 /*
  * Text Domain: (above) is used for Internationalization and must match the 'slug' of the plugin.
  * Doc: http://codex.wordpress.org/I18n_for_WordPress_Developers
- * 
- * Complex Meta boxes in WP (Reference): http://www.wproots.com/complex-meta-boxes-in-wordpress/
  */
 
 /*
  * Reference Section: (Custom Meta Boxes)
+ * Complex Meta boxes in WP (Reference): http://www.wproots.com/complex-meta-boxes-in-wordpress/
  * http://www.smashingmagazine.com/2011/10/04/create-custom-post-meta-boxes-wordpress/
  * http://themefoundation.com/wordpress-meta-boxes-guide/
  * http://code.tutsplus.com/tutorials/how-to-create-custom-wordpress-writemeta-boxes--wp-20336
  */
 
 
-// ##0 : Add the Admin CSS styles for the metabox
+// ##0 : Enqueue the Admin CSS styles for the metabox
 add_action( 'admin_enqueue_scripts', 'jkl_review_style');
 
 // ##1 : Create metabox in Post editing page
@@ -38,15 +37,11 @@ add_action( 'admin_enqueue_scripts', 'jklrv_image_enqueue' );
 // ##4 : Save metabox data
 add_action( 'save_post', 'jkl_save_review_metabox' );
 
-// ##5 : Add a shortcode to display the content box on the page
-add_shortcode( 'review', 'jkl_review_box' );
-
-// ##5B : Just display it straight up on a Post (TutsPlus)
+// ##5 : Display metabox data (and CSS style) straight up on a Post
 add_action( 'the_content', 'jkl_display_review_box' );
 add_action( 'the_content', 'jkl_get_review_box_style');
 
-// Register widgets
-add_action( 'widgets_init', 'jkl_review_widget_init' );
+// ##6 : Helper functions for displaying the metabox
 
 /*
  * ##### 0 #####
