@@ -637,7 +637,7 @@ function jkl_display_review_box( $content ) {
                 
                 // Check all the other info and if present, show it, but if not, don't show it
                 if ( $jklrv_stored_meta['jkl_review_author'][0] !== '' )
-                    echo '<p><em>by: ' . $jklrv_stored_meta['jkl_review_author'][0] . '</em></p>'; // Author
+                    echo jkl_get_author_link ($jklrv_stored_meta['jkl_review_author'][0], $jklrv_stored_meta['jkl_review_author_uri'][0] );  // Author
                 if ( $jklrv_stored_meta['jkl_review_series'][0] !== '' )
                     echo '<p>Series: ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
                 if ( $jklrv_stored_meta['jkl_review_rating'][0] != 0 )
@@ -650,10 +650,10 @@ function jkl_display_review_box( $content ) {
                     // Check all the links and if present, show them, if not, don't show them
                     if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' )
                         echo '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> Purchase</a>'; // Affiliate link
-                    if ( $jklrv_stored_meta['jkl_review_homepage_uri'][0] !== '' )
-                        echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_homepage_uri'][0] . '"> Home Page</a>'; // Product link
-                    if ( $jklrv_stored_meta['jkl_review_authorpage_uri'][0] !== '' )
-                        echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_authorpage_uri'][0] . '"> Author Page</a>'; // Author page link
+                    if ( $jklrv_stored_meta['jkl_review_product_uri'][0] !== '' )
+                        echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_product_uri'][0] . '"> Home Page</a>'; // Product link
+                    if ( $jklrv_stored_meta['jkl_review_author_uri'][0] !== '' )
+                        echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_author_uri'][0] . '"> Author Page</a>'; // Author page link
                     if ( $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' )
                         echo '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> Resources</a>'; // Resources page link
                 echo '</div>'; // End links box
@@ -673,6 +673,15 @@ function jkl_display_review_box( $content ) {
     // If there was NO Review Type AND NO Title, just return the content
     else {
         return $content;
+    }
+}
+
+// This function returns either the author's name WITH a link (if there is one), or without
+function jkl_get_author_link( $author, $authorlink ) {
+    if ( $authorlink == '' ) {
+        return '<p><em>by: ' . $author . '</em></p>';
+    } else {
+        return '<p><em>by: <a href="' . $authorlink . '">' . $author . '</a></em></p>';
     }
 }
 
