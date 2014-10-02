@@ -148,7 +148,7 @@ function display_jkl_review_metabox( $post ) {
     <table class="jkl_review"> 
         
         <!-- ##### PRODUCT INFORMATION TABLE -->
-        <tr><th colspan="2">Product Information (needs translation)</th></tr>
+        <tr><th colspan="2"><?php _e( 'Product Information', 'jkl-reviews/languages') ?></th></tr>
         <tr class="divider"></tr>
         
         <!-- Product Type. Select the radio button corresponding to the product you are reviewing -->
@@ -271,14 +271,14 @@ function display_jkl_review_metabox( $post ) {
             <td>
                 <input type="text" class="input-text" id="jkl_review_category" name="jkl_review_category" 
                            value="<?php if( isset( $jklrv_stored_meta['jkl_review_category'] ) ) echo $jklrv_stored_meta['jkl_review_category'][0]; ?>" />
-                <p class="note">Separate multiple values with commas. (needs translation)</p>
+                <p class="note"><?php _e( 'Separate multiple values with commas.', 'jkl-reviews/languages' ) ?></p>
             </td>
         </tr>
     </table>
       
     <!-- ##### PRODUCT RATING TABLE -->
     <table class="jkl_review">
-        <tr><th colspan="2">Product Rating (needs translation)</th></tr>
+        <tr><th colspan="2"><?php _e( 'Product Rating', 'jkl-reviews/languages' ) ?></th></tr>
         <tr class="divider"></tr>
         <!-- 
             Rating. This is a range slider from 0-5 with 0.5 step increments.
@@ -307,7 +307,7 @@ function display_jkl_review_metabox( $post ) {
                 <output for="jkl_review_rating" id="star-rating">
                     <?php echo isset( $jklrv_stored_meta['jkl_review_rating'] ) ? $jklrv_stored_meta['jkl_review_rating'][0] : 0; ?>
                 </output>
-                <span id="star-rating-text">Stars (needs translation)</span>
+                <span id="star-rating-text"><?php _e( 'Stars', 'jkl-reviews/languages' ) ?></span>
                 
                 <!-- Simple function to dynamically update the output value of the range slider after user releases the mouse button -->
                 <script>
@@ -329,7 +329,7 @@ function display_jkl_review_metabox( $post ) {
 
     <!-- ##### PRODUCT LINKS TABLE -->
     <table class="jkl_review">
-        <tr><th colspan="2">Product Links (needs translation)</th></tr>
+        <tr><th colspan="2"><?php _e( 'Product Links', 'jkl-reviews/languages' ) ?></th></tr>
         <tr class="divider"></tr>
         
         <!-- Affiliate Link -->
@@ -516,7 +516,6 @@ function jkl_display_review_box( $content ) {
      * If there is no Review Type AND no Title (you need both) just return the $content (below)
      */
     
-    // TODO: Everything below needs translation
     if ( $jklrv_stored_meta['jkl_radio'][0] !== '' && $jklrv_stored_meta['jkl_review_title'][0] !== '' ) {
     
         echo '<div id="jkl_review_box"><div id="jkl_review_box_head">';  
@@ -548,9 +547,9 @@ function jkl_display_review_box( $content ) {
                 if ( $jklrv_stored_meta['jkl_review_author'][0] !== '' )
                     echo jkl_get_author_link ($jklrv_stored_meta['jkl_review_author'][0], $jklrv_stored_meta['jkl_review_author_uri'][0] );  // Author
                 if ( $jklrv_stored_meta['jkl_review_series'][0] !== '' )
-                    echo '<p>Series: ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
+                    echo '<p>' . _e( 'Series', 'jkl-reviews/languages' ) . ': ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
                 if ( $jklrv_stored_meta['jkl_review_rating'][0] != 0 )
-                    echo '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' Stars</span></p>'; // Rating
+                    echo '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' ' . _e( 'Stars', 'jkl-reviews/languages') . '</span></p>'; // Rating
                 
                 // Check that there's AT LEAST ONE external link. If not, don't even create the links box.
                 if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_homepage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_authorpage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' ) {
@@ -558,13 +557,13 @@ function jkl_display_review_box( $content ) {
                 
                     // Check all the links and if present, show them, if not, don't show them
                     if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' )
-                        echo '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> Purchase</a>'; // Affiliate link
+                        echo '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> ' . _e( 'Purchase', 'jkl-reviews/languages') . '</a>'; // Affiliate link
                     if ( $jklrv_stored_meta['jkl_review_product_uri'][0] !== '' )
-                        echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_product_uri'][0] . '"> Home Page</a>'; // Product link
+                        echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_product_uri'][0] . '"> ' . _e( 'Home Page', 'jkl-reviews/languages') . '</a>'; // Product link
                     if ( $jklrv_stored_meta['jkl_review_author_uri'][0] !== '' )
-                        echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_author_uri'][0] . '"> Author Page</a>'; // Author page link
+                        echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_author_uri'][0] . '"> ' . _e( 'Author Page', 'jkl-reviews/languages') . '</a>'; // Author page link
                     if ( $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' )
-                        echo '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> Resources</a>'; // Resources page link
+                        echo '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> ' . _e( 'Resources', 'jkl-reviews/languages') . '</a>'; // Resources page link
                 echo '</div>'; // End links box
                 } // End links box IF check
                 
@@ -573,7 +572,7 @@ function jkl_display_review_box( $content ) {
     
         // Check to see if there's a summary. If not, don't display anything.
         if ( $jklrv_stored_meta['jkl_review_summary_area'][0] !== '' )
-            echo '<div class="jkl_summary"><p><strong>Summary</strong></p><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
+            echo '<div class="jkl_summary"><p><strong>' . _e( 'Summary', 'jkl-reviews/languages') . '</strong></p><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
     } // End the check for Review Type and Title
     
     return $content; 
@@ -618,9 +617,9 @@ function jkl_get_fa_icon( $name ) {
  */
 function jkl_get_author_link( $author, $authorlink ) {
     if ( $authorlink == '' ) {
-        return '<p><em>by: ' . $author . '</em></p>'; // needs translation
+        return '<p><em>' . _e( 'by', 'jkl-reviews/languages' ) . ': ' . $author . '</em></p>';
     } else {
-        return '<p><em>by: <a href="' . $authorlink . '">' . $author . '</a></em></p>'; // needs translation
+        return '<p><em>' . _e( 'by', 'jkl-reviews/languages' ) . ': <a href="' . $authorlink . '">' . $author . '</a></em></p>';
     }
 }
 
@@ -700,7 +699,7 @@ function jkl_get_fa_rating( $number ) {
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
-                    . '<i class="fa fa-star-o"></i><span>No rating available.</span>'; // needs translation
+                    . '<i class="fa fa-star-o"></i><span>' . _e( 'No rating available.', 'jkl-reviews/languages') . '</span>';
     }
 }
 
