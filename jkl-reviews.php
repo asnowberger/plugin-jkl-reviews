@@ -24,8 +24,9 @@
  */
 
 
-// ##0 : Enqueue the Admin CSS styles for the metabox
+// ##0 : Enqueue the CSS styles for the metabox (both admin and in the_content)
 add_action( 'admin_enqueue_scripts', 'jkl_review_style');
+add_action( 'the_content', 'jkl_get_review_box_style');
 
 // ##1 : Create metabox in Post editing page
 add_action( 'add_meta_boxes', 'jkl_add_review_metabox' );
@@ -39,14 +40,16 @@ add_action( 'save_post', 'jkl_save_review_metabox' );
 
 // ##5 : Display metabox data (and CSS style) straight up on a Post
 add_action( 'the_content', 'jkl_display_review_box' );
-add_action( 'the_content', 'jkl_get_review_box_style');
 
-// ##6 : Helper functions for displaying the metabox
+// ##6 : Call various helper functions for displaying the metabox (no hooks necessary)
+
 
 /*
  * ##### 0 #####
  * Before everything else, queue up the CSS styles for this metabox
  */
+
+// CSS styles for the admin area
 function jkl_review_style() {
     wp_register_style( 'jkl_review_css', plugin_dir_url( __FILE__ ) . '/css/style.css', false, '1.0.0' );
     wp_enqueue_style( 'jkl_review_css' );
@@ -55,6 +58,7 @@ function jkl_review_style() {
     wp_enqueue_style( 'fontawesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' );
 }
 
+// CSS styles for the Post
 function jkl_get_review_box_style() {
     wp_register_style( 'jkl_review_box_display_css', plugin_dir_url( __FILE__ ) . '/css/boxstyle.css', false, '1.0.0' );
     wp_enqueue_style( 'jkl_review_box_display_css' );
@@ -62,6 +66,7 @@ function jkl_get_review_box_style() {
     // Also, add Font Awesome to our front-end styles
     wp_enqueue_style( 'fontawesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css' );
 }
+
 
 /*
  * ##### 1 ##### 
@@ -77,12 +82,13 @@ function jkl_add_review_metabox() {
      */ 
     
     add_meta_box( 
-            'review_info',                              // Unique ID
-            __('Review Information', 'jkl-reviews'),    // Title
-            'display_jkl_review_metabox',               // Callback function
-            'post'                                      // Post type to display on
-                                                        // Context
-                                                        // Priority
+            'review_info',                                      // Unique ID
+            __('Review Information', 'jkl-reviews/languages'),  // Title
+            'display_jkl_review_metabox',                       // Callback function
+            'post'                                              // Post type to display on
+                                                                // Context
+                                                                // Priority
+                                                                // Callback_args
     );
 }
 
@@ -95,6 +101,7 @@ function jkl_add_review_metabox() {
  */
 
 function display_jkl_review_metabox( $post ) {
+    
     /*
      * Documentation on nonces: 
      * http://markjaquith.wordpress.com/2006/06/02/wordpress-203-nonces/
@@ -104,24 +111,24 @@ function display_jkl_review_metabox( $post ) {
     
     // Retrieve the current data based on Post ID
     $jklrv_stored_meta = get_post_meta( $post->ID );
+    
+    // Call a separate function to evaluate the value stored for the radio button and return a string to correspond to its FontAwesome icon
     $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl-radio'][0] );
     
     /*
      * Metabox fields
-     * 1. Cover Image
-     * 2. Title
-     * 3. Author
-     * 4. Series
-     * 5. Category
-     * 6. Rating
-     * 7. Affiliate Link Option 
-     * 8. Affiliate Link
-     * 9. Product Link Option
-     * 10. Product Link
-     * 11. Author Link Option
-     * 12. Author Link
-     * 13. Resources Link Option
-     * 14. Resources Link
+     * 0. Review Type (radio)       => jkl_radio
+     * 1. Cover Image               => jkl_review_cover
+     * 2. Title                     => jkl_review_title
+     * 3. Author                    => jkl_review_author
+     * 4. Series                    => jkl_review_series
+     * 5. Category                  => jkl_review_category
+     * 6. Rating                    => jkl_review_rating
+     * 7. Summary                   => jkl_review_summary_area
+     * 8. Affiliate Link            => jkl_review_affiliate_uri
+     * 9. Product Link              => jkl_review_product_uri
+     * 10. Author Link              => jkl_review_author_uri
+     * 11. Resources Link           => jkl_review_resources_uri
      */
     
     // Ref: TutsPlus Working with Meta Boxes Video Course
@@ -133,11 +140,15 @@ function display_jkl_review_metabox( $post ) {
     
     // Test your saved values are stripped of tags by trying to save:
     // <script>alert('Hello world!');</script>
+    
+    // TODO: Be sure all data validation/sanitization is complete
     ?>
 
-    <!-- PRODUCT INFORMATION TABLE -->
+    <!-- REVIEW INFORMATION TABLE -->
     <table class="jkl_review"> 
-        <tr><th colspan="2">Product Information</th></tr>
+        
+        <!-- ##### PRODUCT INFORMATION TABLE -->
+        <tr><th colspan="2">Product Information (needs translation)</th></tr>
         <tr class="divider"></tr>
         
         <!-- Product Type. Select the radio button corresponding to the product you are reviewing -->
@@ -233,7 +244,7 @@ function display_jkl_review_metabox( $post ) {
         <!-- Author -->
         <tr>
             <td class="left-label">
-                <label for="jkl_review_author" class="jkl_label"><?php _e('Author: ', 'jkl-reviews')?></label>
+                <label for="jkl_review_author" class="jkl_label"><?php _e('Author: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
                 <input type="text" class="input-text" id="jkl_review_author" name="jkl_review_author" 
@@ -241,10 +252,10 @@ function display_jkl_review_metabox( $post ) {
             </td>
         </tr>
 
-        <!-- Series. Similar to Author. Accepts a String, or also a checkbox input of "most used" series. -->
+        <!-- Series -->
         <tr>
             <td class="left-label">
-                <label for="jkl_review_series" class="jkl_label"><?php _e('Series: ', 'jkl-reviews')?></label>
+                <label for="jkl_review_series" class="jkl_label"><?php _e('Series: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
                 <input type="text" class="input-text" id="jkl_review_series" name="jkl_review_series" 
@@ -252,30 +263,31 @@ function display_jkl_review_metabox( $post ) {
             </td>
         </tr>
 
-        <!-- Category. Should act as WP Tags, separate-able by commas, including the list + X marks to remove categories -->
+        <!-- Category. Should (eventually) act as WP Tags, separate-able by commas, including the list + X marks to remove categories -->
         <tr>
             <td class="left-label">
-                <label for="jkl_review_category" class="jkl_label"><?php _e('Category: ', 'jkl-reviews')?></label>
+                <label for="jkl_review_category" class="jkl_label"><?php _e('Category: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
                 <input type="text" class="input-text" id="jkl_review_category" name="jkl_review_category" 
                            value="<?php if( isset( $jklrv_stored_meta['jkl_review_category'] ) ) echo $jklrv_stored_meta['jkl_review_category'][0]; ?>" />
-                <p class="note">Separate multiple values with commas.</p>
+                <p class="note">Separate multiple values with commas. (needs translation)</p>
             </td>
         </tr>
     </table>
       
     <!-- ##### PRODUCT RATING TABLE -->
     <table class="jkl_review">
-        <tr><th colspan="2">Product Rating</th></tr>
+        <tr><th colspan="2">Product Rating (needs translation)</th></tr>
         <tr class="divider"></tr>
         <!-- 
-            Rating. This should be a range - able to accept numbers at least up to 5, possibly up to 10. 
-            Create a range slider with JS as well: http://www.developerdrive.com/2012/07/creating-a-slider-control-with-the-html5-range-input/
+            Rating. This is a range slider from 0-5 with 0.5 step increments.
+            Consider implementing a fallback for older browsers.
+            Ref: JS range slider: http://www.developerdrive.com/2012/07/creating-a-slider-control-with-the-html5-range-input/
         -->
         <tr>
             <td class="left-label rating-label">
-                <label for="jkl_review_rating" class="jkl_label"><?php _e('Rating: ', 'jkl-reviews')?></label>
+                <label for="jkl_review_rating" class="jkl_label"><?php _e('Rating: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
                 <span class="range-number-left">0</span> 
@@ -295,9 +307,9 @@ function display_jkl_review_metabox( $post ) {
                 <output for="jkl_review_rating" id="star-rating">
                     <?php echo isset( $jklrv_stored_meta['jkl_review_rating'] ) ? $jklrv_stored_meta['jkl_review_rating'][0] : 0; ?>
                 </output>
-                <span id="star-rating-text">Stars</span>
+                <span id="star-rating-text">Stars (needs translation)</span>
                 
-                <!-- Simple function to dynamically update the output value of the range slider -->
+                <!-- Simple function to dynamically update the output value of the range slider after user releases the mouse button -->
                 <script>
                 function showValue(rating) {
                     document.querySelector('#star-rating').value = rating;
@@ -307,7 +319,7 @@ function display_jkl_review_metabox( $post ) {
         </tr>
         <tr>
             <td class="left-label">
-                <label for=jkl_review_summary" class="jkl_label"><?php _e('Summary: ', 'languages/jkl-reviews')?></label>
+                <label for=jkl_review_summary" class="jkl_label"><?php _e('Summary: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
                 <textarea id="jkl_review_summary_area" name="jkl_review_summary_area"><?php if( isset( $jklrv_stored_meta['jkl_review_summary_area'] ) ) echo $jklrv_stored_meta['jkl_review_summary_area'][0]; ?></textarea>
@@ -315,23 +327,20 @@ function display_jkl_review_metabox( $post ) {
         </tr>
     </table>
 
-    <!-- ##### PRODUCT LINKS TABLE ##### -->
+    <!-- ##### PRODUCT LINKS TABLE -->
     <table class="jkl_review">
-        <tr><th colspan="2">Product Links</th></tr>
+        <tr><th colspan="2">Product Links (needs translation)</th></tr>
         <tr class="divider"></tr>
         
-        <!-- Links. Should be able to select from a dropdown list of available links (like Amazon, product page, author's site, resources site, etc) and also accept a URL to those sites. -->
         <!-- Affiliate Link -->
         <tr>
             <td class="left-label">
                 <label for="jkl_affiliate_uri" class="jkl_label"><?php _e('Affiliate Link: ', 'jkl-reviews/languages')?></label>
             </td>
-            
-            <!-- Affiliate Link URL -->
             <td>
                 <input type="url" id="jkl_affiliate_uri" name="jkl_review_affiliate_uri"
                         value="<?php if( isset( $jklrv_stored_meta['jkl_review_affiliate_uri'] ) ) echo $jklrv_stored_meta['jkl_review_affiliate_uri'][0]; ?>" />
-        </tr>
+        </tr> <!-- TODO: Implement an Affiliate link Disclaimer message and checkbox option to turn it on/off. -->
         
         <!-- Product Homepage -->
         <tr>
@@ -377,6 +386,7 @@ function display_jkl_review_metabox( $post ) {
  */
 
 function jklrv_image_enqueue() {
+    // Determine the current Post type
     global $typenow;
     
     if( $typenow == 'post' ) {
@@ -386,13 +396,14 @@ function jklrv_image_enqueue() {
         wp_register_script( 'upload-image', plugin_dir_url( __FILE__ ) . 'js/upload-image.js', array( 'jquery' ) );
         wp_localize_script( 'upload-image', 'jkl_review_cover',
                 array(
-                    'title' => __( 'Select a Cover', 'jkl-reviews' ),
-                    'button' => __( 'Use this Cover', 'jkl-reviews' ),
+                    'title' => __( 'Select a Cover', 'jkl-reviews/languages' ),
+                    'button' => __( 'Use this Cover', 'jkl-reviews/languages' ),
                 )
         );
         wp_enqueue_script( 'upload-image' );
     }
 }
+
 
 /*
  * ##### 4 #####
@@ -401,10 +412,10 @@ function jklrv_image_enqueue() {
 function jkl_save_review_metabox($post_id) {
     
     /*
+     * Ref: WP Codex: http://codex.wordpress.org/Function_Reference/add_meta_box
      * Verify this came from our screen and with proper authorization and that we're ready to save.
      */
     
-    // The following commented code is found directly on the WP Codex
     // Check if nonce is set
     if ( !isset( $_POST['jklrv_nonce'] ) ) return;
     
@@ -419,7 +430,7 @@ function jkl_save_review_metabox($post_id) {
 
     
     /*
-     * After all those checks, save.
+     * After all those checks, save. TODO: Sanitize
      */
     
     // Save the Review Type (radio button selection)
@@ -478,23 +489,111 @@ function jkl_save_review_metabox($post_id) {
     }
 }
 
+
 /*
  * ##### 5 #####
- * Fifth, create the Shortcode Function
+ * Fifth, just display the review content straight up on a Post
  */
-function jkl_review_box($atts, $content) {
-    $options = shortcode_atts(      // can also call this variable $atts if you want and just override the original - it'll work, but possibly not so clear as to what it's doing
-        array(
-            'size' => 'big',
-            'content' => !empty($content) ? $content : ''
-        ), $atts
-    );
+function jkl_display_review_box( $content ) {
     
-    extract($options);  // This extracts all the variables from the array to $size and $content, etc
+    // Make sure that this is a single post and not an index page
+    if ( is_single() ) {
+        
+    // Retrieve Post meta info
+    $jklrv_stored_meta = get_post_meta( get_the_ID() );
+    // Get the appropriate string to display the correct FontAwesome icon per Review Type
+    $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
+    // Get the correct number of FontAwesome stars string
+    $jklrv_fa_rating = jkl_get_fa_rating( $jklrv_stored_meta['jkl_review_rating'][0] );
     
-    return ""; // Here is the actual (responsive) page styling for the box
+    /*
+     * By the way, don't forget, this is how to add images from your plugin directory
+     * <img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />
+     */
+    
+    /*
+     * If there's AT LEAST a Review Type selected AND a Title, create the display box
+     * If there is no Review Type AND no Title (you need both) just return the $content (below)
+     */
+    
+    // TODO: Everything below needs translation
+    if ( $jklrv_stored_meta['jkl_radio'][0] !== '' && $jklrv_stored_meta['jkl_review_title'][0] !== '' ) {
+    
+        echo '<div id="jkl_review_box"><div id="jkl_review_box_head">';  
+            // Display the FontAwesome Review Type icon
+            echo '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
+        
+            // If there's a Category set, display it, otherwise, display nothing (only the Review Type icon)
+            if ( $jklrv_stored_meta['jkl_review_category'][0] !== '' )
+                echo '<p id="jkl_review_box_categories">' . $jklrv_stored_meta['jkl_review_category'][0] . '</p>';
+            echo '</div>'; // End review box head
+            
+        // We already checked for a Review Type and Title, so this <div> is safe to create
+        echo '<div id="jkl_review_box_body">';
+            
+            // If there's no Cover Image set, just show a larger Review Type icon
+            if ( $jklrv_stored_meta['jkl_review_cover'][0] === '' ) {
+                echo '<h1 id="jkl_review_box_cover" class="fa fa-' . $jklrv_fa_icon . '"></h1>';
+            } else {
+                echo '<img id="jkl_review_box_cover" src=' . $jklrv_stored_meta['jkl_review_cover'][0] . ' alt="' . $jklrv_stored_meta['jkl_review_title'][0] . '" />';
+            }
+            
+            // This is where Review data goes
+            echo '<div id="jkl_review_box_info">';
+            
+                // Show the title (since we already checked for it before showing the Review box itself)
+                echo '<p><strong>' . $jklrv_stored_meta['jkl_review_title'][0] . '</strong></p>'; // Title
+                
+                // Check all the other info and if present, show it, but if not, don't show it
+                if ( $jklrv_stored_meta['jkl_review_author'][0] !== '' )
+                    echo jkl_get_author_link ($jklrv_stored_meta['jkl_review_author'][0], $jklrv_stored_meta['jkl_review_author_uri'][0] );  // Author
+                if ( $jklrv_stored_meta['jkl_review_series'][0] !== '' )
+                    echo '<p>Series: ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
+                if ( $jklrv_stored_meta['jkl_review_rating'][0] != 0 )
+                    echo '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' Stars</span></p>'; // Rating
+                
+                // Check that there's AT LEAST ONE external link. If not, don't even create the links box.
+                if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_homepage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_authorpage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' ) {
+                echo '<div id="jkl_review_box_links_box">'; // Links box
+                
+                    // Check all the links and if present, show them, if not, don't show them
+                    if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' )
+                        echo '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> Purchase</a>'; // Affiliate link
+                    if ( $jklrv_stored_meta['jkl_review_product_uri'][0] !== '' )
+                        echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_product_uri'][0] . '"> Home Page</a>'; // Product link
+                    if ( $jklrv_stored_meta['jkl_review_author_uri'][0] !== '' )
+                        echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_author_uri'][0] . '"> Author Page</a>'; // Author page link
+                    if ( $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' )
+                        echo '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> Resources</a>'; // Resources page link
+                echo '</div>'; // End links box
+                } // End links box IF check
+                
+            echo '</div>'; // End review info box
+        echo '</div><div class="jkl_clear"></div></div>'; // End review box body & box (clear is added to give sufficient height to the background-color of taller boxes)
+    
+        // Check to see if there's a summary. If not, don't display anything.
+        if ( $jklrv_stored_meta['jkl_review_summary_area'][0] !== '' )
+            echo '<div class="jkl_summary"><p><strong>Summary</strong></p><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
+    } // End the check for Review Type and Title
+    
+    return $content; 
+    } // End the check for is_singular()
+    
+    else {
+        return $content;
+    }
 }
 
+
+/* 
+ * ##### 6 #####
+ * Helper functions for the rest of the code. No WordPress hooks needed here.
+ */
+
+/*
+ * Take the current Review Type value (stored in the radio button) and return a 
+ * string that corresponds with the FontAwesome icon linked to that type.
+ */
 function jkl_get_fa_icon( $name ) {
     switch( $name ) {
         case 'book' : return 'book';
@@ -513,6 +612,22 @@ function jkl_get_fa_icon( $name ) {
     }
 }
 
+/*
+ * This function returns either the author's name WITH a link (if there is one), 
+ * or without if no author link is saved
+ */
+function jkl_get_author_link( $author, $authorlink ) {
+    if ( $authorlink == '' ) {
+        return '<p><em>by: ' . $author . '</em></p>'; // needs translation
+    } else {
+        return '<p><em>by: <a href="' . $authorlink . '">' . $author . '</a></em></p>'; // needs translation
+    }
+}
+
+/*
+ * Get the rating value (input via the range slider) and return a string of 
+ * FontAwesome star icons that correspond to that numeric value.
+ */
 function jkl_get_fa_rating( $number ) {
     switch( $number ) {
         case 0 : return '<i class="fa fa-star-o"></i>'
@@ -585,174 +700,8 @@ function jkl_get_fa_rating( $number ) {
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
-                    . '<i class="fa fa-star-o"></i><span>No rating available.</span>';
+                    . '<i class="fa fa-star-o"></i><span>No rating available.</span>'; // needs translation
     }
 }
 
-/*
- * ##### 5B #####
- * Fifth Plus, just display the content straight up on a Post
- */
-function jkl_display_review_box( $content ) {
-    
-    if ( is_single() ) {
-        
-    // $jklrv_stored_meta = get_post_meta( get_the_ID(), 'jkl_review_title', true ); (Help from TutsPlus)
-    $jklrv_stored_meta = get_post_meta( get_the_ID() );
-    $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
-    $jklrv_fa_rating = jkl_get_fa_rating( $jklrv_stored_meta['jkl_review_rating'][0] );
-    
-    // By the way, don't forget, this is how to add images from your plugin directory
-    // <img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />
-    
-    // If there's AT LEAST a Review Type selected AND a Title, create the display box
-    if ( $jklrv_stored_meta['jkl_radio'][0] !== '' && $jklrv_stored_meta['jkl_review_title'][0] !== '' ) {
-    
-        echo '<div id="jkl_review_box"><div id="jkl_review_box_head">';    
-            echo '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
-        
-            // If there's a Category set, display it, otherwise, display nothing (only the Review Type icon)
-            if ( $jklrv_stored_meta['jkl_review_category'][0] !== '' )
-                echo '<p id="jkl_review_box_categories">' . $jklrv_stored_meta['jkl_review_category'][0] . '</p>';
-            echo '</div>'; // End review box head
-            
-        echo '<div id="jkl_review_box_body">';
-            
-            // If there's no Cover Image set, just show a larger Review Type icon
-            if ( $jklrv_stored_meta['jkl_review_cover'][0] === '' ) {
-                echo '<h1 id="jkl_review_box_cover" class="fa fa-' . $jklrv_fa_icon . '"></h1>';
-            } else {
-                echo '<img id="jkl_review_box_cover" src=' . $jklrv_stored_meta['jkl_review_cover'][0] . ' alt="' . $jklrv_stored_meta['jkl_review_title'][0] . '" />';
-            }
-            
-            echo '<div id="jkl_review_box_info">';
-            
-                // Show the title (since we already checked for it before showing the Review box itself)
-                echo '<p><strong>' . $jklrv_stored_meta['jkl_review_title'][0] . '</strong></p>'; // Title
-                
-                // Check all the other info and if present, show it, but if not, don't show it
-                if ( $jklrv_stored_meta['jkl_review_author'][0] !== '' )
-                    echo jkl_get_author_link ($jklrv_stored_meta['jkl_review_author'][0], $jklrv_stored_meta['jkl_review_author_uri'][0] );  // Author
-                if ( $jklrv_stored_meta['jkl_review_series'][0] !== '' )
-                    echo '<p>Series: ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
-                if ( $jklrv_stored_meta['jkl_review_rating'][0] != 0 )
-                    echo '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' Stars</span></p>'; // Rating
-                
-                // Check that there's AT LEAST ONE external link. If not, don't even create the links box.
-                if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_homepage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_authorpage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' ) {
-                echo '<div id="jkl_review_box_links_box">'; // Links box
-                
-                    // Check all the links and if present, show them, if not, don't show them
-                    if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' )
-                        echo '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> Purchase</a>'; // Affiliate link
-                    if ( $jklrv_stored_meta['jkl_review_product_uri'][0] !== '' )
-                        echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_product_uri'][0] . '"> Home Page</a>'; // Product link
-                    if ( $jklrv_stored_meta['jkl_review_author_uri'][0] !== '' )
-                        echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_author_uri'][0] . '"> Author Page</a>'; // Author page link
-                    if ( $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' )
-                        echo '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> Resources</a>'; // Resources page link
-                echo '</div>'; // End links box
-                } // End links box IF check
-                
-            echo '</div>'; // End review info box
-        echo '</div><div class="jkl_clear"></div></div>'; // End review box body & box (clear is added to give sufficient height to the background-color of taller boxes)
-    
-        // Check to see if there's a summary. If not, don't display anything.
-        if ( $jklrv_stored_meta['jkl_review_summary_area'][0] !== '' )
-            echo '<div class="jkl_summary"><p><strong>Summary</strong></p><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
-    }
-    
-    return $content; 
-    }
-    
-    // If there was NO Review Type AND NO Title, just return the content
-    else {
-        return $content;
-    }
-}
-
-// This function returns either the author's name WITH a link (if there is one), or without
-function jkl_get_author_link( $author, $authorlink ) {
-    if ( $authorlink == '' ) {
-        return '<p><em>by: ' . $author . '</em></p>';
-    } else {
-        return '<p><em>by: <a href="' . $authorlink . '">' . $author . '</a></em></p>';
-    }
-}
-
-/*
- * Register widget
- */
-function jkl_review_widget_init() {
-    register_widget(JKL_Review_Widget);
-}
-
-/*
- * Widget class
- */
-class JKL_Review_Widget extends WP_Widget {
-    /*
-     *  Constructor + several settings (including CSS classes, etc)
-     */
-    function JKL_Review_Widget() {
-        $widget_options = array(
-            'classname' => 'jklrv_class', // CSS
-            'description' => 'Show product review information from post metadata'
-        );
-        
-        $this->WP_Widget('jklrv_id', 'Review Info', $widget_options);
-    }
-    
-    /*
-     * Show widget form in Appearance/Widgets
-     */
-    function form($instance) {
-        $defaults = array('title' => 'Review Info');
-        $instance = wp_parse_args( (array) $instance, $defaults );
-        
-        $title = esc_attr($instance['title']);
-        
-        echo '<p>Title <input type="text" class="widefat" name="'.$this->get_field_name('title').'" value="'.$title.'" /></p>';
-    }
-    
-    /*
-     * Save widget form
-     */
-    function update($new_instance, $old_instance) {
-        $instance = $old_instance;
-        $instance['title'] = strip_tags($new_instance['title']);
-        return $instance;
-    }
-    
-    /*
-     * Show widget in Post/Page
-     */
-    function widget($args, $instance) {
-        extract( $args );
-        $title = apply_filters('widget_title', $instance['title']);
-        
-        // Show only if single post
-        if(is_single()) {
-            echo $before_widget;
-            echo $before_title.$title.$after_title;
-            
-            // Get Post metadata
-            $review_info = esc_attr(get_post_meta(get_the_ID(), 'jkl_review_rating', true));
-            
-            // Print widget content
-            echo '<iframe width="200" height="200" frameborder="0" allowfullscreen src="http://www.youtube.com/embed/'.get_yt_videoid($review_info).'"></iframe>';
-            
-            echo $after_widget;
-        }
-    }
-}
-
-/*
- * Get YouTube video ID from link
- * From: http://stackoverflow.com/questions/3392993/php-regex-to-get-youtube-video-id/
- */
-function get_yt_videoid($url) {
-    parse_str( parse_url( $url, PHP_URL_QUERY ), $my_array_of_vars );
-    return $my_array_of_vars['v'];
-}
 ?>
