@@ -39,6 +39,8 @@
     max-width: 200px;
     float: left;
     margin: 3%;
+    text-align: center;
+    font-size: 100px; // This is for the default fallback of the Post Type icon IF there is no Cover Image saved
 }
 #jkl_review_box_info {
     width: 60%;
