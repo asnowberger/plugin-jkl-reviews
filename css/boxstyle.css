@@ -2,6 +2,9 @@
     Created on : Sep 30, 2014, 7:03:12 AM
     Author     : jekkilekki
 */
+#jkl_thebox {
+    margin: 0 0 50px 0;
+}
 #jkl_review_box {
     background-color: #fcfcfc;
     width: 100%;

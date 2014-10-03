@@ -39,7 +39,7 @@ add_action( 'admin_enqueue_scripts', 'jklrv_image_enqueue' );
 add_action( 'save_post', 'jkl_save_review_metabox' );
 
 // ##5 : Display metabox data (and CSS style) straight up on a Post
-add_action( 'the_content', 'jkl_display_review_box' );
+add_filter( 'the_content', 'jkl_display_review_box' );
 
 // ##6 : Call various helper functions for displaying the metabox (no hooks necessary)
 
@@ -496,91 +496,97 @@ function jkl_save_review_metabox($post_id) {
  */
 function jkl_display_review_box( $content ) {
     
-    // Make sure that this is a single post and not an index page
-    if ( is_single() ) {
+    /* 
+     * Dunno why I have to do this, but it's the only way it seemed to work.
+     * Get the global post, and store the post_content in $content and custom 
+     * metadata in $jklrv_stored_meta
+     */
+    global $post;
+    $content = $post->post_content; // Retrieve content... I guess
+    $jklrv_stored_meta = get_post_meta( get_the_ID() ); // Retrieve Post meta info
+    
+    // If this is only a single Post and a Review Type is chosen, modify the content and return it
+    if ( is_single() && !empty( $jklrv_stored_meta['jkl_radio'] ) ) {
+       
+        // Get the appropriate string to display the correct FontAwesome icon per Review Type
+        $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
+        // Get the correct number of FontAwesome stars string
+        $jklrv_fa_rating = jkl_get_fa_rating( $jklrv_stored_meta['jkl_review_rating'][0] );
+
+        /*
+         * By the way, don't forget, this is how to add images from your plugin directory
+         * <img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />
+         */
         
-    // Retrieve Post meta info
-    $jklrv_stored_meta = get_post_meta( get_the_ID() );
-    // Get the appropriate string to display the correct FontAwesome icon per Review Type
-    $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
-    // Get the correct number of FontAwesome stars string
-    $jklrv_fa_rating = jkl_get_fa_rating( $jklrv_stored_meta['jkl_review_rating'][0] );
-    
-    /*
-     * By the way, don't forget, this is how to add images from your plugin directory
-     * <img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />
-     */
-    
-    /*
-     * If there's AT LEAST a Review Type selected AND a Title, create the display box
-     * If there is no Review Type AND no Title (you need both) just return the $content (below)
-     */
-    
-    if ( $jklrv_stored_meta['jkl_radio'][0] !== '' && $jklrv_stored_meta['jkl_review_title'][0] !== '' ) {
-    
-        echo '<div id="jkl_review_box"><div id="jkl_review_box_head">';  
+        // Create a string to hold our Review box display string (code)
+        $jkl_thebox = '<div id="jkl_thebox">';
+        
+        // Review box header
+        $jkl_thebox .= '<div id="jkl_review_box"><div id="jkl_review_box_head">';  
+            
             // Display the FontAwesome Review Type icon
-            echo '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
-        
+            $jkl_thebox .= '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
+
             // If there's a Category set, display it, otherwise, display nothing (only the Review Type icon)
             if ( $jklrv_stored_meta['jkl_review_category'][0] !== '' )
-                echo '<p id="jkl_review_box_categories">' . $jklrv_stored_meta['jkl_review_category'][0] . '</p>';
-            echo '</div>'; // End review box head
-            
-        // We already checked for a Review Type and Title, so this <div> is safe to create
-        echo '<div id="jkl_review_box_body">';
-            
+                $jkl_thebox .= '<p id="jkl_review_box_categories">' . $jklrv_stored_meta['jkl_review_category'][0] . '</p>';
+            $jkl_thebox .= '</div>'; // End review box head
+
+        // Review box body
+        $jkl_thebox .= '<div id="jkl_review_box_body">';
+
             // If there's no Cover Image set, just show a larger Review Type icon
             if ( $jklrv_stored_meta['jkl_review_cover'][0] === '' ) {
-                echo '<h1 id="jkl_review_box_cover" class="fa fa-' . $jklrv_fa_icon . '"></h1>';
+                $jkl_thebox .= '<h1 id="jkl_review_box_cover" class="fa fa-' . $jklrv_fa_icon . '"></h1>';
             } else {
-                echo '<img id="jkl_review_box_cover" src=' . $jklrv_stored_meta['jkl_review_cover'][0] . ' alt="' . $jklrv_stored_meta['jkl_review_title'][0] . '" />';
+                $jkl_thebox .= '<img id="jkl_review_box_cover" src=' . $jklrv_stored_meta['jkl_review_cover'][0] . ' alt="' . $jklrv_stored_meta['jkl_review_title'][0] . '" />';
             }
-            
+
             // This is where Review data goes
-            echo '<div id="jkl_review_box_info">';
-            
+            $jkl_thebox .= '<div id="jkl_review_box_info">';
+
                 // Show the title (since we already checked for it before showing the Review box itself)
-                echo '<p><strong>' . $jklrv_stored_meta['jkl_review_title'][0] . '</strong></p>'; // Title
-                
+                $jkl_thebox .= '<p><strong>' . $jklrv_stored_meta['jkl_review_title'][0] . '</strong></p>'; // Title
+
                 // Check all the other info and if present, show it, but if not, don't show it
                 if ( $jklrv_stored_meta['jkl_review_author'][0] !== '' )
-                    echo jkl_get_author_link ($jklrv_stored_meta['jkl_review_author'][0], $jklrv_stored_meta['jkl_review_author_uri'][0] );  // Author
+                    $jkl_thebox .= jkl_get_author_link($jklrv_stored_meta['jkl_review_author'][0], $jklrv_stored_meta['jkl_review_author_uri'][0] );  // Author
                 if ( $jklrv_stored_meta['jkl_review_series'][0] !== '' )
-                    echo '<p>' . _e( 'Series', 'jkl-reviews/languages' ) . ': ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
+                    $jkl_thebox .= '<p>' . __( 'Series', 'jkl-reviews/languages' ) . ': ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
                 if ( $jklrv_stored_meta['jkl_review_rating'][0] != 0 )
-                    echo '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' ' . _e( 'Stars', 'jkl-reviews/languages') . '</span></p>'; // Rating
-                
+                    $jkl_thebox .= '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' ' . __( 'Stars', 'jkl-reviews/languages') . '</span></p>'; // Rating
+
                 // Check that there's AT LEAST ONE external link. If not, don't even create the links box.
                 if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_homepage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_authorpage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' ) {
-                echo '<div id="jkl_review_box_links_box">'; // Links box
-                
+                $jkl_thebox .= '<div id="jkl_review_box_links_box">'; // Links box
+
                     // Check all the links and if present, show them, if not, don't show them
                     if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' )
-                        echo '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> ' . _e( 'Purchase', 'jkl-reviews/languages') . '</a>'; // Affiliate link
+                        $jkl_thebox .= '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> ' . __( 'Purchase', 'jkl-reviews/languages') . '</a>'; // Affiliate link
                     if ( $jklrv_stored_meta['jkl_review_product_uri'][0] !== '' )
-                        echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_product_uri'][0] . '"> ' . _e( 'Home Page', 'jkl-reviews/languages') . '</a>'; // Product link
+                        $jkl_thebox .= '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_product_uri'][0] . '"> ' . __( 'Home Page', 'jkl-reviews/languages') . '</a>'; // Product link
                     if ( $jklrv_stored_meta['jkl_review_author_uri'][0] !== '' )
-                        echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_author_uri'][0] . '"> ' . _e( 'Author Page', 'jkl-reviews/languages') . '</a>'; // Author page link
+                        $jkl_thebox .= '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_author_uri'][0] . '"> ' . __( 'Author Page', 'jkl-reviews/languages') . '</a>'; // Author page link
                     if ( $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' )
-                        echo '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> ' . _e( 'Resources', 'jkl-reviews/languages') . '</a>'; // Resources page link
-                echo '</div>'; // End links box
+                        $jkl_thebox .= '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> ' . __( 'Resources', 'jkl-reviews/languages') . '</a>'; // Resources page link
+                $jkl_thebox .= '</div>'; // End links box
                 } // End links box IF check
-                
-            echo '</div>'; // End review info box
-        echo '</div><div class="jkl_clear"></div></div>'; // End review box body & box (clear is added to give sufficient height to the background-color of taller boxes)
-    
+
+            $jkl_thebox .= '</div>'; // End review info box
+        $jkl_thebox .= '</div><div class="jkl_clear"></div></div>'; // End review box body & box (clear is added to give sufficient height to the background-color of taller boxes)
+
         // Check to see if there's a summary. If not, don't display anything.
         if ( $jklrv_stored_meta['jkl_review_summary_area'][0] !== '' )
-            echo '<div class="jkl_summary"><p><strong>' . _e( 'Summary', 'jkl-reviews/languages') . '</strong></p><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
-    } // End the check for Review Type and Title
+            $jkl_thebox .= '<div class="jkl_summary"><p><strong>' . __( 'Summary', 'jkl-reviews/languages') . '</strong></p><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
+
+        $jkl_thebox .= '</div>'; // End #jkl_thebox
+        
+        // Append the Review box to the $content
+        $content = $jkl_thebox . $content;
+    }       
     
-    return $content; 
-    } // End the check for is_singular()
-    
-    else {
-        return $content;
-    }
+    // Return the content
+    return $content;
 }
 
 
@@ -617,9 +623,9 @@ function jkl_get_fa_icon( $name ) {
  */
 function jkl_get_author_link( $author, $authorlink ) {
     if ( $authorlink == '' ) {
-        return '<p><em>' . _e( 'by', 'jkl-reviews/languages' ) . ': ' . $author . '</em></p>';
+        return '<p><em>' . __( 'by', 'jkl-reviews/languages' ) . ': ' . $author . '</em></p>';
     } else {
-        return '<p><em>' . _e( 'by', 'jkl-reviews/languages' ) . ': <a href="' . $authorlink . '">' . $author . '</a></em></p>';
+        return '<p><em>' . __( 'by', 'jkl-reviews/languages' ) . ': <a href="' . $authorlink . '">' . $author . '</a></em></p>';
     }
 }
 
@@ -699,7 +705,7 @@ function jkl_get_fa_rating( $number ) {
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
-                    . '<i class="fa fa-star-o"></i><span>' . _e( 'No rating available.', 'jkl-reviews/languages') . '</span>';
+                    . '<i class="fa fa-star-o"></i><span>' . __( 'No rating available.', 'jkl-reviews/languages') . '</span>';
     }
 }
 
