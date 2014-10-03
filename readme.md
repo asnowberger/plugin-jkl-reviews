@@ -1,5 +1,7 @@
 #JKL Reviews
 
+![banner-772x250](https://cloud.githubusercontent.com/assets/6644259/4505723/85143264-4af9-11e4-899f-2612b4027574.jpg)
+
 * [Plugin Page](http://example.com/)
 * [Author Page](http://www.aaronsnowberger.com/)
 
