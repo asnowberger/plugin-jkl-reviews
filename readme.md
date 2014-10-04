@@ -1,5 +1,7 @@
 #JKL Reviews
 
+![banner-772x250](https://cloud.githubusercontent.com/assets/6644259/4505723/85143264-4af9-11e4-899f-2612b4027574.jpg)
+
 * [Plugin Page](http://example.com/)
 * [Author Page](http://www.aaronsnowberger.com/)
 
@@ -76,6 +78,14 @@ If you have created your own language pack, or have an update of an existing one
 
 ##Documentation & Support
 Full documentation of the Plugin and its uses can be found at: 
+
+###Screenshots
+1. View of the meta box in the WordPress back-end (below the Post editor)
+![screenshot-1](https://cloud.githubusercontent.com/assets/6644259/4514616/ee23f930-4b7e-11e4-87bc-ca3359feffc3.png)
+
+2. View of the Review box in the WordPress front-end (display of the meta data)
+
+3. Responsive Review box
 
 ###Contact Me
 If you have questions about, problems with, or suggestions for improving this plugin, please let me know at:
