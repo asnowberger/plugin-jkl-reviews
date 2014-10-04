@@ -86,7 +86,7 @@ Full documentation of the Plugin and its uses can be found at:
 2. View of the Review box in the WordPress front-end (display of the meta data)
 ![screenshot-2](https://cloud.githubusercontent.com/assets/6644259/4516768/a54917a2-4c07-11e4-9c15-17e7ebdc5b68.png)
 
-3. Responsive Review box
+3. View of the responsive Review box (font sizes will differ based on your theme, but the layout will be the same)
 ![screenshot-3](https://cloud.githubusercontent.com/assets/6644259/4516776/135d3264-4c08-11e4-87d5-5b7587865ed2.png)
 
 ###Contact Me
