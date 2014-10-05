@@ -136,6 +136,7 @@ function display_jkl_review_metabox( $post ) {
      * 9. Product Link              => jkl_review_product_uri                           back / front        esc_url
      * 10. Author Link              => jkl_review_author_uri                            back / front        esc_url
      * 11. Resources Link           => jkl_review_resources_uri                         back / front        esc_url
+     * 12. Disclosure Type (radio)  => jkl_disclose                                     unnecessary?
      */
     
     // Ref: TutsPlus Working with Meta Boxes Video Course
@@ -378,7 +379,67 @@ function display_jkl_review_metabox( $post ) {
                 <input type="url" id="jkl_review_resources_uri" name="jkl_review_resources_uri"
                         value="<?php if( isset( $jklrv_stored_meta['jkl_review_resources_uri'] ) ) echo esc_url( $jklrv_stored_meta['jkl_review_resources_uri'][0] ); ?>" />
             </td>
-        </tr>        
+        </tr> 
+        
+        <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
+        
+        <!-- Material Disclaimer Type. To comply with guidelines by the FTC (16 CFR, Part 255): http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html -->
+        <tr>
+            <td class="left-label">
+                <label for="jkl-disclosure-type" class="jkl_label"><?php _e('Material Disclosure: ', 'jkl-reviews/languages')?></label>
+            </td>
+            <td>
+                <div class="radio">
+                <label for="jkl-remove-type" id="jkl-remove-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-remove" value="remove" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'remove' ); ?>>
+                    <span class="note"><?php _e('No Disclosure', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-no-type" id="jkl-no-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-none" value="none" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'none' ); ?>>
+                    <span class="note"><?php _e('No Connection', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-aff-type" id="jkl-aff-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-aff" value="affiliate" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'affiliate' ); ?>>
+                    <span class="note"><?php _e('Affiliate Link', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-sample-type" id="jkl-sample-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-sample" value="sample" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'sample' ); ?>>
+                    <span class="note"><?php _e('Review or Sample', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-sponsored-type" id="jkl-sponsored-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-sponsor" value="sponsored" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'sponsored' ); ?>>
+                    <span class="note"><?php _e('Sponsored Post', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-shareholder-type" id="jkl-shareholder-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-shareholder" value="shareholder" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'shareholder' ); ?>>
+                    <span class="note"><?php _e('Employee/Shareholder', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+            </td>
+        </tr>
+        
+        <?php if (isset( $jklrv_stored_meta['jkl_disclose'][0] ) && !checked( $jklrv_stored_meta['jkl_disclose'][0], 'remove' ) ) { ?>
+        <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
+        
+        <tr>
+            <td class="left-label">
+                <label for="jkl-disclosure-preview" class="jkl_label"><?php _e('Disclosure Preview: ', 'jkl-reviews/languages')?></label>
+            </td>
+            <td>
+                <small class="note"><?php echo wp_kses_post( jkl_get_material_disclosure( $jklrv_stored_meta['jkl_disclose'][0] ) ); ?></small>
+            </td>
+        </tr>
+        <?php } ?>
         
     </table>
 
@@ -493,6 +554,11 @@ function jkl_save_review_metabox($post_id) {
     if( isset($_POST['jkl_review_resources_uri'] ) ) {
         update_post_meta( $post_id, 'jkl_review_resources_uri', $_POST['jkl_review_resources_uri'] ); // Performing esc_url on all outputs
     }
+    
+    // Save the Material Disclosure Type (radio button selection)
+    if( isset($_POST[ 'jkl_disclose' ] ) ) {
+        update_post_meta( $post_id, 'jkl_disclose', $_POST['jkl_disclose'] ); // Unnecessary sanitization/validation?
+    }
 }
 
 
@@ -585,6 +651,10 @@ function jkl_display_review_box( $content ) {
         if ( $jklrv_stored_meta['jkl_review_summary_area'][0] !== '' )
             $jkl_thebox .= '<div class="jkl_summary"><p><strong>' . __( 'Summary', 'jkl-reviews/languages') . '</strong></p><p><em>' . wp_kses_post( $jklrv_stored_meta['jkl_review_summary_area'][0] ) . '</em></p></div>';
 
+        // Print the Material Disclosure if one has been assigned.
+        if ( $jklrv_stored_meta['jkl_disclose'][0] !== '' && $jklrv_stored_meta['jkl_disclose'][0] !== 'remove' )
+            $jkl_thebox .= '<div class="jkl_disclosure"><small>' . jkl_get_material_disclosure ( $jklrv_stored_meta['jkl_disclose'][0] ) . '</small></div>';
+        
         $jkl_thebox .= '</div>'; // End #jkl_thebox
         
         // Append the Review box to the $content
@@ -608,17 +678,11 @@ function jkl_display_review_box( $content ) {
 function jkl_get_fa_icon( $name ) {
     switch( $name ) {
         case 'book' : return 'book';
-            break;
         case 'audio' : return 'headphones';
-            break;
         case 'video' : return 'play-circle';
-            break;
         case 'course' : return 'pencil-square-o';
-            break;
         case 'product' : return 'archive';
-            break;
         case 'service' : return 'gift';
-            break;
         default : return 'star';
     }
 }
@@ -646,67 +710,56 @@ function jkl_get_fa_rating( $number ) {
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 0.5 : return '<i class="fa fa-star-half-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 1 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 1.5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-half-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 2 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 2.5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-half-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 3 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 3.5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-half-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 4 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 4.5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-half-o"></i>';
-            break;
         case 5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>';
-            break;
         default: return '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
@@ -714,5 +767,42 @@ function jkl_get_fa_rating( $number ) {
                     . '<i class="fa fa-star-o"></i><span>' . __( 'No rating available.', 'jkl-reviews/languages') . '</span>';
     }
 }
+
+
+/*
+ * Return the appropriate Material Disclosure based on the type selected in the Meta Box
+ */
+function jkl_get_material_disclosure( $type ) {
+    switch( $type ) {
+        case 'none' :
+             $disclosure = "I have received no compensation of any kind for writing this post, "
+                . "nor do I have any connection with the brands, products, or services mentioned. ";
+            break;
+        case 'affiliate' :
+            $disclosure = "Some of the links above are \"affiliate links.\" This means that "
+                . "I will receive a small commission if you click on and purchase the item. Nevertheless, ";
+            break;
+        case 'sample' :
+            $disclosure = "I received one or more of the products or services mentioned "
+                . "above in the hope that I would mention it on my blog. Nevertheless, ";
+            break;
+        case 'sponsored' :
+            $disclosure = "This is a \"sponsored post.\" The company who sponsored it "
+                . "compensated me in some way to write it. Nevertheless, ";
+            break;
+        case 'shareholder' :
+            $disclosure = "I am an employee or shareholder of the company that produced "
+                . "this product. Nevertheless, ";
+            break;
+        default :
+            $disclosure = "";
+    }
+    
+    return $disclosure . "I only recommend products and services that I personally believe in and "
+                . "use. This disclosure is in accordance with the <a href='http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html'"
+                . "alt='FTC Disclosure Guidelines'>FTC's 16 CFR, Part 255</a>: \"Guides Concerning the Use of Endorsements and "
+                . "Testimonials in Advertising.\"";
+}
+
 
 ?>

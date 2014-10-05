@@ -106,6 +106,16 @@
 .jkl_summary p {
     margin-bottom: 1em;
 }
+.jkl_disclosure {
+    background-color: #fcfcfc;
+    color: #bbb;
+    margin: -50px 0 0;
+    padding: 3%;
+    line-height: 1em;
+    font-size: .8em;
+    border: 1px solid #e1e1e1;
+    border-top: none;
+}
 
 /* 
  * Responsive media styles
