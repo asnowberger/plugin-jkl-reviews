@@ -3,7 +3,7 @@
  * Plugin Name: JKL Reviews
  * Plugin URI: http://www.jekkilekki.com
  * Description: A simple Reviews plugin to review books, music, movies, products, or online courses with Star Ratings and links out to related sites.
- * Version: 0.1
+ * Version: 1.1
  * Author: Aaron Snowberger
  * Author URI: http://www.aaronsnowberger.com
  * Text Domain: jkl-reviews/languages
@@ -13,8 +13,15 @@
 /*
  * TODO:
  * 1. Add i18n with EN + KO
- * 2. Add Affiliate Disclaimer and option checkbox to display it or not
- * 3. Allow input of mutliple categories as Terms (like Tags)
+ * 2. Allow input of mutliple categories as Terms (like Tags)
+ * 
+ * UPCOMING:
+ * 1. Shortcode to allow insertion anywhere in the post (beginning or end)
+ * 2. Shortcode parameter 'small' to show a minimalized version of the box
+ * 3. Sidebar widget to show latest books/products reviewed (might be dependent on...)
+ * 4. Custom Post Type with custom Taxonomies for Review Types (can sort and display in widgets/index pages)
+ * 5. WordPress options page to modify box CSS styles
+ * 6. Incorporate AJAX for image chooser, Material Connection disclosure, CSS box styles, etc
  */
 
 /*
@@ -775,33 +782,33 @@ function jkl_get_fa_rating( $number ) {
 function jkl_get_material_disclosure( $type ) {
     switch( $type ) {
         case 'none' :
-             $disclosure = "I have received no compensation of any kind for writing this post, "
-                . "nor do I have any connection with the brands, products, or services mentioned. ";
+             $disclosure = __( 'I have received no compensation of any kind for writing this post, '
+                . 'nor do I have any connection with the brands, products, or services mentioned. ', 'jkl-reviews/languages' );
             break;
         case 'affiliate' :
-            $disclosure = "Some of the links above are \"affiliate links.\" This means that "
-                . "I will receive a small commission if you click on and purchase the item. Nevertheless, ";
+            $disclosure = __( 'Some of the links above are "affiliate links." This means that '
+                . 'I will receive a small commission if you click on and purchase the item. Nevertheless, ', 'jkl-reviews/languages' );
             break;
         case 'sample' :
-            $disclosure = "I received one or more of the products or services mentioned "
-                . "above in the hope that I would mention it on my blog. Nevertheless, ";
+            $disclosure = __( 'I received one or more of the products or services mentioned '
+                . 'above in the hope that I would mention it on my blog. Nevertheless, ', 'jkl-reviews/languages' );
             break;
         case 'sponsored' :
-            $disclosure = "This is a \"sponsored post.\" The company who sponsored it "
-                . "compensated me in some way to write it. Nevertheless, ";
+            $disclosure = __( 'This is a "sponsored post." The company who sponsored it '
+                . 'compensated me in some way to write it. Nevertheless, ', 'jkl-reviews/languages' );
             break;
         case 'shareholder' :
-            $disclosure = "I am an employee or shareholder of the company that produced "
-                . "this product. Nevertheless, ";
+            $disclosure = __( 'I am an employee or shareholder of the company that produced '
+                . 'this product. Nevertheless, ', 'jkl-reviews/languages' );
             break;
         default :
-            $disclosure = "";
+            $disclosure = '';
     }
     
-    return $disclosure . "I only recommend products and services that I personally believe in and "
-                . "use. This disclosure is in accordance with the <a href='http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html'"
-                . "alt='FTC Disclosure Guidelines'>FTC's 16 CFR, Part 255</a>: \"Guides Concerning the Use of Endorsements and "
-                . "Testimonials in Advertising.\"";
+    return $disclosure . __( 'I only recommend products and services that I personally believe in and '
+                . 'use. This disclosure is in accordance with the <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html"'
+                . 'alt="FTC Disclosure Guidelines">FTC\'s 16 CFR, Part 255</a>: "Guides Concerning the Use of Endorsements and '
+                . 'Testimonials in Advertising."', 'jkl-reviews/languages' );
 }
 
 

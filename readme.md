@@ -98,6 +98,8 @@ Want updates about my other WordPress plugins, themes, or tutorials? Follow me a
 ###This plugin uses:
 * [jQuery](http://jquery.com/) licensed under MIT License or GNU General Public License (GPL) Version 2
 * [FontAwesome](http://fortawesome.github.io/Font-Awesome/) licensed under SIL OFL 1.1; Code licensed under MIT License
+* [Material Connection Disclosures](http://michaelhyatt.com/five-ways-to-comply-with-the-new-ftc-guidelines-for-bloggers.html) 
+as found on Michael Hyatt's website and in compliance with FTC Guidelines
 
 ##License
 This program is free software; you can redistribute it and/or modify it under the terms 
