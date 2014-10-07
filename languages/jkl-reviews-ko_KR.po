@@ -1,0 +1,236 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: jkl-reviews\n"
+"POT-Creation-Date: 2014-10-07 10:30+0900\n"
+"PO-Revision-Date: 2014-10-07 15:36+0900\n"
+"Last-Translator: \n"
+"Language-Team: Aaron Snowberger <jekkilekki@gmail.com>\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.9\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../jkl-reviews.php:100
+msgid "Review Information"
+msgstr "검토 정보"
+
+#: ../jkl-reviews.php:165
+msgid "Product Information"
+msgstr "제품 정보"
+
+#: ../jkl-reviews.php:171
+msgid "Product Type: "
+msgstr "제품 유형:"
+
+#: ../jkl-reviews.php:177
+msgid "Book"
+msgstr "책"
+
+#: ../jkl-reviews.php:183
+msgid "Audio"
+msgstr "오디오"
+
+#: ../jkl-reviews.php:189
+msgid "Video"
+msgstr "동영상"
+
+#: ../jkl-reviews.php:195
+msgid "Course"
+msgstr "코스"
+
+#: ../jkl-reviews.php:201
+msgid "Product"
+msgstr "제품"
+
+#: ../jkl-reviews.php:207
+msgid "Service"
+msgstr "서비스"
+
+#: ../jkl-reviews.php:213
+msgid "Other"
+msgstr "기타"
+
+#: ../jkl-reviews.php:224
+msgid "Product Image: "
+msgstr "제품 이미지:"
+
+#: ../jkl-reviews.php:229
+msgid "Choose or Upload an Image"
+msgstr "이미지를 선택하거나 업로드"
+
+#: ../jkl-reviews.php:237
+msgid "Product Image Preview: "
+msgstr "제품 이미지 미리보기:"
+
+#: ../jkl-reviews.php:250
+msgid "Title: "
+msgstr "제목:"
+
+#: ../jkl-reviews.php:261
+msgid "Author: "
+msgstr "창조자:"
+
+#: ../jkl-reviews.php:272
+msgid "Series: "
+msgstr "시리즈:"
+
+#: ../jkl-reviews.php:283
+msgid "Category: "
+msgstr "종류:"
+
+#: ../jkl-reviews.php:288
+msgid "Separate multiple values with commas."
+msgstr "여러 개의 값은 쉼표로 분리."
+
+#: ../jkl-reviews.php:295
+msgid "Product Rating"
+msgstr "제품 평가"
+
+#: ../jkl-reviews.php:304
+msgid "Rating: "
+msgstr "평가:"
+
+#: ../jkl-reviews.php:324 ../jkl-reviews.php:636
+msgid "Stars"
+msgstr "별"
+
+#: ../jkl-reviews.php:336
+msgid "Summary: "
+msgstr "요약:"
+
+#: ../jkl-reviews.php:346
+msgid "Product Links"
+msgstr "제품 링크"
+
+#: ../jkl-reviews.php:352
+msgid "Affiliate Link: "
+msgstr "제휴사 링크:"
+
+#: ../jkl-reviews.php:362
+msgid "Link to Product Page: "
+msgstr "제품 페이지 링크:"
+
+#: ../jkl-reviews.php:372
+msgid "Link to Author Homepage: "
+msgstr "창조자의 홈페이지 링크:"
+
+#: ../jkl-reviews.php:383
+msgid "Link to Resources Page: "
+msgstr "자원 페이지 링크:"
+
+#: ../jkl-reviews.php:396
+msgid "Material Disclosure: "
+msgstr "재료 공개:"
+
+#: ../jkl-reviews.php:402
+msgid "No Disclosure"
+msgstr "공개 없음"
+
+#: ../jkl-reviews.php:408
+msgid "No Connection"
+msgstr "아무 연결"
+
+#: ../jkl-reviews.php:414
+msgid "Affiliate Link"
+msgstr "제휴사 링크"
+
+#: ../jkl-reviews.php:420
+msgid "Review or Sample"
+msgstr "검토 또는 샘플"
+
+#: ../jkl-reviews.php:426
+msgid "Sponsored Post"
+msgstr "후원된 글"
+
+#: ../jkl-reviews.php:432
+msgid "Employee/Shareholder"
+msgstr "직원/주주"
+
+#: ../jkl-reviews.php:443
+msgid "Disclosure Preview: "
+msgstr "공개 미리보기:"
+
+#: ../jkl-reviews.php:473
+msgid "Select a Cover"
+msgstr "커버를 선택함"
+
+#: ../jkl-reviews.php:474
+msgid "Use this Cover"
+msgstr "이 커버를 사용함"
+
+#: ../jkl-reviews.php:634
+msgid "Series"
+msgstr "시리즈"
+
+#: ../jkl-reviews.php:644
+msgid "Purchase"
+msgstr "구매 링크"
+
+#: ../jkl-reviews.php:646
+msgid "Home Page"
+msgstr "홈페이지"
+
+#: ../jkl-reviews.php:648
+msgid "Author Page"
+msgstr "창조자의 페이지"
+
+#: ../jkl-reviews.php:650
+msgid "Resources"
+msgstr "자원 링크"
+
+#: ../jkl-reviews.php:659
+msgid "Summary"
+msgstr "요약"
+
+#: ../jkl-reviews.php:703 ../jkl-reviews.php:705
+msgid "by"
+msgstr "창조자:"
+
+#: ../jkl-reviews.php:774
+msgid "No rating available."
+msgstr "아무 제품 평가 없음."
+
+#: ../jkl-reviews.php:785
+msgid ""
+"I have received no compensation of any kind for writing this post, nor do I "
+"have any connection with the brands, products, or services mentioned. "
+msgstr ""
+
+#: ../jkl-reviews.php:789
+msgid ""
+"Some of the links above are \"affiliate links.\" This means that I will "
+"receive a small commission if you click on and purchase the item. "
+"Nevertheless, "
+msgstr ""
+
+#: ../jkl-reviews.php:793
+msgid ""
+"I received one or more of the products or services mentioned above in the "
+"hope that I would mention it on my blog. Nevertheless, "
+msgstr ""
+
+#: ../jkl-reviews.php:797
+msgid ""
+"This is a \"sponsored post.\" The company who sponsored it compensated me in "
+"some way to write it. Nevertheless, "
+msgstr ""
+
+#: ../jkl-reviews.php:801
+msgid ""
+"I am an employee or shareholder of the company that produced this product. "
+"Nevertheless, "
+msgstr ""
+
+#: ../jkl-reviews.php:808
+msgid ""
+"I only recommend products and services that I personally believe in and use. "
+"This disclosure is in accordance with the <a href=\"http://www.access.gpo."
+"gov/nara/cfr/waisidx_03/16cfr255_03.html\"alt=\"FTC Disclosure Guidelines"
+"\">FTC's 16 CFR, Part 255</a>: \"Guides Concerning the Use of Endorsements "
+"and Testimonials in Advertising.\""
+msgstr ""
