@@ -6,16 +6,15 @@ Author:                 Aaron Snowberger
 Author URI:             http://www.aaronsnowberger.com/
 Donate link:            https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=567MWDR76KHLU
 Tags:                   content, custom, custom meta box, review, reviews, books, music, movies, products, courses, services
-Requires at least:      3.0.1
+Requires at least:      3.5
 Tested up to:           4.0
-Stable tag:             0.1
-Version:                1.0
+Stable tag:             1.1
+Version:                1.1
 License:                GPLv2 or later
 License URI:            http://www.gnu.org/licenses/gpl-2.0.html
 
 A simple Reviews plugin to review books, music, movies, products, or online courses 
-with Star Ratings 
-and links out to related sites.
+with Star Ratings and links out to related sites.
 
 == Description ==
 
@@ -187,6 +186,7 @@ I can take a look at it. Things to include in your message include:
 
 1. Custom Meta Box on the Post Editor page
 2. Review box display on the Post itself
+3. Responsive view of the Review box
 
 == Other Notes ==
 
@@ -215,10 +215,16 @@ Floor, Boston, MA 02110-1301 USA
 
 == Changelog ==
 
+= 1.1 =
+* Added Material Connection Disclosures to comply with FTC regulations for affiliate links and the like
+
 = 1.0 =
 * Initial release
 
 == Upgrade Notice ==
 
+= 1.1 =
+* Added Material Connection Disclosures to comply with FTC regulations for affiliate links and the like
+
 = 1.0 =
-Initial release
+* Initial release

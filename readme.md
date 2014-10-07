@@ -79,6 +79,16 @@ If you have created your own language pack, or have an update of an existing one
 ##Documentation & Support
 Full documentation of the Plugin and its uses can be found at: 
 
+###Screenshots
+1. View of the meta box in the WordPress back-end (below the Post editor)
+![screenshot-1](https://cloud.githubusercontent.com/assets/6644259/4514616/ee23f930-4b7e-11e4-87bc-ca3359feffc3.png)
+
+2. View of the Review box in the WordPress front-end (display of the meta data)
+![screenshot-2](https://cloud.githubusercontent.com/assets/6644259/4516768/a54917a2-4c07-11e4-9c15-17e7ebdc5b68.png)
+
+3. View of the responsive Review box (font sizes will differ based on your theme, but the layout will be the same)
+![screenshot-3](https://cloud.githubusercontent.com/assets/6644259/4516776/135d3264-4c08-11e4-87d5-5b7587865ed2.png)
+
 ###Contact Me
 If you have questions about, problems with, or suggestions for improving this plugin, please let me know at:
 
@@ -88,6 +98,8 @@ Want updates about my other WordPress plugins, themes, or tutorials? Follow me a
 ###This plugin uses:
 * [jQuery](http://jquery.com/) licensed under MIT License or GNU General Public License (GPL) Version 2
 * [FontAwesome](http://fortawesome.github.io/Font-Awesome/) licensed under SIL OFL 1.1; Code licensed under MIT License
+* [Material Connection Disclosures](http://michaelhyatt.com/five-ways-to-comply-with-the-new-ftc-guidelines-for-bloggers.html) 
+as found on Michael Hyatt's website and in compliance with FTC Guidelines
 
 ##License
 This program is free software; you can redistribute it and/or modify it under the terms 

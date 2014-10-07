@@ -2,6 +2,9 @@
     Created on : Sep 30, 2014, 7:03:12 AM
     Author     : jekkilekki
 */
+#jkl_thebox {
+    margin: 0 0 50px 0;
+}
 #jkl_review_box {
     background-color: #fcfcfc;
     width: 100%;
@@ -9,7 +12,7 @@
     min-height: 300px;
 }
 #jkl_review_box_head {
-    background-color: #00A8EF;
+    background-color: #13a1d7;
     margin: 2px;
     padding: 2px;
     border-bottom: 1px solid #e1e1e1;
@@ -77,6 +80,7 @@
     color: #999999;
     text-decoration: none;
     line-height: 25px;
+    text-align: left;
 }
 #jkl_review_box_links_box a::before {
     color: #464646;
@@ -92,14 +96,25 @@
     clear: both;
 }
 .jkl_summary {
-    margin: 3% 0px;
+    margin: 3% 0px 50px;
     padding: 0 3%;
     border-bottom: 3px solid #e1e1e1;
     border-left: 1px solid #e1e1e1;
     border-right: 1px solid #e1e1e1;
+    padding-bottom: 20px;
 }
 .jkl_summary p {
     margin-bottom: 1em;
+}
+.jkl_disclosure {
+    background-color: #fcfcfc;
+    color: #bbb;
+    margin: -50px 0 0;
+    padding: 3%;
+    line-height: 1em;
+    font-size: .8em;
+    border: 1px solid #e1e1e1;
+    border-top: none;
 }
 
 /* 

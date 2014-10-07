@@ -3,11 +3,25 @@
  * Plugin Name: JKL Reviews
  * Plugin URI: http://www.jekkilekki.com
  * Description: A simple Reviews plugin to review books, music, movies, products, or online courses with Star Ratings and links out to related sites.
- * Version: 0.1
+ * Version: 1.1
  * Author: Aaron Snowberger
  * Author URI: http://www.aaronsnowberger.com
  * Text Domain: jkl-reviews/languages
  * License: GPL2
+ */
+
+/*
+ * TODO:
+ * 1. Add i18n with EN + KO
+ * 2. Allow input of mutliple categories as Terms (like Tags)
+ * 
+ * UPCOMING:
+ * 1. Shortcode to allow insertion anywhere in the post (beginning or end)
+ * 2. Shortcode parameter 'small' to show a minimalized version of the box
+ * 3. Sidebar widget to show latest books/products reviewed (might be dependent on...)
+ * 4. Custom Post Type with custom Taxonomies for Review Types (can sort and display in widgets/index pages)
+ * 5. WordPress options page to modify box CSS styles
+ * 6. Incorporate AJAX for image chooser, Material Connection disclosure, CSS box styles, etc
  */
 
 /*
@@ -39,7 +53,7 @@ add_action( 'admin_enqueue_scripts', 'jklrv_image_enqueue' );
 add_action( 'save_post', 'jkl_save_review_metabox' );
 
 // ##5 : Display metabox data (and CSS style) straight up on a Post
-add_action( 'the_content', 'jkl_display_review_box' );
+add_filter( 'the_content', 'jkl_display_review_box' );
 
 // ##6 : Call various helper functions for displaying the metabox (no hooks necessary)
 
@@ -116,19 +130,20 @@ function display_jkl_review_metabox( $post ) {
     $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl-radio'][0] );
     
     /*
-     * Metabox fields
-     * 0. Review Type (radio)       => jkl_radio
-     * 1. Cover Image               => jkl_review_cover
-     * 2. Title                     => jkl_review_title
-     * 3. Author                    => jkl_review_author
-     * 4. Series                    => jkl_review_series
-     * 5. Category                  => jkl_review_category
-     * 6. Rating                    => jkl_review_rating
-     * 7. Summary                   => jkl_review_summary_area
-     * 8. Affiliate Link            => jkl_review_affiliate_uri
-     * 9. Product Link              => jkl_review_product_uri
-     * 10. Author Link              => jkl_review_author_uri
-     * 11. Resources Link           => jkl_review_resources_uri
+     * Metabox fields                                           Validated (on save)     Escaped (output)    Method
+     * 0. Review Type (radio)       => jkl_radio                                        unnecessary?        (esc_attr breaks the code)
+     * 1. Cover Image               => jkl_review_cover                                 back / front        esc_url
+     * 2. Title                     => jkl_review_title         sanitize_text_field()   back / front        esc_attr
+     * 3. Author                    => jkl_review_author        sanitize_text_field()   back / front        esc_attr
+     * 4. Series                    => jkl_review_series        sanitize_text_field()   back / front        esc_attr
+     * 5. Category                  => jkl_review_category      sanitize_text_field()   back / front        esc_attr
+     * 6. Rating                    => jkl_review_rating        (float)                 unnecessary?        (use (float) to set as float, or floatval( $val ) to check it's a float
+     * 7. Summary                   => jkl_review_summary_area                          back / front        wp_kses_post
+     * 8. Affiliate Link            => jkl_review_affiliate_uri                         back / front        esc_url
+     * 9. Product Link              => jkl_review_product_uri                           back / front        esc_url
+     * 10. Author Link              => jkl_review_author_uri                            back / front        esc_url
+     * 11. Resources Link           => jkl_review_resources_uri                         back / front        esc_url
+     * 12. Disclosure Type (radio)  => jkl_disclose                                     unnecessary?
      */
     
     // Ref: TutsPlus Working with Meta Boxes Video Course
@@ -141,7 +156,6 @@ function display_jkl_review_metabox( $post ) {
     // Test your saved values are stripped of tags by trying to save:
     // <script>alert('Hello world!');</script>
     
-    // TODO: Be sure all data validation/sanitization is complete
     ?>
 
     <!-- REVIEW INFORMATION TABLE -->
@@ -237,7 +251,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="text" class="input-text" id="jkl_review_title" name="jkl_review_title" 
-                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_title'] ) ) echo $jklrv_stored_meta['jkl_review_title'][0]; ?>" />
+                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_title'] ) ) echo esc_attr( $jklrv_stored_meta['jkl_review_title'][0] ); ?>" />
             </td>
         </tr>
 
@@ -248,7 +262,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="text" class="input-text" id="jkl_review_author" name="jkl_review_author" 
-                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_author'] ) ) echo $jklrv_stored_meta['jkl_review_author'][0]; ?>" />
+                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_author'] ) ) echo esc_attr( $jklrv_stored_meta['jkl_review_author'][0] ); ?>" />
             </td>
         </tr>
 
@@ -259,7 +273,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="text" class="input-text" id="jkl_review_series" name="jkl_review_series" 
-                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_series'] ) ) echo $jklrv_stored_meta['jkl_review_series'][0]; ?>" />
+                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_series'] ) ) echo esc_attr( $jklrv_stored_meta['jkl_review_series'][0] ); ?>" />
             </td>
         </tr>
 
@@ -270,7 +284,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="text" class="input-text" id="jkl_review_category" name="jkl_review_category" 
-                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_category'] ) ) echo $jklrv_stored_meta['jkl_review_category'][0]; ?>" />
+                           value="<?php if( isset( $jklrv_stored_meta['jkl_review_category'] ) ) echo esc_attr( $jklrv_stored_meta['jkl_review_category'][0] ); ?>" />
                 <p class="note"><?php _e( 'Separate multiple values with commas.', 'jkl-reviews/languages' ) ?></p>
             </td>
         </tr>
@@ -322,7 +336,7 @@ function display_jkl_review_metabox( $post ) {
                 <label for=jkl_review_summary" class="jkl_label"><?php _e('Summary: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
-                <textarea id="jkl_review_summary_area" name="jkl_review_summary_area"><?php if( isset( $jklrv_stored_meta['jkl_review_summary_area'] ) ) echo $jklrv_stored_meta['jkl_review_summary_area'][0]; ?></textarea>
+                <textarea id="jkl_review_summary_area" name="jkl_review_summary_area"><?php if( isset( $jklrv_stored_meta['jkl_review_summary_area'] ) ) echo wp_kses_post( $jklrv_stored_meta['jkl_review_summary_area'][0] ); ?></textarea>
             </td>
         </tr>
     </table>
@@ -339,7 +353,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="url" id="jkl_affiliate_uri" name="jkl_review_affiliate_uri"
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_affiliate_uri'] ) ) echo $jklrv_stored_meta['jkl_review_affiliate_uri'][0]; ?>" />
+                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_affiliate_uri'] ) ) echo esc_url( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] ); ?>" />
         </tr> <!-- TODO: Implement an Affiliate link Disclaimer message and checkbox option to turn it on/off. -->
         
         <!-- Product Homepage -->
@@ -349,7 +363,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="url" id="jkl_review_product_uri" name="jkl_review_product_uri"
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_product_uri'] ) ) echo $jklrv_stored_meta['jkl_review_product_uri'][0]; ?>" />
+                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_product_uri'] ) ) echo esc_url( $jklrv_stored_meta['jkl_review_product_uri'][0] ); ?>" />
         </tr>
         
         <!-- Author Homepage -->
@@ -359,7 +373,7 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="url" id="jkl_review_author_uri" name="jkl_review_author_uri"
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_author_uri'] ) ) echo $jklrv_stored_meta['jkl_review_author_uri'][0]; ?>" />
+                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_author_uri'] ) ) echo esc_url( $jklrv_stored_meta['jkl_review_author_uri'][0] ); ?>" />
             </td>
         </tr>       
         
@@ -370,9 +384,69 @@ function display_jkl_review_metabox( $post ) {
             </td>
             <td>
                 <input type="url" id="jkl_review_resources_uri" name="jkl_review_resources_uri"
-                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_resources_uri'] ) ) echo $jklrv_stored_meta['jkl_review_resources_uri'][0]; ?>" />
+                        value="<?php if( isset( $jklrv_stored_meta['jkl_review_resources_uri'] ) ) echo esc_url( $jklrv_stored_meta['jkl_review_resources_uri'][0] ); ?>" />
             </td>
-        </tr>        
+        </tr> 
+        
+        <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
+        
+        <!-- Material Disclaimer Type. To comply with guidelines by the FTC (16 CFR, Part 255): http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html -->
+        <tr>
+            <td class="left-label">
+                <label for="jkl-disclosure-type" class="jkl_label"><?php _e('Material Disclosure: ', 'jkl-reviews/languages')?></label>
+            </td>
+            <td>
+                <div class="radio">
+                <label for="jkl-remove-type" id="jkl-remove-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-remove" value="remove" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'remove' ); ?>>
+                    <span class="note"><?php _e('No Disclosure', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-no-type" id="jkl-no-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-none" value="none" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'none' ); ?>>
+                    <span class="note"><?php _e('No Connection', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-aff-type" id="jkl-aff-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-aff" value="affiliate" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'affiliate' ); ?>>
+                    <span class="note"><?php _e('Affiliate Link', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-sample-type" id="jkl-sample-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-sample" value="sample" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'sample' ); ?>>
+                    <span class="note"><?php _e('Review or Sample', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-sponsored-type" id="jkl-sponsored-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-sponsor" value="sponsored" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'sponsored' ); ?>>
+                    <span class="note"><?php _e('Sponsored Post', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+                <div class="radio">
+                <label for="jkl-shareholder-type" id="jkl-shareholder-type">
+                    <input type="radio" name="jkl_disclose" id="jkl-disclose-shareholder" value="shareholder" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'shareholder' ); ?>>
+                    <span class="note"><?php _e('Employee/Shareholder', 'jkl-reviews/languages')?></span>
+                </label>
+                </div>
+            </td>
+        </tr>
+        
+        <?php if (isset( $jklrv_stored_meta['jkl_disclose'][0] ) && !checked( $jklrv_stored_meta['jkl_disclose'][0], 'remove' ) ) { ?>
+        <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
+        
+        <tr>
+            <td class="left-label">
+                <label for="jkl-disclosure-preview" class="jkl_label"><?php _e('Disclosure Preview: ', 'jkl-reviews/languages')?></label>
+            </td>
+            <td>
+                <small class="note"><?php echo wp_kses_post( jkl_get_material_disclosure( $jklrv_stored_meta['jkl_disclose'][0] ) ); ?></small>
+            </td>
+        </tr>
+        <?php } ?>
         
     </table>
 
@@ -435,57 +509,62 @@ function jkl_save_review_metabox($post_id) {
     
     // Save the Review Type (radio button selection)
     if( isset($_POST[ 'jkl_radio' ] ) ) {
-        update_post_meta( $post_id, 'jkl_radio', $_POST['jkl_radio'] );
+        update_post_meta( $post_id, 'jkl_radio', $_POST['jkl_radio'] ); // Unnecessary sanitization/validation?
     }
 
     // Save the Cover: Checks for input and saves image if needed
     if( isset($_POST[ 'jkl_review_cover' ] ) ) {
-        update_post_meta( $post_id, 'jkl_review_cover', $_POST['jkl_review_cover'] );
+        update_post_meta( $post_id, 'jkl_review_cover', $_POST['jkl_review_cover'] ); // Performing esc_url on all outputs
     } 
 
     // Save the Title: Checks for input and sanitizes/saves if needed
     if( isset($_POST['jkl_review_title'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_title', $_POST['jkl_review_title'] );
+        update_post_meta( $post_id, 'jkl_review_title', sanitize_text_field( $_POST['jkl_review_title'] ) );
     } 
 
     // Save the Author:
     if( isset($_POST['jkl_review_author'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_author', $_POST['jkl_review_author'] );
+        update_post_meta( $post_id, 'jkl_review_author', sanitize_text_field( $_POST['jkl_review_author'] ) );
     } 
 
     // Save the Series:
     if( isset($_POST['jkl_review_series'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_series', $_POST['jkl_review_series'] );
+        update_post_meta( $post_id, 'jkl_review_series', sanitize_text_field( $_POST['jkl_review_series'] ) );
     }
 
     // Save the Category:
     if( isset($_POST['jkl_review_category'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_category', $_POST['jkl_review_category'] );
+        update_post_meta( $post_id, 'jkl_review_category', sanitize_text_field( $_POST['jkl_review_category'] ) );
     } 
 
     // Save the Rating:
     if( isset($_POST['jkl_review_rating'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_rating', $_POST['jkl_review_rating'] );
+        update_post_meta( $post_id, 'jkl_review_rating', (float) $_POST['jkl_review_rating'] );
     } 
 
     // Save the Summary:
     if( isset($_POST['jkl_review_summary_area'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_summary_area', $_POST['jkl_review_summary_area'] );
+        update_post_meta( $post_id, 'jkl_review_summary_area', $_POST['jkl_review_summary_area'] ); // Performing wp_kses_post on all outputs
     } 
 
     // Links and Options Below:
     // Save the Links:
     if( isset($_POST['jkl_review_affiliate_uri'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_affiliate_uri', $_POST['jkl_review_affiliate_uri'] );
+        update_post_meta( $post_id, 'jkl_review_affiliate_uri', $_POST['jkl_review_affiliate_uri'] ); // Performing esc_url on all outputs
     }
     if( isset($_POST['jkl_review_product_uri'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_product_uri', $_POST['jkl_review_product_uri'] );
+        update_post_meta( $post_id, 'jkl_review_product_uri', $_POST['jkl_review_product_uri'] ); // Performing esc_url on all outputs
     }
     if( isset($_POST['jkl_review_author_uri'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_author_uri', $_POST['jkl_review_author_uri'] );
+        update_post_meta( $post_id, 'jkl_review_author_uri', $_POST['jkl_review_author_uri'] ); // Performing esc_url on all outputs
     }
     if( isset($_POST['jkl_review_resources_uri'] ) ) {
-        update_post_meta( $post_id, 'jkl_review_resources_uri', $_POST['jkl_review_resources_uri'] );
+        update_post_meta( $post_id, 'jkl_review_resources_uri', $_POST['jkl_review_resources_uri'] ); // Performing esc_url on all outputs
+    }
+    
+    // Save the Material Disclosure Type (radio button selection)
+    if( isset($_POST[ 'jkl_disclose' ] ) ) {
+        update_post_meta( $post_id, 'jkl_disclose', $_POST['jkl_disclose'] ); // Unnecessary sanitization/validation?
     }
 }
 
@@ -496,91 +575,101 @@ function jkl_save_review_metabox($post_id) {
  */
 function jkl_display_review_box( $content ) {
     
-    // Make sure that this is a single post and not an index page
-    if ( is_single() ) {
+    /* 
+     * Dunno why I have to do this, but it's the only way it seemed to work.
+     * Get the global post, and store the post_content in $content and custom 
+     * metadata in $jklrv_stored_meta
+     */
+    global $post;
+    $content = $post->post_content; // Retrieve content... I guess
+    $jklrv_stored_meta = get_post_meta( get_the_ID() ); // Retrieve Post meta info
+    
+    // If this is only a single Post and a Review Type is chosen, modify the content and return it
+    if ( is_single() && !empty( $jklrv_stored_meta['jkl_radio'] ) ) {
+       
+        // Get the appropriate string to display the correct FontAwesome icon per Review Type
+        $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
+        // Get the correct number of FontAwesome stars string
+        $jklrv_fa_rating = jkl_get_fa_rating( $jklrv_stored_meta['jkl_review_rating'][0] );
+
+        /*
+         * By the way, don't forget, this is how to add images from your plugin directory
+         * <img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />
+         */
         
-    // Retrieve Post meta info
-    $jklrv_stored_meta = get_post_meta( get_the_ID() );
-    // Get the appropriate string to display the correct FontAwesome icon per Review Type
-    $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
-    // Get the correct number of FontAwesome stars string
-    $jklrv_fa_rating = jkl_get_fa_rating( $jklrv_stored_meta['jkl_review_rating'][0] );
-    
-    /*
-     * By the way, don't forget, this is how to add images from your plugin directory
-     * <img src="' . plugins_url( 'imgs/' . $jklrv_stored_meta['jkl_radio'][0] . '-dk.png', __FILE__ ) . '" alt="Product link" />
-     */
-    
-    /*
-     * If there's AT LEAST a Review Type selected AND a Title, create the display box
-     * If there is no Review Type AND no Title (you need both) just return the $content (below)
-     */
-    
-    if ( $jklrv_stored_meta['jkl_radio'][0] !== '' && $jklrv_stored_meta['jkl_review_title'][0] !== '' ) {
-    
-        echo '<div id="jkl_review_box"><div id="jkl_review_box_head">';  
+        // Create a string to hold our Review box display string (code)
+        $jkl_thebox = '<div id="jkl_thebox">';
+        
+        // Review box header
+        $jkl_thebox .= '<div id="jkl_review_box"><div id="jkl_review_box_head">';  
+            
             // Display the FontAwesome Review Type icon
-            echo '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
-        
+            $jkl_thebox .= '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
+
             // If there's a Category set, display it, otherwise, display nothing (only the Review Type icon)
             if ( $jklrv_stored_meta['jkl_review_category'][0] !== '' )
-                echo '<p id="jkl_review_box_categories">' . $jklrv_stored_meta['jkl_review_category'][0] . '</p>';
-            echo '</div>'; // End review box head
-            
-        // We already checked for a Review Type and Title, so this <div> is safe to create
-        echo '<div id="jkl_review_box_body">';
-            
+                $jkl_thebox .= '<p id="jkl_review_box_categories">' . esc_attr( $jklrv_stored_meta['jkl_review_category'][0] ) . '</p>';
+            $jkl_thebox .= '</div>'; // End review box head
+
+        // Review box body
+        $jkl_thebox .= '<div id="jkl_review_box_body">';
+
             // If there's no Cover Image set, just show a larger Review Type icon
             if ( $jklrv_stored_meta['jkl_review_cover'][0] === '' ) {
-                echo '<h1 id="jkl_review_box_cover" class="fa fa-' . $jklrv_fa_icon . '"></h1>';
+                $jkl_thebox .= '<h1 id="jkl_review_box_cover" class="fa fa-' . $jklrv_fa_icon . '"></h1>';
             } else {
-                echo '<img id="jkl_review_box_cover" src=' . $jklrv_stored_meta['jkl_review_cover'][0] . ' alt="' . $jklrv_stored_meta['jkl_review_title'][0] . '" />';
+                $jkl_thebox .= '<img id="jkl_review_box_cover" src=' . esc_url( $jklrv_stored_meta['jkl_review_cover'][0] ) . ' alt="' . esc_attr( $jklrv_stored_meta['jkl_review_title'][0] ) . '" />';
             }
-            
+
             // This is where Review data goes
-            echo '<div id="jkl_review_box_info">';
-            
+            $jkl_thebox .= '<div id="jkl_review_box_info">';
+
                 // Show the title (since we already checked for it before showing the Review box itself)
-                echo '<p><strong>' . $jklrv_stored_meta['jkl_review_title'][0] . '</strong></p>'; // Title
-                
+                $jkl_thebox .= '<p><strong>' . esc_attr( $jklrv_stored_meta['jkl_review_title'][0] ) . '</strong></p>'; // Title
+
                 // Check all the other info and if present, show it, but if not, don't show it
                 if ( $jklrv_stored_meta['jkl_review_author'][0] !== '' )
-                    echo jkl_get_author_link ($jklrv_stored_meta['jkl_review_author'][0], $jklrv_stored_meta['jkl_review_author_uri'][0] );  // Author
+                    $jkl_thebox .= jkl_get_author_link($jklrv_stored_meta['jkl_review_author'][0], $jklrv_stored_meta['jkl_review_author_uri'][0] );  // Run the function to return the Author name with OR without a link
                 if ( $jklrv_stored_meta['jkl_review_series'][0] !== '' )
-                    echo '<p>' . _e( 'Series', 'jkl-reviews/languages' ) . ': ' . $jklrv_stored_meta['jkl_review_series'][0] . '</p>'; // Series
+                    $jkl_thebox .= '<p>' . __( 'Series', 'jkl-reviews/languages' ) . ': ' . esc_attr( $jklrv_stored_meta['jkl_review_series'][0] ) . '</p>'; // Series
                 if ( $jklrv_stored_meta['jkl_review_rating'][0] != 0 )
-                    echo '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' ' . _e( 'Stars', 'jkl-reviews/languages') . '</span></p>'; // Rating
-                
+                    $jkl_thebox .= '<p>' . $jklrv_fa_rating . '<span>' . $jklrv_stored_meta['jkl_review_rating'][0] . ' ' . __( 'Stars', 'jkl-reviews/languages') . '</span></p>'; // Rating
+
                 // Check that there's AT LEAST ONE external link. If not, don't even create the links box.
                 if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_homepage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_authorpage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' ) {
-                echo '<div id="jkl_review_box_links_box">'; // Links box
-                
+                $jkl_thebox .= '<div id="jkl_review_box_links_box">'; // Links box
+
                     // Check all the links and if present, show them, if not, don't show them
                     if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' )
-                        echo '<a class="fa fa-dollar" href="' . $jklrv_stored_meta['jkl_review_affiliate_uri'][0] . '"> ' . _e( 'Purchase', 'jkl-reviews/languages') . '</a>'; // Affiliate link
+                        $jkl_thebox .= '<a class="fa fa-dollar" href="' . esc_url( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] ) . '"> ' . __( 'Purchase', 'jkl-reviews/languages') . '</a>'; // Affiliate link
                     if ( $jklrv_stored_meta['jkl_review_product_uri'][0] !== '' )
-                        echo '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . $jklrv_stored_meta['jkl_review_product_uri'][0] . '"> ' . _e( 'Home Page', 'jkl-reviews/languages') . '</a>'; // Product link
+                        $jkl_thebox .= '<a class="fa fa-' . $jklrv_fa_icon . '" href="' . esc_url( $jklrv_stored_meta['jkl_review_product_uri'][0] ) . '"> ' . __( 'Home Page', 'jkl-reviews/languages') . '</a>'; // Product link
                     if ( $jklrv_stored_meta['jkl_review_author_uri'][0] !== '' )
-                        echo '<a class="fa fa-user" href="' . $jklrv_stored_meta['jkl_review_author_uri'][0] . '"> ' . _e( 'Author Page', 'jkl-reviews/languages') . '</a>'; // Author page link
+                        $jkl_thebox .= '<a class="fa fa-user" href="' . esc_url( $jklrv_stored_meta['jkl_review_author_uri'][0] ) . '"> ' . __( 'Author Page', 'jkl-reviews/languages') . '</a>'; // Author page link
                     if ( $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' )
-                        echo '<a class="fa fa-link" href="' . $jklrv_stored_meta['jkl_review_resources_uri'][0] . '"> ' . _e( 'Resources', 'jkl-reviews/languages') . '</a>'; // Resources page link
-                echo '</div>'; // End links box
+                        $jkl_thebox .= '<a class="fa fa-link" href="' . esc_url( $jklrv_stored_meta['jkl_review_resources_uri'][0] ) . '"> ' . __( 'Resources', 'jkl-reviews/languages') . '</a>'; // Resources page link
+                $jkl_thebox .= '</div>'; // End links box
                 } // End links box IF check
-                
-            echo '</div>'; // End review info box
-        echo '</div><div class="jkl_clear"></div></div>'; // End review box body & box (clear is added to give sufficient height to the background-color of taller boxes)
-    
+
+            $jkl_thebox .= '</div>'; // End review info box
+        $jkl_thebox .= '</div><div class="jkl_clear"></div></div>'; // End review box body & box (clear is added to give sufficient height to the background-color of taller boxes)
+
         // Check to see if there's a summary. If not, don't display anything.
         if ( $jklrv_stored_meta['jkl_review_summary_area'][0] !== '' )
-            echo '<div class="jkl_summary"><p><strong>' . _e( 'Summary', 'jkl-reviews/languages') . '</strong></p><p><em>' . $jklrv_stored_meta['jkl_review_summary_area'][0] . '</em></p></div>';
-    } // End the check for Review Type and Title
+            $jkl_thebox .= '<div class="jkl_summary"><p><strong>' . __( 'Summary', 'jkl-reviews/languages') . '</strong></p><p><em>' . wp_kses_post( $jklrv_stored_meta['jkl_review_summary_area'][0] ) . '</em></p></div>';
+
+        // Print the Material Disclosure if one has been assigned.
+        if ( $jklrv_stored_meta['jkl_disclose'][0] !== '' && $jklrv_stored_meta['jkl_disclose'][0] !== 'remove' )
+            $jkl_thebox .= '<div class="jkl_disclosure"><small>' . jkl_get_material_disclosure ( $jklrv_stored_meta['jkl_disclose'][0] ) . '</small></div>';
+        
+        $jkl_thebox .= '</div>'; // End #jkl_thebox
+        
+        // Append the Review box to the $content
+        $content = $jkl_thebox . $content;
+    }       
     
-    return $content; 
-    } // End the check for is_singular()
-    
-    else {
-        return $content;
-    }
+    // Return the content
+    return $content;
 }
 
 
@@ -596,17 +685,11 @@ function jkl_display_review_box( $content ) {
 function jkl_get_fa_icon( $name ) {
     switch( $name ) {
         case 'book' : return 'book';
-            break;
         case 'audio' : return 'headphones';
-            break;
         case 'video' : return 'play-circle';
-            break;
         case 'course' : return 'pencil-square-o';
-            break;
         case 'product' : return 'archive';
-            break;
         case 'service' : return 'gift';
-            break;
         default : return 'star';
     }
 }
@@ -617,9 +700,9 @@ function jkl_get_fa_icon( $name ) {
  */
 function jkl_get_author_link( $author, $authorlink ) {
     if ( $authorlink == '' ) {
-        return '<p><em>' . _e( 'by', 'jkl-reviews/languages' ) . ': ' . $author . '</em></p>';
+        return '<p><em>' . __( 'by', 'jkl-reviews/languages' ) . ': ' . esc_attr( $author ) . '</em></p>';
     } else {
-        return '<p><em>' . _e( 'by', 'jkl-reviews/languages' ) . ': <a href="' . $authorlink . '">' . $author . '</a></em></p>';
+        return '<p><em>' . __( 'by', 'jkl-reviews/languages' ) . ': <a href="' . esc_attr( $authorlink ) . '">' . esc_attr( $author ) . '</a></em></p>';
     }
 }
 
@@ -634,73 +717,99 @@ function jkl_get_fa_rating( $number ) {
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 0.5 : return '<i class="fa fa-star-half-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 1 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 1.5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-half-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 2 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 2.5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-half-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 3 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 3.5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-half-o"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 4 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-o"></i>';
-            break;
         case 4.5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star-half-o"></i>';
-            break;
         case 5 : return '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>'
                     . '<i class="fa fa-star"></i>';
-            break;
         default: return '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
                     . '<i class="fa fa-star-o"></i>'
-                    . '<i class="fa fa-star-o"></i><span>' . _e( 'No rating available.', 'jkl-reviews/languages') . '</span>';
+                    . '<i class="fa fa-star-o"></i><span>' . __( 'No rating available.', 'jkl-reviews/languages') . '</span>';
     }
 }
+
+
+/*
+ * Return the appropriate Material Disclosure based on the type selected in the Meta Box
+ */
+function jkl_get_material_disclosure( $type ) {
+    switch( $type ) {
+        case 'none' :
+             $disclosure = __( 'I have received no compensation of any kind for writing this post, '
+                . 'nor do I have any connection with the brands, products, or services mentioned. ', 'jkl-reviews/languages' );
+            break;
+        case 'affiliate' :
+            $disclosure = __( 'Some of the links above are "affiliate links." This means that '
+                . 'I will receive a small commission if you click on and purchase the item. Nevertheless, ', 'jkl-reviews/languages' );
+            break;
+        case 'sample' :
+            $disclosure = __( 'I received one or more of the products or services mentioned '
+                . 'above in the hope that I would mention it on my blog. Nevertheless, ', 'jkl-reviews/languages' );
+            break;
+        case 'sponsored' :
+            $disclosure = __( 'This is a "sponsored post." The company who sponsored it '
+                . 'compensated me in some way to write it. Nevertheless, ', 'jkl-reviews/languages' );
+            break;
+        case 'shareholder' :
+            $disclosure = __( 'I am an employee or shareholder of the company that produced '
+                . 'this product. Nevertheless, ', 'jkl-reviews/languages' );
+            break;
+        default :
+            $disclosure = '';
+    }
+    
+    return $disclosure . __( 'I only recommend products and services that I personally believe in and '
+                . 'use. This disclosure is in accordance with the <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html"'
+                . 'alt="FTC Disclosure Guidelines">FTC\'s 16 CFR, Part 255</a>: "Guides Concerning the Use of Endorsements and '
+                . 'Testimonials in Advertising."', 'jkl-reviews/languages' );
+}
+
 
 ?>
