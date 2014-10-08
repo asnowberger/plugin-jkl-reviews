@@ -128,6 +128,7 @@ function display_jkl_review_metabox( $post ) {
     
     // Retrieve the current data based on Post ID
     $jklrv_stored_meta = get_post_meta( $post->ID );
+    $jklrv_stored_options = get_option( 'jklrv_plugin_options' ); // Get options set on WP Options page
     
     // Call a separate function to evaluate the value stored for the radio button and return a string to correspond to its FontAwesome icon
     $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl-radio'][0] );
@@ -336,10 +337,11 @@ function display_jkl_review_metabox( $post ) {
         </tr>
         <tr>
             <td class="left-label">
-                <label for=jkl_review_summary" class="jkl_label"><?php _e('Summary: ', 'jkl-reviews/languages')?></label>
+                <label for=jkl_review_summary" class="jkl_label"><?php _e('Short <a href="#">(why?)</a>Summary: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
                 <textarea id="jkl_review_summary_area" name="jkl_review_summary_area"><?php if( isset( $jklrv_stored_meta['jkl_review_summary_area'] ) ) echo wp_kses_post( $jklrv_stored_meta['jkl_review_summary_area'][0] ); ?></textarea>
+                <p class="note"><?php _e( 'Enter any valid HTML in the Summary field.<br /><strong>Note:</strong> Any text entered will be in italics.', 'jkl-reviews/languages' ) ?></p>
             </td>
         </tr>
     </table>
@@ -352,7 +354,7 @@ function display_jkl_review_metabox( $post ) {
         <!-- Affiliate Link -->
         <tr>
             <td class="left-label">
-                <label for="jkl_affiliate_uri" class="jkl_label"><?php _e('Affiliate Link: ', 'jkl-reviews/languages')?></label>
+                <label for="jkl_affiliate_uri" class="jkl_label"><?php _e('Affiliate or Purchase Link: ', 'jkl-reviews/languages')?></label>
             </td>
             <td>
                 <input type="url" id="jkl_affiliate_uri" name="jkl_review_affiliate_uri"
@@ -390,6 +392,8 @@ function display_jkl_review_metabox( $post ) {
                         value="<?php if( isset( $jklrv_stored_meta['jkl_review_resources_uri'] ) ) echo esc_url( $jklrv_stored_meta['jkl_review_resources_uri'][0] ); ?>" />
             </td>
         </tr> 
+        
+        <?php if ( $jklrv_stored_options[ 'jklrv_display_disclosure' ] ) { // Only display the following IF Disclosure is enabled on WP Options page ?> 
         
         <tr><td colspan="2"><div class="divider-lite"></div></td></tr>
         
@@ -449,7 +453,12 @@ function display_jkl_review_metabox( $post ) {
                 <small class="note"><?php echo wp_kses_post( jkl_get_material_disclosure( $jklrv_stored_meta['jkl_disclose'][0] ) ); ?></small>
             </td>
         </tr>
-        <?php } ?>
+        <?php 
+        
+            } // End Disclosure Type check
+        } // End Show Material Disclosure from WP Options page check 
+            
+        ?>
         
     </table>
 
@@ -478,6 +487,9 @@ function jklrv_image_enqueue() {
                 )
         );
         wp_enqueue_script( 'upload-image' );
+        
+        wp_register_script( 'box-style', plugin_dir_url( __FILE__ ) . 'js/box-style.js', array( 'jquery' ) );
+        wp_enqueue_script( 'box-style' );
     }
 }
 
@@ -586,9 +598,15 @@ function jkl_display_review_box( $content ) {
     global $post;
     $content = $post->post_content; // Retrieve content... I guess
     $jklrv_stored_meta = get_post_meta( get_the_ID() ); // Retrieve Post meta info
+
+    print_r($jklrv_stored_options);
     
     // If this is only a single Post and a Review Type is chosen, modify the content and return it
     if ( is_single() && !empty( $jklrv_stored_meta['jkl_radio'] ) ) {
+        
+        $jklrv_stored_options = get_option( 'jklrv_plugin_options' ); // Retrieve WP Options stored in the Options Page
+        $color = $jklrv_stored_options[ 'jklrv_color_scheme' ];
+        $style = $jklrv_stored_options[ 'jklrv_display_style' ];
        
         // Get the appropriate string to display the correct FontAwesome icon per Review Type
         $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
@@ -601,10 +619,10 @@ function jkl_display_review_box( $content ) {
          */
         
         // Create a string to hold our Review box display string (code)
-        $jkl_thebox = '<div id="jkl_thebox">';
+        $jkl_thebox = '<div id="jkl_thebox" class="' . $style . '">';
         
         // Review box header
-        $jkl_thebox .= '<div id="jkl_review_box"><div id="jkl_review_box_head">';  
+        $jkl_thebox .= '<div id="jkl_review_box" class="' . $style . '"><div id="jkl_review_box_head" class="' . $color . '">';  
             
             // Display the FontAwesome Review Type icon
             $jkl_thebox .= '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
@@ -640,7 +658,7 @@ function jkl_display_review_box( $content ) {
 
                 // Check that there's AT LEAST ONE external link. If not, don't even create the links box.
                 if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_homepage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_authorpage_uri'][0] !== '' or $jklrv_stored_meta['jkl_review_resources_uri'][0] !== '' ) {
-                $jkl_thebox .= '<div id="jkl_review_box_links_box">'; // Links box
+                $jkl_thebox .= '<div id="jkl_review_box_links_box" class="' . $style . '">'; // Links box
 
                     // Check all the links and if present, show them, if not, don't show them
                     if ( $jklrv_stored_meta['jkl_review_affiliate_uri'][0] !== '' )
@@ -659,11 +677,11 @@ function jkl_display_review_box( $content ) {
 
         // Check to see if there's a summary. If not, don't display anything.
         if ( $jklrv_stored_meta['jkl_review_summary_area'][0] !== '' )
-            $jkl_thebox .= '<div class="jkl_summary"><p><strong>' . __( 'Summary', 'jkl-reviews/languages') . '</strong></p><p><em>' . wp_kses_post( $jklrv_stored_meta['jkl_review_summary_area'][0] ) . '</em></p></div>';
+            $jkl_thebox .= '<div class="jkl_summary ' . $style . '"><p><strong>' . __( 'Summary', 'jkl-reviews/languages') . '</strong></p><p><em>' . wp_kses_post( $jklrv_stored_meta['jkl_review_summary_area'][0] ) . '</em></p></div>';
 
         // Print the Material Disclosure if one has been assigned.
-        if ( $jklrv_stored_meta['jkl_disclose'][0] !== '' && $jklrv_stored_meta['jkl_disclose'][0] !== 'remove' )
-            $jkl_thebox .= '<div class="jkl_disclosure"><small>' . jkl_get_material_disclosure ( $jklrv_stored_meta['jkl_disclose'][0] ) . '</small></div>';
+        if ( $jklrv_stored_options[ 'jklrv_display_disclosure' ] ) // Only show if you chose to display the Disclosure from the WP Options (default = false)
+            $jkl_thebox .= '<div class="jkl_disclosure ' . $style . '"><small>' . jkl_get_material_disclosure ( $jklrv_stored_meta['jkl_disclose'][0] ) . '</small></div>';
         
         $jkl_thebox .= '</div>'; // End #jkl_thebox
         
@@ -837,11 +855,10 @@ class JKL_Review_Options {
     
     public function jkl_display_options_page() {
         ?>
-    
         <div class="wrap">
             <?php // screen_icon(); // Deprecated function? No icons in any of the menus I can see ?>
             <h2><?php _e( 'JKL Reviews Options', 'jkl-reviews/languages') ?></h2>
-
+            <?php // print_r(get_option('jklrv_plugin_options')); ?>
             <form method="post" action="options.php"> <!-- Add enctype="mutlipart/form-data" if allowing user to upload data -->
                 <!-- To add inputs, use the WP Settings API: http://codex.wordpress.org/Settings_API -->
                 <?php settings_fields( 'jklrv_plugin_options' ); // WP takes care of security and nonces with this function ?>
@@ -864,15 +881,21 @@ class JKL_Review_Options {
         register_setting( 'jklrv_plugin_options', 'jklrv_plugin_options' ); // Params (group name, name, optional callback)
     
         // Doc: http://codex.wordpress.org/Function_Reference/add_settings_section
-        add_settings_section( 'jklrv_main_section', __( 'Main Settings', 'jkl-reviews/languages' ), array( $this, 'jklrv_main_section_cb' ) , __FILE__ ); // Params (id, title, callback, page)
-    
+        add_settings_section( 'jklrv_main_section', __( 'Main Settings', 'jkl-reviews/languages' ), array( $this, 'jklrv_main_section_cb' ), __FILE__ ); // Params (id, title, callback, page)
+        add_settings_section( 'jklrv_cpt_section', __( 'Your Custom Content Types', 'jkl-reviews/languages'), array( $this, 'jklrv_cpt_section_cb' ), __FILE__ );
+        
         // Note: You can't access methods within a class without passing an array
-        add_settings_field( 'jklrv_display_disclosure', __( 'Show Material Disclosure Options', 'jkl-reviews/languages' ) , array( $this, 'jklrv_display_disclosure_setting'), __FILE__, 'jklrv_main_section' ); // Params (id, title, callback, page, section)
-        // add_settings_field( 'jklrv_display_disclosure', 'Show Material Disclosure Options', array( $this, 'jklrv_display_disclosure_setting'), __FILE__, 'jklrv_main_section' );
+        add_settings_field( 'jklrv_display_disclosure', __( 'Show Material Disclosure', 'jkl-reviews/languages' ) , array( $this, 'jklrv_display_disclosure_setting'), __FILE__, 'jklrv_main_section' ); // Params (id, title, callback, page, section)
+        add_settings_field( 'jklrv_display_style', __( 'Select Review Box Style', 'jkl-reviews/languages' ), array( $this, 'jklrv_display_style_setting' ), __FILE__, 'jklrv_main_section' );
+        add_settings_field( 'jklrv_color_scheme', __( 'Desired Color Scheme', 'jkl-reviews/languages' ), array( $this, 'jklrv_color_scheme_setting' ), __FILE__, 'jklrv_main_section' );
+        add_settings_field( 'jklrv_cpt_option', __( 'Use JKL Reviews Post Type', 'jkl-reviews/languages' ), array( $this, 'jklrv_cpt_option_setting' ), __FILE__, 'jklrv_cpt_section' );
         
     }
     
     public function jklrv_main_section_cb() {
+        // optional
+    }
+    public function jklrv_cpt_section_cb() {
         // optional
     }
     
@@ -884,9 +907,49 @@ class JKL_Review_Options {
     
     // Display Material Disclosures?
     public function jklrv_display_disclosure_setting() {
-        echo "<input type='checkbox' name='jklrv_plugin_options[jklrv_display_disclosure]' value='true' />"
-        . "<span class='note'>" . __('For US users to comply with <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html">FTC regulations</a> regarding "Endorsements and Testimonials in Advertising."', 'jkl-reviews/languages') . "</span>"
-        . "<br /></br><div id='jkl-options-sample-disclosure'><strong>Example Disclosure</strong><p><small>" . jkl_get_material_disclosure( 'affiliate' ) . "</small></p></div>";
+        $options = get_option( 'jklrv_plugin_options' );
+        ?>
+        <input type='checkbox' id='jklrv_plugin_options[jklrv_display_disclosure]' name='jklrv_plugin_options[jklrv_display_disclosure]' value='1' <?php checked( $options['jklrv_display_disclosure'], 1 ); ?> />
+        <label for='jklrv_plugin_options[jklrv_display_disclosure]' class='note'>
+            <?php _e( 'For US users to comply with <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html">FTC regulations</a> regarding "Endorsements and Testimonials in Advertising."', 'jkl-reviews/languages') ?>
+        </label>
+        
+        <?php
+        if( isset( $options['jklrv_display_disclosure'] ) )
+            echo "<br /></br><div id='jkl-options-sample-disclosure'><strong>Example Disclosure</strong><p><small>" . jkl_get_material_disclosure( 'affiliate' ) . "</small></p></div>";
+    }
+    
+    // Dark or Light Scheme
+    public function jklrv_display_style_setting() {
+        $items = array( 'Light', 'Dark' );
+        echo "<select name='jklrv_plugin_options[jklrv_display_style]'>";
+        
+        foreach( $items as $item ) {
+            $selected = ( $this->options['jklrv_display_style'] === $item ) ? 'selected="selected"' : '';
+            echo "<option value='$item' $selected>$item</option>";
+        }
+        echo "</select>";
+    }
+    
+    // Color Scheme
+    public function jklrv_color_scheme_setting() {
+        $items = array( 'Blue', 'Brown', 'Beige', 'Tan', 'Red', 'Grey' );
+        echo "<select name='jklrv_plugin_options[jklrv_color_scheme]'>";
+        
+        foreach( $items as $item ) {
+            $selected = ( $this->options['jklrv_color_scheme'] === $item ) ? 'selected="selected"' : '';
+            echo "<option value='$item' $selected>$item</option>";
+        }
+        echo "</select>";
+    }
+    
+    // Use Custom Post Type?
+    public function jklrv_cpt_option_setting() {
+        $options = get_option( 'jklrv_plugin_options' );
+        ?>
+        <input type='checkbox' id='jklrv_plugin_options[jklrv_cpt_option]' name='jklrv_plugin_options[jklrv_cpt_option]' value='1' <?php checked( $options['jklrv_cpt_option'], 1 ); ?> />
+        <label for='jklrv_plugin_options[jklrv_cpt_option]' class='note'><?php _e('Enable JKL Reviews Custom Post Type for this site. <a href="#">Learn More</a>', 'jkl-reviews/languages') ?></label>
+    <?php
     }
 }
 
