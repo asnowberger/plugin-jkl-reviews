@@ -3,7 +3,7 @@
  * Plugin Name: JKL Reviews
  * Plugin URI: http://www.jekkilekki.com
  * Description: A simple Reviews plugin to review books, music, movies, products, or online courses with Star Ratings and links out to related sites.
- * Version: 1.1
+ * Version: 1.2
  * Author: Aaron Snowberger
  * Author URI: http://www.aaronsnowberger.com
  * Text Domain: jkl-reviews/languages
@@ -683,6 +683,8 @@ function jkl_display_review_box( $content ) {
         if ( $jklrv_stored_options[ 'jklrv_display_disclosure' ] ) // Only show if you chose to display the Disclosure from the WP Options (default = false)
             $jkl_thebox .= '<div class="jkl_disclosure ' . $style . '"><small>' . jkl_get_material_disclosure ( $jklrv_stored_meta['jkl_disclose'][0] ) . '</small></div>';
         
+        $jkl_thebox .= '<div class="jkl_credit"><a href="http://www.jekkilekki.com"><i class="fa fa-star"></i> JKL</a></div>';
+        
         $jkl_thebox .= '</div>'; // End #jkl_thebox
         
         // Append the Review box to the $content
@@ -882,13 +884,13 @@ class JKL_Review_Options {
     
         // Doc: http://codex.wordpress.org/Function_Reference/add_settings_section
         add_settings_section( 'jklrv_main_section', __( 'Main Settings', 'jkl-reviews/languages' ), array( $this, 'jklrv_main_section_cb' ), __FILE__ ); // Params (id, title, callback, page)
-        add_settings_section( 'jklrv_cpt_section', __( 'Your Custom Content Types', 'jkl-reviews/languages'), array( $this, 'jklrv_cpt_section_cb' ), __FILE__ );
+        // add_settings_section( 'jklrv_cpt_section', __( 'Your Custom Content Types', 'jkl-reviews/languages'), array( $this, 'jklrv_cpt_section_cb' ), __FILE__ );
         
         // Note: You can't access methods within a class without passing an array
         add_settings_field( 'jklrv_display_disclosure', __( 'Show Material Disclosure', 'jkl-reviews/languages' ) , array( $this, 'jklrv_display_disclosure_setting'), __FILE__, 'jklrv_main_section' ); // Params (id, title, callback, page, section)
         add_settings_field( 'jklrv_display_style', __( 'Select Review Box Style', 'jkl-reviews/languages' ), array( $this, 'jklrv_display_style_setting' ), __FILE__, 'jklrv_main_section' );
         add_settings_field( 'jklrv_color_scheme', __( 'Desired Color Scheme', 'jkl-reviews/languages' ), array( $this, 'jklrv_color_scheme_setting' ), __FILE__, 'jklrv_main_section' );
-        add_settings_field( 'jklrv_cpt_option', __( 'Use JKL Reviews Post Type', 'jkl-reviews/languages' ), array( $this, 'jklrv_cpt_option_setting' ), __FILE__, 'jklrv_cpt_section' );
+        // add_settings_field( 'jklrv_cpt_option', __( 'Use JKL Reviews Post Type', 'jkl-reviews/languages' ), array( $this, 'jklrv_cpt_option_setting' ), __FILE__, 'jklrv_cpt_section' );
         
     }
     
@@ -916,7 +918,7 @@ class JKL_Review_Options {
         
         <?php
         if( isset( $options['jklrv_display_disclosure'] ) )
-            echo "<br /></br><div id='jkl-options-sample-disclosure'><strong>Example Disclosure</strong><p><small>" . jkl_get_material_disclosure( 'affiliate' ) . "</small></p></div>";
+            echo "<br /></br><div id='jkl-options-sample-disclosure' class=" . $options['jklrv_display_style'] . "><strong>Example Disclosure</strong><p><small>" . jkl_get_material_disclosure( 'affiliate' ) . "</small></p></div>";
     }
     
     // Dark or Light Scheme
@@ -933,7 +935,7 @@ class JKL_Review_Options {
     
     // Color Scheme
     public function jklrv_color_scheme_setting() {
-        $items = array( 'Blue', 'Brown', 'Beige', 'Tan', 'Red', 'Grey' );
+        $items = array( 'Blue', 'Slate', 'Brown', 'Burgundy', 'Beige', 'Camel', 'Sand', 'Mud' );
         echo "<select name='jklrv_plugin_options[jklrv_color_scheme]'>";
         
         foreach( $items as $item ) {

@@ -99,3 +99,10 @@ td.left-label {
 #jkl-options-sample-disclosure strong {
     color: #777;
 }
+#jkl-options-sample-disclosure.Dark {
+    background-color: #222;
+    color: #777;
+}
+#jkl-options-sample-disclosure.Dark strong {
+    color: #aaa;
+}

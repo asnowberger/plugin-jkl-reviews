@@ -8,8 +8,8 @@ Donate link:            https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&host
 Tags:                   content, custom, custom meta box, review, reviews, books, music, movies, products, courses, services
 Requires at least:      3.5
 Tested up to:           4.0
-Stable tag:             1.1
-Version:                1.1
+Stable tag:             1.2
+Version:                1.2
 License:                GPLv2 or later
 License URI:            http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -215,6 +215,12 @@ Floor, Boston, MA 02110-1301 USA
 
 == Changelog ==
 
+= 1.2 =
+* Added WP Options page
+* Made Material Connection Disclosures box optional with a checkbox
+* Added a Dark box style
+* Added 8 different header color choices based on colors in the JKL Reviews Icon
+
 = 1.1 =
 * Added Material Connection Disclosures to comply with FTC regulations for affiliate links and the like
 
@@ -222,6 +228,9 @@ Floor, Boston, MA 02110-1301 USA
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.2 =
+* Added WP Options page with different color choices, box styles, and checkboxes for optional components
 
 = 1.1 =
 * Added Material Connection Disclosures to comply with FTC regulations for affiliate links and the like

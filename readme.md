@@ -116,5 +116,14 @@ Floor, Boston, MA 02110-1301 USA
 
 ##Changelog
 
+###1.2
+* Added WP Options page
+* Made Material Connection Disclosures box optional with a checkbox
+* Added a Dark box style
+* Added 8 different header color choices based on colors in the JKL Reviews Icon
+
+###1.1
+* Added Material Connection Disclosures to comply with FTC regulations for affiliate links and the like
+
 ###1.0
 * Initial release
