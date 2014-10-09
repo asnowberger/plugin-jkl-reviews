@@ -110,9 +110,9 @@
 .jkl_disclosure {
     background-color: #fcfcfc;
     color: #bbb;
-    margin: -50px 0 0;
+    margin: -50px 0 50px;
     padding: 3%;
-    line-height: 1em;
+    line-height: 1.1em;
     font-size: .8em;
     border: 1px solid #e1e1e1;
     border-top: none;
@@ -121,9 +121,10 @@
     font-size: 0.6em;
     text-align: right;
     margin: -22px 3% 0;
-    opacity: 0.3;
+    position: relative;
+    //opacity: 0.3;
 }
-.jkl_credit:hover {
+/*.jkl_credit:hover {
     opacity: 0.7;
 }
 .jkl_credit a {
@@ -133,15 +134,25 @@
 .jkl_credit a:hover {
     color: #777;
     opacity: 0.7;
+}*/
+.jkl_credit img {
+    width: 40px;
+    position: absolute;
+    bottom: 40px;
+    right: 0px;
+    opacity: 0.2;
+}
+.jkl_credit img:hover {
+    opacity: 0.7;
 }
 
 /*
  * Dark box style
  */
 #jkl_review_box.Dark {
-    border-right: 1px solid black;
-    border-left: 1px solid black;
-    border-top: 1px solid black;
+    border-right: 1px solid #3a3a3a;
+    border-left: 1px solid #3a3a3a;
+    border-top: 1px solid #3a3a3a;
 }
 #jkl_review_box_head {
     margin: 0;
@@ -170,9 +181,9 @@
 }
 .jkl_disclosure.Dark {
     background-color: #222222;
-    border-right: 1px solid black;
-    border-left: 1px solid black;
-    border-top: 1px solid black;
+    border-right: 1px solid #3a3a3a;
+    border-left: 1px solid #3a3a3a;
+    border-bottom: 1px solid #3a3a3a;
 }
 .jkl_disclosure.Dark small {
     opacity: 0.5;

@@ -683,7 +683,7 @@ function jkl_display_review_box( $content ) {
         if ( $jklrv_stored_options[ 'jklrv_display_disclosure' ] ) // Only show if you chose to display the Disclosure from the WP Options (default = false)
             $jkl_thebox .= '<div class="jkl_disclosure ' . $style . '"><small>' . jkl_get_material_disclosure ( $jklrv_stored_meta['jkl_disclose'][0] ) . '</small></div>';
         
-        $jkl_thebox .= '<div class="jkl_credit"><a href="http://www.jekkilekki.com"><i class="fa fa-star"></i> JKL</a></div>';
+        $jkl_thebox .= '<div class="jkl_credit"><a href="http://www.jekkilekki.com"><img src="' . plugins_url( 'imgs/logofor-' . $jklrv_stored_options['jklrv_display_style'] . '.svg', __FILE__ ) . '" alt="Coder Credit" /></a></div>';
         
         $jkl_thebox .= '</div>'; // End #jkl_thebox
         

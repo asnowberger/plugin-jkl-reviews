@@ -24,11 +24,15 @@ Requires WordPress 3.5 and PHP 5.
 ###Special Features
 * Multiple Review Types supported
 * [FontAwesome](http://fortawesome.github.io/Font-Awesome/) icons
+* 8 color choices for the box header 
+* Light and Dark display box styles
 * Range slider to select your rating
 * Uses WordPress's native Image Chooser to add a Cover Image
 * Responsive design (front-end and back-end)
 * Affiliate link support
-* Ability to enable or disable Affiliate link disclaimer
+* WordPress Options page
+* Ability to enable or disable Affiliate link disclaimer on WP Options page
+* Ability to enable or disable Affiliate link disclaimer on individual Posts after enabling that functionality in WP Options
 
 ###Information Stored by the Plugin 
 * The Title
@@ -57,11 +61,11 @@ Requires WordPress 3.5 and PHP 5.
 * Custom Post Type
 * Custom Taxonomy
 * Shortcode
+* Ability to link between Categories (like WP Tags)
+* Ability to display all of a certain Review Type (like WP Categories)
 * Parameters `big` and `small` to change the display box features
-* Custom colors or additional box styles
 * Override (optional) the Post Featured Image with the Cover Image you choose
 * Overlay Star-ratings over the Featured Image on index pages
-* WordPress Options page
 * CSS animations
 * Dropdown menu to select different icons for external links or Review Type
 * Translations
@@ -77,7 +81,7 @@ If you have created your own language pack, or have an update of an existing one
 
 
 ##Documentation & Support
-Full documentation of the Plugin and its uses can be found at: 
+Full documentation of the Plugin and its uses can (currently) be found at its [WordPress.org Plugin location](https://wordpress.org/plugins/jkl-reviews/faq/)
 
 ###Screenshots
 1. View of the meta box in the WordPress back-end (below the Post editor)
@@ -90,9 +94,9 @@ Full documentation of the Plugin and its uses can be found at:
 ![screenshot-3](https://cloud.githubusercontent.com/assets/6644259/4516776/135d3264-4c08-11e4-87d5-5b7587865ed2.png)
 
 ###Contact Me
-If you have questions about, problems with, or suggestions for improving this plugin, please let me know at:
+If you have questions about, problems with, or suggestions for improving this plugin, please let me know at the [WordPress.org support forums](http://wordpress.org/support/plugin/jkl-reviews)
 
-Want updates about my other WordPress plugins, themes, or tutorials? Follow me at:
+Want updates about my other WordPress plugins, themes, or tutorials? Follow me [@jekkilekki](http://twitter.com/jekkilekki)
 
 ##Acknowledgements 
 ###This plugin uses:
@@ -121,6 +125,7 @@ Floor, Boston, MA 02110-1301 USA
 * Made Material Connection Disclosures box optional with a checkbox
 * Added a Dark box style
 * Added 8 different header color choices based on colors in the JKL Reviews Icon
+* Added an attribution link at the bottom-right of the plugin
 
 ###1.1
 * Added Material Connection Disclosures to comply with FTC regulations for affiliate links and the like
