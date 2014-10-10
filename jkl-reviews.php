@@ -60,6 +60,8 @@ add_filter( 'the_content', 'jkl_display_review_box' );
 add_action( 'admin_menu', function() { JKL_Review_Options::add_menu_page(); } );
 add_action( 'admin_init', function() { new JKL_Review_Options(); } );
 
+// ##8 : Include Custom Post Type
+
 
 /*
  * ##### 0 #####
@@ -849,13 +851,13 @@ class JKL_Review_Options {
         $this->jkl_register_settings_and_fields();
     }
     
-    public function add_menu_page() {
+    static public function add_menu_page() {
         // Params (name, menu name, user with access, page_id, callback function to display page contents)
         // The PHP call __FILE__ points to THIS specific file and will be sure our page_id is unique
         add_options_page( 'JKL Reviews Options', __( 'JKL Reviews Options', 'jkl-reviews/languages' ), 'administrator', __FILE__, array('JKL_Review_Options', 'jkl_display_options_page'));
     }
     
-    public function jkl_display_options_page() {
+    static public function jkl_display_options_page() {
         ?>
         <div class="wrap">
             <?php // screen_icon(); // Deprecated function? No icons in any of the menus I can see ?>
@@ -884,13 +886,13 @@ class JKL_Review_Options {
     
         // Doc: http://codex.wordpress.org/Function_Reference/add_settings_section
         add_settings_section( 'jklrv_main_section', __( 'Main Settings', 'jkl-reviews/languages' ), array( $this, 'jklrv_main_section_cb' ), __FILE__ ); // Params (id, title, callback, page)
-        // add_settings_section( 'jklrv_cpt_section', __( 'Your Custom Content Types', 'jkl-reviews/languages'), array( $this, 'jklrv_cpt_section_cb' ), __FILE__ );
+        add_settings_section( 'jklrv_cpt_section', __( 'Your Custom Content Types', 'jkl-reviews/languages'), array( $this, 'jklrv_cpt_section_cb' ), __FILE__ );
         
         // Note: You can't access methods within a class without passing an array
         add_settings_field( 'jklrv_display_disclosure', __( 'Show Material Disclosure', 'jkl-reviews/languages' ) , array( $this, 'jklrv_display_disclosure_setting'), __FILE__, 'jklrv_main_section' ); // Params (id, title, callback, page, section)
         add_settings_field( 'jklrv_display_style', __( 'Select Review Box Style', 'jkl-reviews/languages' ), array( $this, 'jklrv_display_style_setting' ), __FILE__, 'jklrv_main_section' );
         add_settings_field( 'jklrv_color_scheme', __( 'Desired Color Scheme', 'jkl-reviews/languages' ), array( $this, 'jklrv_color_scheme_setting' ), __FILE__, 'jklrv_main_section' );
-        // add_settings_field( 'jklrv_cpt_option', __( 'Use JKL Reviews Post Type', 'jkl-reviews/languages' ), array( $this, 'jklrv_cpt_option_setting' ), __FILE__, 'jklrv_cpt_section' );
+        add_settings_field( 'jklrv_cpt_option', __( 'Use JKL Reviews Post Type', 'jkl-reviews/languages' ), array( $this, 'jklrv_cpt_option_setting' ), __FILE__, 'jklrv_cpt_section' );
         
     }
     
@@ -910,15 +912,18 @@ class JKL_Review_Options {
     // Display Material Disclosures?
     public function jklrv_display_disclosure_setting() {
         $options = get_option( 'jklrv_plugin_options' );
+        if( ! isset( $options[ 'jklrv_display_disclosure' ] ) )
+            $options[ 'jklrv_display_disclosure' ] = 0;
+        
         ?>
         <input type='checkbox' id='jklrv_plugin_options[jklrv_display_disclosure]' name='jklrv_plugin_options[jklrv_display_disclosure]' value='1' <?php checked( $options['jklrv_display_disclosure'], 1 ); ?> />
         <label for='jklrv_plugin_options[jklrv_display_disclosure]' class='note'>
             <?php _e( 'For US users to comply with <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html">FTC regulations</a> regarding "Endorsements and Testimonials in Advertising."', 'jkl-reviews/languages') ?>
         </label>
-        
+       
         <?php
-        if( isset( $options['jklrv_display_disclosure'] ) )
-            echo "<br /></br><div id='jkl-options-sample-disclosure' class=" . $options['jklrv_display_style'] . "><strong>Example Disclosure</strong><p><small>" . jkl_get_material_disclosure( 'affiliate' ) . "</small></p></div>";
+        if( $options[ 'jklrv_display_disclosure' ] !== 0 )
+            echo "<br /><br /><div id='jkl-options-sample-disclosure' class=" . $options['jklrv_display_style'] . "><strong>Example Disclosure</strong><p><small>" . jkl_get_material_disclosure( 'affiliate' ) . "</small></p></div>";
     }
     
     // Dark or Light Scheme
@@ -948,10 +953,22 @@ class JKL_Review_Options {
     // Use Custom Post Type?
     public function jklrv_cpt_option_setting() {
         $options = get_option( 'jklrv_plugin_options' );
+        if( ! isset( $options[ 'jklrv_cpt_option' ] ) )
+            $options[ 'jklrv_cpt_option' ] = 0;
         ?>
         <input type='checkbox' id='jklrv_plugin_options[jklrv_cpt_option]' name='jklrv_plugin_options[jklrv_cpt_option]' value='1' <?php checked( $options['jklrv_cpt_option'], 1 ); ?> />
         <label for='jklrv_plugin_options[jklrv_cpt_option]' class='note'><?php _e('Enable JKL Reviews Custom Post Type for this site. <a href="#">Learn More</a>', 'jkl-reviews/languages') ?></label>
     <?php
+    
+        if( isset( $options['jklrv_cpt_option'] ) )
+            jklrv_enable_cpt();
     }
 }
 
+/**
+ * ##### 8 #####
+ */
+function jklrv_enable_cpt() {
+    print_r('you are here');
+    include plugin_dir_path( __FILE__ ) . 'jkl-reviews-posttype.php';
+}

@@ -12,6 +12,7 @@ function jkl_create_review() {
     
     // Examples for translation-ready and Custom messages: http://codex.wordpress.org/Function_Reference/register_post_type#Example
     register_post_type( 'reviews', array (
+        'public'    => true,
         'labels' => array(
             'name' => 'Reviews',
             'singular_name' => 'Review',
