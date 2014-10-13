@@ -642,8 +642,11 @@ function jkl_display_review_box( $content ) {
             $jkl_thebox .= '<i id="jkl_fa_icon" class="fa fa-' . $jklrv_fa_icon . '"></i>';
 
             // If there's a Category set, display it, otherwise, display nothing (only the Review Type icon)
-            if ( $jklrv_stored_meta['jkl_review_category'][0] !== '' )
+            if ( $jklrv_stored_meta['jkl_review_category'][0] !== '' ) {
                 $jkl_thebox .= '<p id="jkl_review_box_categories">' . esc_attr( $jklrv_stored_meta['jkl_review_category'][0] ) . '</p>';
+            } else { // So, Category IS empty? Then at least tell me the Review Type
+                $jkl_thebox .= '<p id="jkl_review_box_categories">' . ucwords( $jklrv_stored_meta['jkl_radio'][0] ) . '</p>';
+            }
             $jkl_thebox .= '</div>'; // End review box head
 
         // Review box body
@@ -697,8 +700,11 @@ function jkl_display_review_box( $content ) {
         if ( $jklrv_stored_options[ 'jklrv_display_disclosure' ] ) // Only show if you chose to display the Disclosure from the WP Options (default = false)
             $jkl_thebox .= '<div class="jkl_disclosure ' . $style . '"><small>' . jkl_get_material_disclosure ( $jklrv_stored_meta['jkl_disclose'][0] ) . '</small></div>';
         
-        $jkl_thebox .= '<div class="jkl_credit"><a href="http://www.jekkilekki.com"><img src="' . plugins_url( 'imgs/logofor-' . $jklrv_stored_options['jklrv_display_style'] . '.svg', __FILE__ ) . '" alt="Coder Credit" /></a></div>';
-        
+        // Show Attribution link if allowed.
+        if ( $jklrv_stored_options[ 'jklrv_attribution_link'] ) {
+            $jkl_thebox .= '<div class="jkl_credit"><a href="http://www.jekkilekki.com"><img src="' . plugins_url( 'imgs/logofor-' . $jklrv_stored_options['jklrv_display_style'] . '.svg', __FILE__ ) . '" alt="Coder Credit" /></a></div>';
+        }
+            
         $jkl_thebox .= '</div>'; // End #jkl_thebox
         
         // Append the Review box to the $content
@@ -904,6 +910,7 @@ class JKL_Review_Options {
         add_settings_field( 'jklrv_display_disclosure', __( 'Show Material Disclosure', 'jkl-reviews/languages' ) , array( $this, 'jklrv_display_disclosure_setting'), __FILE__, 'jklrv_main_section' ); // Params (id, title, callback, page, section)
         add_settings_field( 'jklrv_display_style', __( 'Select Review Box Style', 'jkl-reviews/languages' ), array( $this, 'jklrv_display_style_setting' ), __FILE__, 'jklrv_main_section' );
         add_settings_field( 'jklrv_color_scheme', __( 'Desired Color Scheme', 'jkl-reviews/languages' ), array( $this, 'jklrv_color_scheme_setting' ), __FILE__, 'jklrv_main_section' );
+        add_settings_field( 'jklrv_attribution_link', __( 'Show Attribution Link', 'jkl-reviews/languages' ), array( $this, 'jklrv_attribution_setting' ), __FILE__, 'jklrv_main_section' );
         add_settings_field( 'jklrv_cpt_option', __( 'Use JKL Reviews Post Type', 'jkl-reviews/languages' ), array( $this, 'jklrv_cpt_option_setting' ), __FILE__, 'jklrv_cpt_section' );
         
     }
@@ -960,6 +967,21 @@ class JKL_Review_Options {
             echo "<option value='$item' $selected>$item</option>";
         }
         echo "</select>";
+    }
+    
+    // Display Material Disclosures?
+    public function jklrv_attribution_setting() {
+        $options = get_option( 'jklrv_plugin_options' );
+        if( ! isset( $options[ 'jklrv_attribution_link' ] ) )
+            $options[ 'jklrv_attribution_link' ] = 1;
+        
+        ?>
+        <input type='checkbox' id='jklrv_plugin_options[jklrv_attribution_link]' name='jklrv_plugin_options[jklrv_attribution_link]' value='1' <?php checked( $options['jklrv_attribution_link'], 1 ); ?> />
+        <label for='jklrv_plugin_options[jklrv_attribution_link]' class='note'>
+            <?php _e( 'Can I show a link back to the Plugin Developer\'s <a href="http://www.jekkilekki.com">website?</a> Consider <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=567MWDR76KHLU">donating before disabling.</a>', 'jkl-reviews/languages') ?>
+        </label>
+       
+        <?php
     }
     
     // Use Custom Post Type?
