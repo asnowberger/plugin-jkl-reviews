@@ -132,8 +132,16 @@ function display_jkl_review_metabox( $post ) {
     $jklrv_stored_meta = get_post_meta( $post->ID );
     $jklrv_stored_options = get_option( 'jklrv_plugin_options' ); // Get options set on WP Options page
     
+    // Test for the presence of some identifiers and if NOT present, make them blank to avoid PHP debug errors
+    if( empty( $jklrv_stored_meta['jkl_radio'][0] ) ) {
+        $jklrv_stored_meta['jkl_radio'][0] = '';
+        $jklrv_fa_icon = '';
+    }
+    if( empty( $jklrv_stored_meta['jkl_review_cover'][0] ) ) {
+        $jklrv_stored_meta['jkl_review_cover'][0] = '';
+    }
     // Call a separate function to evaluate the value stored for the radio button and return a string to correspond to its FontAwesome icon
-    $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl-radio'][0] );
+    $jklrv_fa_icon = jkl_get_fa_icon( $jklrv_stored_meta['jkl_radio'][0] );
     
     /*
      * Metabox fields                                           Validated (on save)     Escaped (output)    Method
@@ -599,9 +607,13 @@ function jkl_display_review_box( $content ) {
      */
     global $post;
     $content = $post->post_content; // Retrieve content... I guess
-    $jklrv_stored_meta = get_post_meta( get_the_ID() ); // Retrieve Post meta info
+    
+    if ( empty( $jklrv_stored_meta ) ) {
+        $jklrv_stored_meta = ''; // Set a default value to avoid PHP errors in Debug mode
+    }
+    $jklrv_stored_meta = get_post_meta( get_the_ID() ); // Retrieve Post meta inf
 
-    print_r($jklrv_stored_options);
+    // print_r($jklrv_stored_options); // Only for testing
     
     // If this is only a single Post and a Review Type is chosen, modify the content and return it
     if ( is_single() && !empty( $jklrv_stored_meta['jkl_radio'] ) ) {
