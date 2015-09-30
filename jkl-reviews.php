@@ -1,13 +1,49 @@
 <?php
 /*
- * Plugin Name: JKL Reviews
+ * Plugin Name: JKL Reviews Working
  * Plugin URI: http://www.jekkilekki.com
  * Description: A simple Reviews plugin to review books, music, movies, products, or online courses with Star Ratings and links out to related sites.
- * Version: 1.2
+ * Version: 2.0
  * Author: Aaron Snowberger
  * Author URI: http://www.aaronsnowberger.com
- * Text Domain: jkl-reviews/languages
- * License: GPL2
+ * Text Domain: jkl-reviews
+ * License: GPLv2
+ * 
+ * Requires at least: 3.8
+ * Tested up to: 4.2.2
+ *
+ * @package 	JKL-Reviews
+ * @category 	Core
+ * @author 	Aaron Snowberger
+ */
+
+/*
+ * JKL Reviews allows you to add product reviews to your site & display them as Google does.
+ * Copyright (C) 2015  AARON SNOWBERGER (email: JEKKILEKKI@GMAIL.COM)
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+/* 
+ * Plugin Notes:
+ * 
+ * 1. WP Options Page (CPT or Shortcode or both?)
+ * 2. CPT Constructor
+ * 3. Shortcode
+ * 4. Widget Code
+ * 5. Styling
  */
 
 /*
@@ -25,11 +61,6 @@
  */
 
 /*
- * Text Domain: (above) is used for Internationalization and must match the 'slug' of the plugin.
- * Doc: http://codex.wordpress.org/I18n_for_WordPress_Developers
- */
-
-/*
  * Reference Section: (Custom Meta Boxes)
  * Complex Meta boxes in WP (Reference): http://www.wproots.com/complex-meta-boxes-in-wordpress/
  * http://www.smashingmagazine.com/2011/10/04/create-custom-post-meta-boxes-wordpress/
@@ -37,6 +68,74 @@
  * http://code.tutsplus.com/tutorials/how-to-create-custom-wordpress-writemeta-boxes--wp-20336
  */
 
+if( !class_exists( 'JKL_Reviews' ) ) {
+    
+
+    class JKL_Reviews {
+
+        /**
+         * Constructor
+         *
+         * initializes the JKL_Level_Test object
+         */
+        public function __construct() {
+
+            /* 
+             * To register callback functions inside an object, we have to use an array. 
+             * @source: http://code.tutsplus.com/articles/create-wordpress-plugins-with-oop-techniques--net-20153
+             */
+            register_activation_hook( __FILE__, array( $this, 'jkl_reviews_set_default_options' ) );
+            register_deactivation_hook( __FILE__, array( $this, 'jkl_reviews_deactivate' ) );
+
+            add_action( 'init', array( $this, 'jkl_reviews_init' ) );
+            add_action( 'admin_menu', array( $this, 'jkl_reviews_admin_menu' ) );
+
+            add_shortcode( 'JKLReview', array( $this, 'shortcode' ) );
+        }
+
+
+        /* Load text domain for localization */
+        public function jkl_reviews_init() {
+            load_plugin_textdomain( 'jkl-reviews', false, 
+                    plugin_basename( dirname( __FILE__ ) . '/languages' ) // Should this be 'localization'?
+            );
+        }
+
+        /* Admin Settings Page */
+        public function jkl_reviews_admin_menu() {
+            add_options_page( 'JKL Reviews Options', 'JKL Reviews Options', 'manage_options', 'jkl_reviews_user_options', 'jkl_lt_config_page' );
+        }
+
+        /* Shortcode */
+        public function shortcode() {
+
+        }
+
+        /* To contain the admin page for Plugin settings */
+        function jkl_lt_test_options() {
+
+        }
+
+        /* Sets default plugin options */
+        function jkl_lt_set_default_options() {
+            if ( get_option( 'jkl_lt_options' ) === false ) {
+                $new_options[ 'version' ] = "0.1";
+                add_option( 'jkl_lt_options', $new_options );
+            } else {
+                $existing_options = get_option( 'jkl_lt_options' );
+                if ( $existing_options[ 'version' ] < 0.1 ) {
+                    $existing_options[ 'version' ] = "0.1";
+                    update_option( 'jkl_lt_options', $existing_options );
+                }
+            }
+        }
+
+
+
+    }
+}
+
+$jklreviews = new JKL_Reviews();
 
 // ##0 : Enqueue the CSS styles for the metabox (both admin and in the_content)
 add_action( 'admin_enqueue_scripts', 'jkl_review_style');
