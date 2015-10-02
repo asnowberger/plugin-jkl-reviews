@@ -13,6 +13,7 @@ if ( ! class_exists( 'JKL_Reviews_Post_Type' ) ) {
 class JKL_Reviews_Post_Type {
 
         const POST_TYPE = "review";
+        
         private $_meta = array(
             'jkl_radio',                    // 0. Review Type (radio)
             'jkl_review_cover',             // 1. Cover Image

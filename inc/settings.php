@@ -23,13 +23,13 @@ class JKL_Reviews_Settings {
     public function __construct() {
 
         // Create the Settings Page
-        $this->jkl_create_settings_page();  // ?Or add_action( 'admin_menu', array( $this, 'jkl_create_settings_page' ) );
-        $this->jkl_register_settings();     // ?Or add_action( 'admin_init', array( $this, 'jkl_register_settings' ) );
+        //$this->jkl_create_settings_page();  // ?Or add_action( 'admin_menu', array( $this, 'jkl_create_settings_page' ) );
+        //$this->jkl_register_settings();     // ?Or add_action( 'admin_init', array( $this, 'jkl_register_settings' ) );
 
-        //add_action( 'admin_menu', array( &$this, 'jkl_add_menu' ) );
-        //add_action( 'admin_init', array( &$this, 'jkl_register_settings' ) );
+        add_action( 'admin_menu', array( &$this, 'jkl_add_menu' ) );
+        add_action( 'admin_init', array( &$this, 'jkl_register_settings' ) );
         
-    }
+    } // END __construct()
 
     /**
      * METHODS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -46,10 +46,10 @@ class JKL_Reviews_Settings {
                __( 'JKL Reviews Settings', 'jkl-reviews' ), 
                'manage_options', 
                'jkl_reviews_settings', 
-               array( $this, 'jkl_plugin_settings_page' ) 
+               array( $this, 'jkl_create_settings_page' ) 
        );
 
-   } // END admin_menu
+   } // END jkl_add_menu()
 
     /**
      * Settings Page Callback
@@ -74,7 +74,7 @@ class JKL_Reviews_Settings {
         </div>
 
         <?php
-    }
+    } // END jkl_create_settings_page()
 
     /**
      * Register and add settings
@@ -87,31 +87,76 @@ class JKL_Reviews_Settings {
                 'jkl_reviews_settings',         // Option name
                 array( $this, 'sanitize' )      // Sanitize callback
         );
-
-        // Doc: http://codex.wordpress.org/Function_Reference/add_settings_section
+        
+        /**
+         * Main Section
+         */
         add_settings_section( 
                 'main_section',                                     // ID
                 __( 'Main Settings', 'jkl-reviews' ),               // Title
                 array( $this, 'main_section_info' ),                // Callback
                 'main-settings'                                     // Page
         ); 
-
-                // add_settings_section( 'jklrv_cpt_section', __( 'Your Custom Content Types', 'jkl-reviews/languages'), array( $this, 'jklrv_cpt_section_cb' ), __FILE__ );
-
-                add_settings_field( 
-                        'show_disclosure',                                  // ID
-                        __( 'Show Material Disclosure', 'jkl-reviews' ),    // Title
-                        array( $this, 'disclosure_setting'),                // Callback
-                        'main-settings',                                    // Page
-                        'main_section'                                      // Section
+        
+        /**
+         * Components Section
+         * Doc: http://codex.wordpress.org/Function_Reference/add_settings_section
+         */
+        add_settings_section(
+                'components_section',                               // ID
+                __( 'Components', 'jkl-reviews' ),                  // Title
+                array( $this, 'component_section_info' ),           // Callback
+                'main-settings'                                     // Page
+        );
+        
+                add_settings_field(
+                        'add_shortcode',                            // ID
+                        __( 'Enable Shortcode', 'jkl-reviews' ),    // Title
+                        array( $this, 'enable_shortcode' ),         // Callback
+                        'main-settings',                            // Page
+                        'components_section'                        // Section
                 );
-
+        
                 add_settings_field( 
-                        'box_style', 
+                        'add_cpt', 
+                        __( 'Enable Reviews Post Type', 'jkl-reviews' ), 
+                        array( $this, 'enable_cpt' ), 
+                        'main-settings', 
+                        'components_section' 
+                );
+                
+                add_settings_field(
+                        'add_widget',
+                        __( 'Enable Dynamic Widget', 'jkl-reviews' ),
+                        array( $this, 'enable_widget' ),
+                        'main-settings',
+                        'components_section'
+                );
+                
+                add_settings_field(
+                        'add_giveaways',
+                        __( 'Enable Giveaways', 'jkl-reviews' ),
+                        array( $this, 'enable_giveaways' ),
+                        'main-settings',
+                        'components_section'
+                );
+        
+        /**
+         * Color and Style Settings
+         */
+        add_settings_section(
+                'style_section',
+                __( 'Plugin Style', 'jkl-reviews' ),
+                array( $this, 'style_section_info' ),
+                'main-settings'
+        );
+ 
+                add_settings_field( 
+                        'box_style',                                    
                         __( 'Select Review Box Style', 'jkl-reviews' ), 
                         array( $this, 'box_style_setting' ), 
                         'main-settings', 
-                        'main_section' 
+                        'style_section' 
                 );
 
                 add_settings_field( 
@@ -119,11 +164,43 @@ class JKL_Reviews_Settings {
                         __( 'Desired Color Scheme', 'jkl-reviews' ), 
                         array( $this, 'color_scheme_setting' ), 
                         'main-settings', 
-                        'main_section' 
+                        'style_section' 
+                );
+                
+                add_settings_field(
+                        'custom_css',
+                        __( 'Custom CSS Rules', 'jkl-reviews' ),
+                        array( $this, 'custom_css_setting' ),
+                        'main-settings',
+                        'style_section'
+                );
+                
+        /**
+         * Other Settings
+         */
+        add_settings_section(
+                'other_section',
+                __( 'Other Settings', 'jkl-reviews' ),
+                array( $this, 'other_section_info' ),
+                'main-settings'
+        );
+                
+                add_settings_field( 
+                        'show_disclosure',                                  // ID
+                        __( 'Show Material Disclosure', 'jkl-reviews' ),    // Title
+                        array( $this, 'disclosure_setting'),                // Callback
+                        'main-settings',                                    // Page
+                        'other_section'                                     // Section
                 );
 
-                // add_settings_field( 'jklrv_cpt_option', __( 'Use JKL Reviews Post Type', 'jkl-reviews/languages' ), array( $this, 'jklrv_cpt_option_setting' ), __FILE__, 'jklrv_cpt_section' );
-
+                add_settings_field( 
+                        'attribution', 
+                        __( 'Show Attribution Link', 'jkl-reviews' ), 
+                        array( $this, 'attribution_setting' ), 
+                        'main-settings', 
+                        'other_section' 
+                );     
+        
     }
 
     /**
@@ -148,41 +225,90 @@ class JKL_Reviews_Settings {
 
         return $new_input;
     }
-
+    
     /**
-     * Inputs !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * MAIN SECTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      */
-
-    /**
-     * Print Main Section Text
-     */
+    
+    // Print Main Section Text
     public function main_section_info() {
-        printf( 'Enter your settings below:' );
+        echo '<p>Enter your settings below:</p>';
     }
-
+    
     /**
-     * Display Disclosure Settings
+     * COMPONENTS SECTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      */
-    public function disclosure_setting() {
+    
+    // Print Components Section Text
+    public function component_section_info() {
+        echo '<p>Which plugin components would you like to enable?</p>';
+    }
+    
+    /**
+     * Enable Shortcode
+     */
+    public function enable_shortcode() {
+        
         $options = get_option( 'jkl_reviews_settings' );
         ?>
-        <input type='checkbox' id='jkl_reviews_settings[ disclosure ]' name='jkl_reviews_settings[ disclosure ]' value='1' <?php checked( $options[ 'disclosure' ], 1 ); ?> />
-        <label for='jkl_reviews_settings[ disclosure ]' class='note'>
-            <?php _e( 'For US users to comply with <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html">FTC regulations</a> regarding "Endorsements and Testimonials in Advertising."', 'jkl-reviews') ?>
-        </label>
-
-        <?php
-        if( isset( $options[ 'disclosure' ] ) ) {
-            $output = "<br /></br>";
-            $output .= "<div id='jkl-options-sample-disclosure' class=" . $options[ 'box_style' ] . ">";
-            $output .= "<strong>Example Disclosure</strong>";
-            $output .= "<p><small>" . get_material_disclosure( 'affiliate' ) . "</small></p>";
-            $output .= "</div>";
-
-            echo $output;
-        }
+        <input type='checkbox' id='jkl_reviews_settings[use_shortcode]' name='jkl_reviews_settings[use_shortcode]' value='1' <?php checked( $options['use_shortcode'], 1 ); ?> />
+        <label for='jkl_reviews_settings[use_shortcode]' class='note'><?php _e('Enable Shortcode to place a Reviews box anywhere within your Post content.'
+                . '<br><a href="#">Learn More</a>', 'jkl-reviews') ?></label>
+    
+    <?php
     }
-
+    
+    /**
+     * Enable Reviews Post Type
+     */
+    public function enable_cpt() {
+        
+        $options = get_option( 'jkl_reviews_settings' );
+        ?>
+        <input type='checkbox' id='jkl_reviews_settings[use_cpt]' name='jkl_reviews_settings[use_cpt]' value='1' <?php checked( $options['use_cpt'], 1 ); ?> />
+        <label for='jkl_reviews_settings[use_cpt]' class='note'><?php _e('Enable JKL Reviews Custom Post Type for this site.'
+                . '<br><a href="#">Learn More</a>', 'jkl-reviews') ?></label>
+    
+    <?php
+    }
+    
+    /**
+     * Enable Dynamic Sidebar Widget
+     */
+    public function enable_widget() {
+        
+        $options = get_option( 'jkl_reviews_settings' );
+        ?>
+        <input type='checkbox' id='jkl_reviews_settings[use_widget]' name='jkl_reviews_settings[use_widget]' value='1' <?php checked( $options['use_widget'], 1 ); ?> />
+        <label for='jkl_reviews_settings[use_widget]' class='note'><?php _e('Enable Dynamic Sidebar to load review data when you click a Cover Image.'
+                . '<br><a href="#">Learn More</a>', 'jkl-reviews') ?></label>
+    
+    <?php
+    }
+    
+    /**
+     * Enable Giveaways
+     */
+    public function enable_giveaways() {
+        
+        $options = get_option( 'jkl_reviews_settings' );
+        ?>
+        <input type='checkbox' id='jkl_reviews_settings[use_giveaways]' name='jkl_reviews_settings[use_giveaways]' value='1' <?php checked( $options['use_giveaways'], 1 ); ?> />
+        <label for='jkl_reviews_settings[use_giveaways]' class='note'><?php _e('Enable Product Giveaways for this site.'
+                . '<br><a href="#">Learn More</a>', 'jkl-reviews') ?></label>
+    
+    <?php
+    }
+    
+    /**
+     * STYLE SECTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     */
+    
+    // Print Style Section Text
+    public function style_section_info() {
+        echo '<p>Style your plugin below:</p>';
+    }
+    
     /**
      * Display Box Style Settings
      */
@@ -210,15 +336,68 @@ class JKL_Reviews_Settings {
         }
         echo "</select>";
     }
-
-    // Use Custom Post Type?
-    public function jklrv_cpt_option_setting() {
-        $options = get_option( 'jklrv_plugin_options' );
+    
+    /**
+     * Custom CSS Rules Textarea
+     */
+    public function custom_css_setting() {
+        $options = get_option( 'jkl_reviews_settings' );
         ?>
-        <input type='checkbox' id='jklrv_plugin_options[jklrv_cpt_option]' name='jklrv_plugin_options[jklrv_cpt_option]' value='1' <?php checked( $options['jklrv_cpt_option'], 1 ); ?> />
-        <label for='jklrv_plugin_options[jklrv_cpt_option]' class='note'><?php _e('Enable JKL Reviews Custom Post Type for this site. <a href="#">Learn More</a>', 'jkl-reviews/languages') ?></label>
+        <textarea id='jkl_reviews_settings[ custom_css ]' name='jkl_reviews_settings[ custom_css ]' value="jkl_reviews_settings[ custom_css ]">
+            
+        </textarea>
     <?php
     }
-}
     
-}
+    /**
+     * OTHER SECTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     */
+    
+    // Print Other Section Text
+    public function other_section_info() {
+        echo '<p>The following section deals with attribution and disclosure of materials.</p>';
+    }
+    
+    /**
+     * Display Disclosure Settings
+     */
+    public function disclosure_setting() {
+        $options = get_option( 'jkl_reviews_settings' );
+        ?>
+        <input type='checkbox' id='jkl_reviews_settings[ disclosure ]' name='jkl_reviews_settings[ disclosure ]' value='1' <?php checked( $options[ 'disclosure' ], 1 ); ?> />
+        <label for='jkl_reviews_settings[ disclosure ]' class='note'>
+            <?php _e( 'For US users to comply with <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html">FTC regulations</a> regarding "Endorsements and Testimonials in Advertising."', 'jkl-reviews') ?>
+        </label>
+
+        <?php
+        if( isset( $options[ 'disclosure' ] ) ) {
+            $output = "<br /></br>";
+            $output .= "<div id='jkl-options-sample-disclosure' class=" . $options[ 'box_style' ] . ">";
+            $output .= "<strong>Example Disclosure</strong>";
+            $output .= "<p><small>" . get_material_disclosure( 'affiliate' ) . "</small></p>";
+            $output .= "</div>";
+
+            echo $output;
+        }
+    }
+    
+    /**
+     * Show Attribution Link?
+     */
+    public function attribution_setting() {
+        $options = get_option( 'jkl_review_settings' );
+        if( ! isset( $options[ 'attribution' ] ) )
+            $options[ 'attribution' ] = 1;
+
+        ?>
+        <input type='checkbox' id='jkl_review_settings[ attribution ]' name='jkl_review_settings[ attribution ]' value='1' <?php checked( $options[ 'attribution' ], 1 ); ?> />
+        <label for='jkl_review_settings[ attribution ]' class='note'>
+            <?php _e( 'Allow Plugin to link to the <a href="http://www.jekkilekki.com">developer\'s website?</a>'
+                    . '<br>Consider <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=567MWDR76KHLU">donating before disabling.</a>', 'jkl-reviews') ?>
+        </label>
+
+        <?php
+    }
+    
+} // END class JKL_Reviews_Settings   
+} // END if ( ! class_exists( 'JKL_Reviews_Settings' ) )

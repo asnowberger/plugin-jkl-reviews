@@ -6,7 +6,7 @@
  */
 if( !class_exists( 'JKL_Reviews_Settings' ) ) {
     
-    class JKL_Review_Settings {
+    class JKL_Reviews_Settings {
 
         // TODO: Read this: http://codex.wordpress.org/Creating_Options_Pages PERFECT Examples
 
@@ -14,6 +14,7 @@ if( !class_exists( 'JKL_Reviews_Settings' ) ) {
 
         public function __construct() {
             $this->options = get_option( 'jklrv_plugin_options' );
+            $this->jkl_display_options_page();
             $this->jkl_register_settings_and_fields();
         }
 

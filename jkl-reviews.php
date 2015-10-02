@@ -112,11 +112,11 @@ if( !class_exists( 'JKL_Reviews' ) ) {
         public function __construct() {
             
             // Get the initial plugin options (should it be 'protected' or 'public'?
-            //$this->options = get_option( 'jkl_reviews_options' );
+            $this->options = get_option( 'jkl_reviews_options' );
 
             //add_action( 'init', array( $this, 'jkl_reviews_init' ) );
-            add_action( 'admin_init', array( $this, 'jkl_admin_init' ) );
-            add_action( 'admin_menu', array( $this, 'jkl_add_menu' ) );
+            //add_action( 'admin_init', array( $this, 'jkl_admin_init' ) );
+            //add_action( 'admin_menu', array( $this, 'jkl_add_menu' ) );
 
             //add_shortcode( 'JKLReview', array( $this, 'shortcode' ) );
             
@@ -125,8 +125,8 @@ if( !class_exists( 'JKL_Reviews' ) ) {
             $JKL_Reviews_Post_Type = new JKL_Reviews_Post_Type();
             
             // Incorporate Settings
-            //require_once( sprintf ( "%s/inc/settings.php", dirname( __FILE__ ) ) );
-            //$JKL_Reviews_Settings = new JKL_Reviews_Settings();
+            require_once( sprintf ( "%s/inc/settings.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
             
         } // END __contstruct
         
