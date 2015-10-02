@@ -120,6 +120,14 @@ if( !class_exists( 'JKL_Reviews' ) ) {
 
             //add_shortcode( 'JKLReview', array( $this, 'shortcode' ) );
             
+            // Incorporate Post Type
+            require_once( sprintf ( "%s/inc/post-type.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Post_Type = new JKL_Reviews_Post_Type();
+            
+            // Incorporate Settings
+            //require_once( sprintf ( "%s/inc/settings.php", dirname( __FILE__ ) ) );
+            //$JKL_Reviews_Settings = new JKL_Reviews_Settings();
+            
         } // END __contstruct
         
         /**
@@ -158,18 +166,30 @@ if( !class_exists( 'JKL_Reviews' ) ) {
          * Initialize some custom settings
          */
         public function jkl_init_settings() {
+            
             /** 
              * Register the settings for this plugin
              * @source: http://codex.wordpress.org/Function_Reference/register_setting
              */
-            register_setting( 'jkl_reviews_settings', 'jkl_reviews_plugin_settings' ); // Params (group name, name, optional callback)
+            require_once( sprintf( "%s/inc/settings.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
+            
         } // END public function init_settings
 
         /* 
          * Admin Settings Page Add a Menu 
          */
         public function jkl_add_menu() {
-            add_options_page( 'JKL Reviews Settings', 'JKL Reviews Settings', 'manage_options', 'jkl_user_settings', array( &$this, 'jkl_plugin_settings_page' ) );
+            
+            // This page wil be under "Settings"
+            add_options_page( 
+                    'JKL Reviews Settings', 
+                    __( 'JKL Reviews Settings', 'jkl-reviews' ), 
+                    'manage_options', 
+                    'jkl_reviews_settings', 
+                    array( &$this, 'jkl_plugin_settings_page' ) 
+            );
+            
         } // END admin_menu
         
         /*
@@ -178,10 +198,12 @@ if( !class_exists( 'JKL_Reviews' ) ) {
         public function jkl_plugin_settings_page() {
             
             if( !current_user_can( 'manage_options' ) ) {
-                wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+                wp_die( __( 'You do not fdafdahave sufficient permissions to access this page.' ) );
             }
             // Render the settings template (call it in)
             include( sprintf( "%s/inc/settings.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
+            
         }
 
     } // END class JKL_Reviews

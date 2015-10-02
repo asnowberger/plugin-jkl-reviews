@@ -1,8 +1,13 @@
 <?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * JKL Reviews Uninstall
  */
 
+// If uninstall not called from WordPress exit 
+if( ! defined( 'WP_UNINSTALL_PLUGIN' ) )
+	exit ();
+
+// Delete option from options table 
+delete_option( 'jkl_reviews_settings' );
+
+//remove additional options and custom tables
