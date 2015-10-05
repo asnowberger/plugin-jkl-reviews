@@ -1,8 +1,21 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! class_exists( 'JKL_Reviews_Shortcode' ) ) {
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * JKL Reviews Shortcode
+ * Doc: https://codex.wordpress.org/Shortcode_API
+ * 
+ * @author Aaron Snowberger
+ * @project JKL-Reviews
+ * @link http://solislab.com/blog/how-to-make-shortcodes-user-friendly/
  */
+    
+class JKL_Reviews_Shortcode {
 
+    public function __construct() {
+        
+    } // END __construct()
+    
+} // END JKL_Reviews_Shortcode
+} // END if ( ! class_exists( 'JKL_Reviews_Shortcode' )

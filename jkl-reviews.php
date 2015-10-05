@@ -69,20 +69,22 @@
 
 /**
  * Current OOP References:
- * @source: http://code.tutsplus.com/articles/create-wordpress-plugins-with-oop-techniques--net-20153
- * @source: http://www.yaconiello.com/blog/how-to-write-wordpress-plugin/ (MAIN SOURCE)
- * @source: http://codex.wordpress.org/Function_Reference/add_options_page
- * @source: https://catn.com/2014/10/06/tutorial-writing-a-simple-wordpress-plugin-from-scratch/
- * @source: http://www.slideshare.net/mtoppa/object-oriented-programming-for-wordpress-plugin-development
- * @source: https://iandunn.name/designing-object-oriented-plugins-for-a-procedural-application/
- * @source: https://iandunn.name/content/presentations/wp-oop-mvc/oop.php#/
- * @source: https://iandunn.name/content/presentations/wp-oop-mvc/mvc.php#/
+ * @link WOW http://code.tutsplus.com/articles/object-oriented-programming-in-wordpress-building-the-plugin-i--cms-21083
+ * 
+ * @link http://code.tutsplus.com/articles/create-wordpress-plugins-with-oop-techniques--net-20153
+ * @link http://www.yaconiello.com/blog/how-to-write-wordpress-plugin/ (MAIN SOURCE)
+ * @link http://codex.wordpress.org/Function_Reference/add_options_page
+ * @link https://catn.com/2014/10/06/tutorial-writing-a-simple-wordpress-plugin-from-scratch/
+ * @link http://www.slideshare.net/mtoppa/object-oriented-programming-for-wordpress-plugin-development
+ * @link https://iandunn.name/designing-object-oriented-plugins-for-a-procedural-application/
+ * @link https://iandunn.name/content/presentations/wp-oop-mvc/oop.php#/
+ * @link https://iandunn.name/content/presentations/wp-oop-mvc/mvc.php#/
  */
 
 /* Prevent direct access */
 //defined( 'ABSPATH' ) or die( 'Plugin file cannot be accessed directly.' );
-
-if( !class_exists( 'JKL_Reviews' ) ) {
+if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! class_exists( 'JKL_Reviews' ) ) {
     
     class JKL_Reviews {
         
@@ -90,19 +92,25 @@ if( !class_exists( 'JKL_Reviews' ) ) {
          * Current version of the plugin.
          * @var string
          */
-        protected $version = '2.0'; 
+        protected $version; 
         
         /**
          * Type of plugin to run (Meta-boxes, CPT, or both).
          * @var string
          */
-        protected $plugin = '';
+        protected $plugin_slug;
         
         /**
          * Default plugin options
          * @var array
          */
-        protected $options = [];
+        protected $options;
+        
+        /**
+         * Loader
+         * @var array
+         */
+        protected $loader;
         
         
         /**
@@ -111,22 +119,42 @@ if( !class_exists( 'JKL_Reviews' ) ) {
          */
         public function __construct() {
             
+            // Set the version number
+            $this->version = '2.0';
+            $this->plugin_slug = 'jkl-reviews-slug';
+            
             // Get the initial plugin options (should it be 'protected' or 'public'?
-            $this->options = get_option( 'jkl_reviews_options' );
-
-            //add_action( 'init', array( $this, 'jkl_reviews_init' ) );
-            //add_action( 'admin_init', array( $this, 'jkl_admin_init' ) );
-            //add_action( 'admin_menu', array( $this, 'jkl_add_menu' ) );
-
-            //add_shortcode( 'JKLReview', array( $this, 'shortcode' ) );
+            $this->options = get_option( 'jkl_reviews_options' );;
+            $this->loader = [];
+            
+            // 
+            $this->load_dependencies();
+            $this->define_admin_hooks();
+            
+            
+            // Incorporate Metaboxes
+            require_once( sprintf ( "%s/inc/metaboxes.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Metabox = new JKL_Reviews_Metabox();
+            
+            // Incorporate Settings
+            require_once( sprintf ( "%s/admin/settings.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
+            
+            // Incorporate Shortcode
+            require_once( sprintf ( "%s/inc/shortcode.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Shortcode = new JKL_Reviews_Shortcode();
             
             // Incorporate Post Type
             require_once( sprintf ( "%s/inc/post-type.php", dirname( __FILE__ ) ) );
             $JKL_Reviews_Post_Type = new JKL_Reviews_Post_Type();
             
-            // Incorporate Settings
-            require_once( sprintf ( "%s/inc/settings.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
+            // Incorporate Widget
+            require_once( sprintf ( "%s/inc/widget.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Widget = new JKL_Reviews_Widget();
+            
+            // Incorporate Giveaways
+            require_once( sprintf ( "%s/inc/giveaways.php", dirname( __FILE__ ) ) );
+            $JKL_Reviews_Giveaways = new JKL_Reviews_Giveaways();
             
         } // END __contstruct
         
@@ -148,6 +176,39 @@ if( !class_exists( 'JKL_Reviews' ) ) {
             
         } // END deactivate
 
+        /**
+         * From Tom McFarlin at TutsPlus ---------------------------------------
+         */
+        
+        /**
+         * Imports all the files that are used throughout this plugin
+         */
+        public function load_dependencies() {
+            //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/';
+             
+            //require_once plugin_dir_path( __FILE__ ) . 'class-single';
+            //$this->loader = new JKL_Reviews_Loader();
+        }
+        
+        /**
+         * Use the Loader to coordinate the functions we need to load
+         */
+        private function define_admin_hooks() {
+            //$admin = new JKL_Reviews_Admin( $this->get_version() );
+            //$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'jkl_single_meta_box_style' );
+           // $this->loader->add_action( 'add_meta_boxes', $admin, 'jkl_add_meta_box' );
+        }
+        
+        /**
+         * Sets everything in motion so it all runs when activated in WP
+         */
+        public function run() {
+            //$this->loader->run();
+        }
+        
+        public function get_version() {
+            return $this->version;
+        }
         
         /**
          * SETUP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

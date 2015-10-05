@@ -7,10 +7,15 @@ if ( ! class_exists( 'JKL_Reviews_Settings' ) ) {
  * 
  * @author Aaron Snowberger
  * @project JKL-Reviews
+ * @link http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-1--wp-24060
+ * @link http://theme.fm/2011/10/how-to-create-tabs-with-the-settings-api-in-wordpress-2590/
+ * 
  */
     
 class JKL_Reviews_Settings {
 
+    private $version;
+    
     /*
      * Holds the values to be used in the fields callbacks
      * Doc: http://codex.wordpress.org/Creating_Options_Pages PERFECT Examples
@@ -40,14 +45,32 @@ class JKL_Reviews_Settings {
     */
    public function jkl_add_menu() {
 
-       // This page wil be under "Settings"
-       add_options_page( 
-               'JKL Reviews Settings', 
-               __( 'JKL Reviews Settings', 'jkl-reviews' ), 
-               'manage_options', 
-               'jkl_reviews_settings', 
-               array( $this, 'jkl_create_settings_page' ) 
+       /**
+        * Include the file to create a top-level menu item (if none exists)
+        */
+       require_once( sprintf ( "%s/plugins-admin.php", dirname( __FILE__ ) ) );
+       $JKL_Plugins_Admin = new JKL_Plugins_Admin();
+       
+       /**
+        * Create a submenu page for THIS plugin
+        */
+       add_submenu_page(
+               'jkl-plugins-main-menu',
+               __( 'JKL Reviews Plugin Settings', 'jkl-reviews' ),
+               __( 'JKL Reviews', 'jkl-reviews' ),
+               'manage_options',
+               'jkl_reviews_settings',
+               array( $this, 'jkl_create_settings_page' )
        );
+
+        // This page wil be under "Settings"
+//       add_options_page( 
+//               'JKL Reviews Settings', 
+//               __( 'JKL Reviews Settings', 'jkl-reviews' ), 
+//               'manage_options', 
+//               'jkl_reviews_settings', 
+//               array( $this, 'jkl_create_settings_page' ) 
+//       );
 
    } // END jkl_add_menu()
 
