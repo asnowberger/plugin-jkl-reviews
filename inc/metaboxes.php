@@ -22,9 +22,9 @@ class JKL_Reviews_Metabox {
      * CONSTRUCTOR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      * @param type $version
      */
-    public function __construct( $version ) {
+    public function __construct( /*$version*/ ) {
         
-        $this->version = $version;
+        //$this->version = $version;
         
     } // END __construct()
     

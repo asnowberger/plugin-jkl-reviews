@@ -29,14 +29,15 @@ class JKL_Plugins_Admin {
         /**
          * Create a top-level menu item
          */
-         add_menu_page(
-                 __( 'JKL Plugins', 'jkl-reviews' ),
-                 __( 'JKL Plugins', 'jkl-reviews' ),
-                 'manage_options',
-                 'jkl-plugins-main-menu',
-                 'jkl_plugins_main_page',
-                 'dashicons-admin-plugins'
-         );
+        if ( empty ( $GLOBALS[ 'admin_page_hooks' ][ 'jkl-plugins-main-menu' ] ) ) 
+            add_menu_page(
+                    __( 'JKL Plugins', 'jkl-reviews' ),
+                    __( 'JKL Plugins', 'jkl-reviews' ),
+                    'manage_options',
+                    'jkl-plugins-main-menu',
+                    'jkl_plugins_main_page',
+                    'dashicons-admin-plugins'
+            );
          
     }
     

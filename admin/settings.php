@@ -9,7 +9,9 @@ if ( ! class_exists( 'JKL_Reviews_Settings' ) ) {
  * @project JKL-Reviews
  * @link http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-1--wp-24060
  * @link http://theme.fm/2011/10/how-to-create-tabs-with-the-settings-api-in-wordpress-2590/
+ * @link TABS http://digitalraindrops.net/2011/02/tabbed-options-page/
  * 
+ * @TODO currently 'General' tab doesn't show up at all
  */
     
 class JKL_Reviews_Settings {
@@ -20,7 +22,13 @@ class JKL_Reviews_Settings {
      * Holds the values to be used in the fields callbacks
      * Doc: http://codex.wordpress.org/Creating_Options_Pages PERFECT Examples
      */ 
-    private $options;
+    private $options        = array();
+    
+    
+    private $general_settings_key = 'jkl_reviews_general_settings';
+    private $style_settings_key = 'jkl_reviews_style_settings';
+    private $plugin_options_key = 'jkl_reviews_plugin_options';
+    private $plugins_settings_tabs = array();
 
     /**
      * CONSTRUCTOR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -31,8 +39,10 @@ class JKL_Reviews_Settings {
         //$this->jkl_create_settings_page();  // ?Or add_action( 'admin_menu', array( $this, 'jkl_create_settings_page' ) );
         //$this->jkl_register_settings();     // ?Or add_action( 'admin_init', array( $this, 'jkl_register_settings' ) );
 
-        add_action( 'admin_menu', array( &$this, 'jkl_add_menu' ) );
-        add_action( 'admin_init', array( &$this, 'jkl_register_settings' ) );
+        add_action( 'init', array( &$this, 'jkl_load_settings' ) );
+        add_action( 'admin_init', array( &$this, 'jkl_register_general_settings' ) );
+        add_action( 'admin_init', array( &$this, 'jkl_register_style_settings' ) );
+        add_action( 'admin_menu', array( &$this, 'jkl_add_menus' ) );
         
     } // END __construct()
 
@@ -40,75 +50,37 @@ class JKL_Reviews_Settings {
      * METHODS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      */
     
-    /* 
-    * Admin Settings Page Add a Menu 
-    */
-   public function jkl_add_menu() {
-
-       /**
-        * Include the file to create a top-level menu item (if none exists)
-        */
-       require_once( sprintf ( "%s/plugins-admin.php", dirname( __FILE__ ) ) );
-       $JKL_Plugins_Admin = new JKL_Plugins_Admin();
-       
-       /**
-        * Create a submenu page for THIS plugin
-        */
-       add_submenu_page(
-               'jkl-plugins-main-menu',
-               __( 'JKL Reviews Plugin Settings', 'jkl-reviews' ),
-               __( 'JKL Reviews', 'jkl-reviews' ),
-               'manage_options',
-               'jkl_reviews_settings',
-               array( $this, 'jkl_create_settings_page' )
-       );
-
-        // This page wil be under "Settings"
-//       add_options_page( 
-//               'JKL Reviews Settings', 
-//               __( 'JKL Reviews Settings', 'jkl-reviews' ), 
-//               'manage_options', 
-//               'jkl_reviews_settings', 
-//               array( $this, 'jkl_create_settings_page' ) 
-//       );
-
-   } // END jkl_add_menu()
-
     /**
-     * Settings Page Callback
+     * Load Settings
      */
-    public function jkl_create_settings_page() {
-
-        // Get pre-existing settings
-        $this->options = get_option( 'jkl_reviews_settings' );
-        ?>
-
-        <div class="wrap">
-
-            <h2><?php _e( 'JKL Reviews Settings', 'jkl-reviews') ?></h2>
-            <form method="post" action="options.php"> <!-- Add enctype="mutlipart/form-data" if allowing user to upload data -->
-            <?php    
-                // This prints out all hidden setting fields
-                settings_fields( 'main-settings-group' ); // WP takes care of security and nonces with this function
-                do_settings_sections( 'main-settings' );
-                submit_button();
-            ?>
-            </form>
-        </div>
-
-        <?php
-    } // END jkl_create_settings_page()
-
+    public function jkl_load_settings() {
+        
+        $this->general_settings = (array) get_option( $this->general_settings_key );
+        $this->style_settings = (array) get_option( $this->style_settings_key );
+        
+        // Merge with defaults
+        $this->general_settings = array_merge( array (
+            'general_option' => 'General value'
+        ), $this->general_settings );
+        
+        $this->style_settings = array_merge( array( 
+            'style_option' => 'Style value'
+        ), $this->style_settings );
+        
+    }
+    
     /**
      * Register and add settings
      */
-    public function jkl_register_settings() {
+    public function jkl_register_general_settings() {
 
+        $this->plugin_settings_tabs[ $this->general_settings_key ] = 'General';
+        
         // Doc: http://codex.wordpress.org/Function_Reference/register_setting
         register_setting( 
-                'main-settings-group',          // Option group name
-                'jkl_reviews_settings',         // Option name
-                array( $this, 'sanitize' )      // Sanitize callback
+                $this->general_settings_key,            // Option group name
+                $this->general_settings_key,            // Option name
+                array( $this, 'sanitize' )              // Sanitize callback
         );
         
         /**
@@ -118,7 +90,7 @@ class JKL_Reviews_Settings {
                 'main_section',                                     // ID
                 __( 'Main Settings', 'jkl-reviews' ),               // Title
                 array( $this, 'main_section_info' ),                // Callback
-                'main-settings'                                     // Page
+                $this->general_settings_key                                     // Page
         ); 
         
         /**
@@ -129,14 +101,14 @@ class JKL_Reviews_Settings {
                 'components_section',                               // ID
                 __( 'Components', 'jkl-reviews' ),                  // Title
                 array( $this, 'component_section_info' ),           // Callback
-                'main-settings'                                     // Page
+                $this->general_settings_key                                     // Page
         );
         
                 add_settings_field(
                         'add_shortcode',                            // ID
                         __( 'Enable Shortcode', 'jkl-reviews' ),    // Title
                         array( $this, 'enable_shortcode' ),         // Callback
-                        'main-settings',                            // Page
+                        $this->general_settings_key,                            // Page
                         'components_section'                        // Section
                 );
         
@@ -144,7 +116,7 @@ class JKL_Reviews_Settings {
                         'add_cpt', 
                         __( 'Enable Reviews Post Type', 'jkl-reviews' ), 
                         array( $this, 'enable_cpt' ), 
-                        'main-settings', 
+                        $this->general_settings_key, 
                         'components_section' 
                 );
                 
@@ -152,7 +124,7 @@ class JKL_Reviews_Settings {
                         'add_widget',
                         __( 'Enable Dynamic Widget', 'jkl-reviews' ),
                         array( $this, 'enable_widget' ),
-                        'main-settings',
+                        $this->general_settings_key,
                         'components_section'
                 );
                 
@@ -160,9 +132,22 @@ class JKL_Reviews_Settings {
                         'add_giveaways',
                         __( 'Enable Giveaways', 'jkl-reviews' ),
                         array( $this, 'enable_giveaways' ),
-                        'main-settings',
+                        $this->general_settings_key,
                         'components_section'
                 );
+                   
+    }
+    
+    public function jkl_register_style_settings() {
+        
+        $this->plugins_settings_tabs[ $this->style_settings_key ] = 'Style';
+        
+        // Doc: http://codex.wordpress.org/Function_Reference/register_setting
+        register_setting( 
+                $this->style_settings_key,            // Option group name
+                $this->style_settings_key,            // Option name
+                array( $this, 'sanitize' )              // Sanitize callback
+        );
         
         /**
          * Color and Style Settings
@@ -171,14 +156,14 @@ class JKL_Reviews_Settings {
                 'style_section',
                 __( 'Plugin Style', 'jkl-reviews' ),
                 array( $this, 'style_section_info' ),
-                'main-settings'
+                $this->style_settings_key
         );
  
                 add_settings_field( 
                         'box_style',                                    
                         __( 'Select Review Box Style', 'jkl-reviews' ), 
                         array( $this, 'box_style_setting' ), 
-                        'main-settings', 
+                        $this->style_settings_key, 
                         'style_section' 
                 );
 
@@ -186,7 +171,7 @@ class JKL_Reviews_Settings {
                         'color_scheme', 
                         __( 'Desired Color Scheme', 'jkl-reviews' ), 
                         array( $this, 'color_scheme_setting' ), 
-                        'main-settings', 
+                        $this->style_settings_key, 
                         'style_section' 
                 );
                 
@@ -194,7 +179,7 @@ class JKL_Reviews_Settings {
                         'custom_css',
                         __( 'Custom CSS Rules', 'jkl-reviews' ),
                         array( $this, 'custom_css_setting' ),
-                        'main-settings',
+                        $this->style_settings_key,
                         'style_section'
                 );
                 
@@ -205,14 +190,14 @@ class JKL_Reviews_Settings {
                 'other_section',
                 __( 'Other Settings', 'jkl-reviews' ),
                 array( $this, 'other_section_info' ),
-                'main-settings'
+                $this->style_settings_key
         );
                 
                 add_settings_field( 
                         'show_disclosure',                                  // ID
                         __( 'Show Material Disclosure', 'jkl-reviews' ),    // Title
                         array( $this, 'disclosure_setting'),                // Callback
-                        'main-settings',                                    // Page
+                        $this->style_settings_key,                                    // Page
                         'other_section'                                     // Section
                 );
 
@@ -220,9 +205,89 @@ class JKL_Reviews_Settings {
                         'attribution', 
                         __( 'Show Attribution Link', 'jkl-reviews' ), 
                         array( $this, 'attribution_setting' ), 
-                        'main-settings', 
+                        $this->style_settings_key, 
                         'other_section' 
                 );     
+        
+    }
+    
+        /* 
+     * Admin Settings Page Add a Menu 
+     */
+    public function jkl_add_menus() {
+       
+        /**
+         * Create a submenu page for THIS plugin
+         */
+        add_submenu_page(
+                'jkl-plugins-main-menu',
+                __( 'JKL Reviews Plugin Settings', 'jkl-reviews' ),
+                __( 'JKL Reviews', 'jkl-reviews' ),
+                'manage_options',
+                $this->plugin_options_key,
+                array( $this, 'jkl_create_settings_page' )
+        );
+       
+        /**
+         * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+         * !!!! IMPORTANT: Only allows one instance of the JKL Plugins Menu  !!!!
+         * !!!! Add AFTER add_submenu_page() to not duplicate the name       !!!!
+         * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+         */
+        if ( empty ( $GLOBALS[ 'admin_page_hooks' ][ 'jkl-plugins-main-menu' ] ) ) {
+            add_menu_page(
+                    __( 'JKL Plugins', 'jkl-level-test' ),
+                    __( 'JKL Plugins', 'jkl-level-test' ),
+                    'manage_options',
+                    'jkl-plugins-main-menu',
+                    'jkl_plugins_main_page',
+                    'dashicons-admin-plugins'
+            );
+       }
+
+    } // END jkl_add_menu()
+
+    /**
+     * Settings Page Callback
+     */
+    public function jkl_create_settings_page() {
+
+        // Get pre-existing settings
+        $this->options = get_option( 'jkl_reviews_settings' );
+        
+        $tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $this->general_settings_key;
+        ?>
+
+        <div class="wrap">
+            <?php $this->jkl_create_settings_tabs(); ?>
+
+            <form method="post" action="options.php"> <!-- Add enctype="mutlipart/form-data" if allowing user to upload data -->
+            <?php
+                wp_nonce_field( 'update-options' );
+                // This prints out all hidden setting fields
+                settings_fields( $tab ); // WP takes care of security and nonces with this function
+                do_settings_sections( $tab );
+                submit_button();
+            ?>
+            </form>
+        </div>
+
+        <?php
+    } // END jkl_create_settings_page()
+
+    /**
+     * Tabs
+     */
+    public function jkl_create_settings_tabs() {
+
+        $current_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $this->general_settings_key;
+        
+        echo '<h2 class="nav-tab-wrapper">';
+        foreach ( $this->plugins_settings_tabs as $tab_key => $tab_caption ) {
+            $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
+            echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->plugin_options_key . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
+        }
+        echo '</h2>';
         
     }
 
