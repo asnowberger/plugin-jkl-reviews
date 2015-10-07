@@ -8,6 +8,7 @@ if ( ! class_exists( 'JKL_Reviews_Settings' ) ) {
  * @author Aaron Snowberger
  * @project JKL-Reviews
  * @link http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-1--wp-24060
+ * @link http://code.tutsplus.com/tutorials/the-complete-guide-to-the-wordpress-settings-api-part-5-tabbed-navigation-for-your-settings-page--wp-24971
  * @link http://theme.fm/2011/10/how-to-create-tabs-with-the-settings-api-in-wordpress-2590/
  * @link TABS http://digitalraindrops.net/2011/02/tabbed-options-page/
  * 
@@ -25,10 +26,10 @@ class JKL_Reviews_Settings {
     private $options        = array();
     
     
-    private $general_settings_key = 'jkl_reviews_general_settings';
-    private $style_settings_key = 'jkl_reviews_style_settings';
-    private $plugin_options_key = 'jkl_reviews_plugin_options';
-    private $plugins_settings_tabs = array();
+    private $general_settings_key = 'general';
+    private $style_settings_key = 'style';
+    private $plugin_options_key = 'jkl_reviews_settings';
+    private $plugin_tabs = array();
 
     /**
      * CONSTRUCTOR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -74,7 +75,7 @@ class JKL_Reviews_Settings {
      */
     public function jkl_register_general_settings() {
 
-        $this->plugin_settings_tabs[ $this->general_settings_key ] = 'General';
+        $this->plugin_tabs[ $this->general_settings_key ] = 'General';
         
         // Doc: http://codex.wordpress.org/Function_Reference/register_setting
         register_setting( 
@@ -140,7 +141,7 @@ class JKL_Reviews_Settings {
     
     public function jkl_register_style_settings() {
         
-        $this->plugins_settings_tabs[ $this->style_settings_key ] = 'Style';
+        $this->plugin_tabs[ $this->style_settings_key ] = 'Style';
         
         // Doc: http://codex.wordpress.org/Function_Reference/register_setting
         register_setting( 
@@ -236,8 +237,8 @@ class JKL_Reviews_Settings {
          */
         if ( empty ( $GLOBALS[ 'admin_page_hooks' ][ 'jkl-plugins-main-menu' ] ) ) {
             add_menu_page(
-                    __( 'JKL Plugins', 'jkl-level-test' ),
-                    __( 'JKL Plugins', 'jkl-level-test' ),
+                    __( 'JKL Plugins', 'jkl-reviews' ),
+                    __( 'JKL Plugins', 'jkl-reviews' ),
                     'manage_options',
                     'jkl-plugins-main-menu',
                     'jkl_plugins_main_page',
@@ -276,14 +277,15 @@ class JKL_Reviews_Settings {
     } // END jkl_create_settings_page()
 
     /**
-     * Tabs
+     * Create the Tabs dynamically as each section link is clicked (also change the page title <h2> to match)
      */
     public function jkl_create_settings_tabs() {
 
         $current_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $this->general_settings_key;
         
+        echo '<h2>JKL Reviews: ' . ucwords( $current_tab ) . ' Settings</h2>';
         echo '<h2 class="nav-tab-wrapper">';
-        foreach ( $this->plugins_settings_tabs as $tab_key => $tab_caption ) {
+        foreach ( $this->plugin_tabs as $tab_key => $tab_caption ) {
             $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
             echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->plugin_options_key . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
         }
@@ -320,7 +322,7 @@ class JKL_Reviews_Settings {
     
     // Print Main Section Text
     public function main_section_info() {
-        echo '<p>Enter your settings below:</p>';
+        echo '<p>This plugin was designed to make </p>';
     }
     
     /**

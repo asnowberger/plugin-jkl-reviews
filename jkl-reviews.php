@@ -128,8 +128,8 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
             $this->loader = [];
             
             // 
-            $this->load_dependencies();
-            $this->define_admin_hooks();
+            //$this->load_dependencies();
+            //$this->define_admin_hooks();
             
             
             // Incorporate Metaboxes
@@ -137,8 +137,9 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
             $JKL_Reviews_Metabox = new JKL_Reviews_Metabox();
             
             // Incorporate Settings
-            require_once( sprintf ( "%s/admin/settings.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
+            $this->jkl_admin_init();
+//            require_once( sprintf ( "%s/admin/settings.php", dirname( __FILE__ ) ) );
+//            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
             
             // Incorporate Shortcode
             require_once( sprintf ( "%s/inc/shortcode.php", dirname( __FILE__ ) ) );
@@ -175,36 +176,6 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
         public static function deactivate() {
             
         } // END deactivate
-
-        /**
-         * From Tom McFarlin at TutsPlus ---------------------------------------
-         */
-        
-        /**
-         * Imports all the files that are used throughout this plugin
-         */
-        public function load_dependencies() {
-            //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/';
-             
-            //require_once plugin_dir_path( __FILE__ ) . 'class-single';
-            //$this->loader = new JKL_Reviews_Loader();
-        }
-        
-        /**
-         * Use the Loader to coordinate the functions we need to load
-         */
-        private function define_admin_hooks() {
-            //$admin = new JKL_Reviews_Admin( $this->get_version() );
-            //$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'jkl_single_meta_box_style' );
-           // $this->loader->add_action( 'add_meta_boxes', $admin, 'jkl_add_meta_box' );
-        }
-        
-        /**
-         * Sets everything in motion so it all runs when activated in WP
-         */
-        public function run() {
-            //$this->loader->run();
-        }
         
         public function get_version() {
             return $this->version;
@@ -232,40 +203,11 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
              * Register the settings for this plugin
              * @source: http://codex.wordpress.org/Function_Reference/register_setting
              */
-            require_once( sprintf( "%s/inc/settings.php", dirname( __FILE__ ) ) );
+            require_once( sprintf( "%s/admin/settings.php", dirname( __FILE__ ) ) );
             $JKL_Reviews_Settings = new JKL_Reviews_Settings();
             
         } // END public function init_settings
-
-        /* 
-         * Admin Settings Page Add a Menu 
-         */
-        public function jkl_add_menu() {
-            
-            // This page wil be under "Settings"
-            add_options_page( 
-                    'JKL Reviews Settings', 
-                    __( 'JKL Reviews Settings', 'jkl-reviews' ), 
-                    'manage_options', 
-                    'jkl_reviews_settings', 
-                    array( &$this, 'jkl_plugin_settings_page' ) 
-            );
-            
-        } // END admin_menu
-        
-        /*
-         * Admin Menu callback
-         */
-        public function jkl_plugin_settings_page() {
-            
-            if( !current_user_can( 'manage_options' ) ) {
-                wp_die( __( 'You do not fdafdahave sufficient permissions to access this page.' ) );
-            }
-            // Render the settings template (call it in)
-            include( sprintf( "%s/inc/settings.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
-            
-        }
+  
 
     } // END class JKL_Reviews
 } // END if(!class_exists())
@@ -287,7 +229,7 @@ if ( class_exists( 'JKL_Reviews' ) ) {
         
         // Add the settings link to the plugins page
         function jkl_plugin_settings_link( $links ) {
-            $settings_link = '<a href="options-general.php?page=jkl_reviews">Settings</a>';
+            $settings_link = '<a href="admin.php?page=jkl_reviews_settings">Settings</a>';
             array_unshift( $links, $settings_link );
             return $links;
         }
