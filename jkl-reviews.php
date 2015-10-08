@@ -138,24 +138,35 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
             
             // Incorporate Settings
             $this->jkl_admin_init();
-//            require_once( sprintf ( "%s/admin/settings.php", dirname( __FILE__ ) ) );
-//            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
             
+            
+            /**
+             * Load optional plugin components
+             */
+
             // Incorporate Shortcode
-            require_once( sprintf ( "%s/inc/shortcode.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Shortcode = new JKL_Reviews_Shortcode();
+            if( $this->options[ 'use_shortcode' ] ) {
+                require_once( sprintf ( "%s/inc/shortcode.php", dirname( __FILE__ ) ) );
+                $JKL_Reviews_Shortcode = new JKL_Reviews_Shortcode();
+            }
             
             // Incorporate Post Type
-            require_once( sprintf ( "%s/inc/post-type.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Post_Type = new JKL_Reviews_Post_Type();
+            if( $this->options[ 'use_cpt' ] ) {
+                require_once( sprintf ( "%s/inc/post-type.php", dirname( __FILE__ ) ) );
+                $JKL_Reviews_Post_Type = new JKL_Reviews_Post_Type();
+            }
             
             // Incorporate Widget
-            require_once( sprintf ( "%s/inc/widget.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Widget = new JKL_Reviews_Widget();
+            if( $this->options[ 'use_widget' ] ) {
+                require_once( sprintf ( "%s/inc/widget.php", dirname( __FILE__ ) ) );
+                $JKL_Reviews_Widget = new JKL_Reviews_Widget();
+            }
             
             // Incorporate Giveaways
-            require_once( sprintf ( "%s/inc/giveaways.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Giveaways = new JKL_Reviews_Giveaways();
+            if( $this->options[ 'use_giveaways' ] ) {
+                require_once( sprintf ( "%s/inc/giveaways.php", dirname( __FILE__ ) ) );
+                $JKL_Reviews_Giveaways = new JKL_Reviews_Giveaways();
+            }
             
         } // END __contstruct
         

@@ -136,6 +136,14 @@ class JKL_Reviews_Settings {
                         $this->general_settings_key,
                         'components_section'
                 );
+                
+        /**
+         * Register our settings
+         */
+        register_setting( $this->general_settings_key, 'use_shortcode', array( $this, 'sanitize' ) );
+        register_setting( $this->general_settings_key, 'use_cpt', array( $this, 'sanitize' ) );
+        register_setting( $this->general_settings_key, 'use_widget', array( $this, 'sanitize' ) );
+        register_setting( $this->general_settings_key, 'use_giveaways', array( $this, 'sanitize' ) );
                    
     }
     
@@ -195,7 +203,7 @@ class JKL_Reviews_Settings {
         );
                 
                 add_settings_field( 
-                        'show_disclosure',                                  // ID
+                        'disclosure',                                       // ID
                         __( 'Show Material Disclosure', 'jkl-reviews' ),    // Title
                         array( $this, 'disclosure_setting'),                // Callback
                         $this->style_settings_key,                                    // Page
@@ -208,11 +216,20 @@ class JKL_Reviews_Settings {
                         array( $this, 'attribution_setting' ), 
                         $this->style_settings_key, 
                         'other_section' 
-                );     
+                ); 
+                
+        /**
+         * Register our Settings
+         */
+        register_setting( $this->style_settings_key, 'box_style', array( $this, 'sanitize' ) );
+        register_setting( $this->style_settings_key, 'color_scheme', array( $this, 'sanitize' ) );
+        register_setting( $this->style_settings_key, 'custom_css', array( $this, 'sanitize' ) );
+        register_setting( $this->style_settings_key, 'disclosure', array( $this, 'sanitize' ) );
+        register_setting( $this->style_settings_key, 'attribution', array( $this, 'sanitize' ) );
         
     }
     
-        /* 
+    /* 
      * Admin Settings Page Add a Menu 
      */
     public function jkl_add_menus() {
@@ -340,10 +357,13 @@ class JKL_Reviews_Settings {
     public function enable_shortcode() {
         
         $options = get_option( 'jkl_reviews_settings' );
+        if( ! isset( $options[ 'use_shortcode' ] ) )
+            $options[ 'use_shortcode' ] = 1;
         ?>
+        <h3><?php _e( 'Shortcode', 'jkl-reviews' ); ?></h3>
+        <p><?php _e( 'Enabling this option will turn on the [jkl-reviews] shortcode which will allow you to place the Review box anywhere within your content.', 'jkl-reviews' ); ?></p>
         <input type='checkbox' id='jkl_reviews_settings[use_shortcode]' name='jkl_reviews_settings[use_shortcode]' value='1' <?php checked( $options['use_shortcode'], 1 ); ?> />
-        <label for='jkl_reviews_settings[use_shortcode]' class='note'><?php _e('Enable Shortcode to place a Reviews box anywhere within your Post content.'
-                . '<br><a href="#">Learn More</a>', 'jkl-reviews') ?></label>
+        <label for='jkl_reviews_settings[use_shortcode]' class='note'><?php _e('Enable Shortcode?', 'jkl-reviews') ?></label>
     
     <?php
     }
@@ -354,6 +374,8 @@ class JKL_Reviews_Settings {
     public function enable_cpt() {
         
         $options = get_option( 'jkl_reviews_settings' );
+        if( ! isset( $options[ 'use_cpt' ] ) )
+            $options[ 'use_cpt' ] = 0;
         ?>
         <input type='checkbox' id='jkl_reviews_settings[use_cpt]' name='jkl_reviews_settings[use_cpt]' value='1' <?php checked( $options['use_cpt'], 1 ); ?> />
         <label for='jkl_reviews_settings[use_cpt]' class='note'><?php _e('Enable JKL Reviews Custom Post Type for this site.'
@@ -368,6 +390,8 @@ class JKL_Reviews_Settings {
     public function enable_widget() {
         
         $options = get_option( 'jkl_reviews_settings' );
+        if( ! isset( $options[ 'use_widget' ] ) )
+            $options[ 'use_widget' ] = 0;
         ?>
         <input type='checkbox' id='jkl_reviews_settings[use_widget]' name='jkl_reviews_settings[use_widget]' value='1' <?php checked( $options['use_widget'], 1 ); ?> />
         <label for='jkl_reviews_settings[use_widget]' class='note'><?php _e('Enable Dynamic Sidebar to load review data when you click a Cover Image.'
@@ -382,6 +406,8 @@ class JKL_Reviews_Settings {
     public function enable_giveaways() {
         
         $options = get_option( 'jkl_reviews_settings' );
+        if( ! isset( $options[ 'use_giveaways' ] ) )
+            $options[ 'use_giveaways' ] = 0;
         ?>
         <input type='checkbox' id='jkl_reviews_settings[use_giveaways]' name='jkl_reviews_settings[use_giveaways]' value='1' <?php checked( $options['use_giveaways'], 1 ); ?> />
         <label for='jkl_reviews_settings[use_giveaways]' class='note'><?php _e('Enable Product Giveaways for this site.'
@@ -453,6 +479,8 @@ class JKL_Reviews_Settings {
      */
     public function disclosure_setting() {
         $options = get_option( 'jkl_reviews_settings' );
+        if( ! isset( $options[ 'disclosure' ] ) )
+            $options[ 'disclosure' ] = 0;
         ?>
         <input type='checkbox' id='jkl_reviews_settings[ disclosure ]' name='jkl_reviews_settings[ disclosure ]' value='1' <?php checked( $options[ 'disclosure' ], 1 ); ?> />
         <label for='jkl_reviews_settings[ disclosure ]' class='note'>
@@ -460,7 +488,7 @@ class JKL_Reviews_Settings {
         </label>
 
         <?php
-        if( isset( $options[ 'disclosure' ] ) ) {
+        if( $options[ 'disclosure' ] ) {
             $output = "<br /></br>";
             $output .= "<div id='jkl-options-sample-disclosure' class=" . $options[ 'box_style' ] . ">";
             $output .= "<strong>Example Disclosure</strong>";
