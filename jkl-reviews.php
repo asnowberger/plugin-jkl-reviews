@@ -1,23 +1,28 @@
 <?php
-/*
- * Plugin Name: JKL Reviews Working
- * Plugin URI: http://www.jekkilekki.com
- * Description: A simple Reviews plugin to review books, music, movies, products, or online courses with Star Ratings and links out to related sites.
- * Version: 2.0
- * Author: Aaron Snowberger
- * Author URI: http://www.aaronsnowberger.com
- * Text Domain: jkl-reviews
- * License: GPLv2
+/**
+ * The plugin bootstrap file
  * 
- * Requires at least: 3.8
- * Tested up to: 4.2.2
- *
- * @package 	JKL-Reviews
- * @category 	Core
- * @author 	Aaron Snowberger
+ * This file is responsible for starting the plugin using the main plugin class file.
+ * 
+ * @since       2.0.0
+ * @package     JKL_Reviews
+ * @author      Aaron Snowberger <jekkilekki@gmail.com>
+ * 
+ * @wordpress-plugin
+ * Plugin Name: JKL Reviews Working
+ * Plugin URI:  https://github.com/jekkilekki/plugin-jkl-reviews
+ * Description: A simple Reviews plugin to review books, music, movies, products, or online courses with Star Ratings and links out to related sites.
+ * Version:     2.0.0
+ * Author:      Aaron Snowberger
+ * Author URI:  http://www.aaronsnowberger.com
+ * Text Domain: jkl-reviews
+ * License:     GPL2
+ * 
+ * Requires at least: 3.5
+ * Tested up to: 4.3.1
  */
 
-/*
+/**
  * JKL Reviews allows you to add product reviews to your site & display them as Google does.
  * Copyright (C) 2015  AARON SNOWBERGER (email: JEKKILEKKI@GMAIL.COM)
  * 
@@ -66,7 +71,6 @@
  * 6. Incorporate AJAX for image chooser, Material Connection disclosure, CSS box styles, etc
  */
 
-
 /**
  * Current OOP References:
  * @link WOW http://code.tutsplus.com/articles/object-oriented-programming-in-wordpress-building-the-plugin-i--cms-21083
@@ -82,170 +86,29 @@
  */
 
 /* Prevent direct access */
-//defined( 'ABSPATH' ) or die( 'Plugin file cannot be accessed directly.' );
-if ( ! defined( 'ABSPATH' ) ) exit;
-if ( ! class_exists( 'JKL_Reviews' ) ) {
-    
-    class JKL_Reviews {
-        
-        /**
-         * Current version of the plugin.
-         * @var string
-         */
-        protected $version; 
-        
-        /**
-         * Type of plugin to run (Meta-boxes, CPT, or both).
-         * @var string
-         */
-        protected $plugin_slug;
-        
-        /**
-         * Default plugin options
-         * @var array
-         */
-        protected $options;
-        
-        /**
-         * Loader
-         * @var array
-         */
-        protected $loader;
-        
-        
-        /**
-         * CONSTRUCTOR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         * Initializes the JKL_Reviews object
-         */
-        public function __construct() {
-            
-            // Set the version number
-            $this->version = '2.0';
-            $this->plugin_slug = 'jkl-reviews-slug';
-            
-            // Get the initial plugin options (should it be 'protected' or 'public'?
-            $this->options = get_option( 'jkl_reviews_options' );;
-            $this->loader = [];
-            
-            // 
-            //$this->load_dependencies();
-            //$this->define_admin_hooks();
-            
-            
-            // Incorporate Metaboxes
-            require_once( sprintf ( "%s/inc/metaboxes.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Metabox = new JKL_Reviews_Metabox();
-            
-            // Incorporate Settings
-            $this->jkl_admin_init();
-            
-            
-            /**
-             * Load optional plugin components
-             */
-
-            // Incorporate Shortcode
-            if( $this->options[ 'use_shortcode' ] ) {
-                require_once( sprintf ( "%s/inc/shortcode.php", dirname( __FILE__ ) ) );
-                $JKL_Reviews_Shortcode = new JKL_Reviews_Shortcode();
-            }
-            
-            // Incorporate Post Type
-            if( $this->options[ 'use_cpt' ] ) {
-                require_once( sprintf ( "%s/inc/post-type.php", dirname( __FILE__ ) ) );
-                $JKL_Reviews_Post_Type = new JKL_Reviews_Post_Type();
-            }
-            
-            // Incorporate Widget
-            if( $this->options[ 'use_widget' ] ) {
-                require_once( sprintf ( "%s/inc/widget.php", dirname( __FILE__ ) ) );
-                $JKL_Reviews_Widget = new JKL_Reviews_Widget();
-            }
-            
-            // Incorporate Giveaways
-            if( $this->options[ 'use_giveaways' ] ) {
-                require_once( sprintf ( "%s/inc/giveaways.php", dirname( __FILE__ ) ) );
-                $JKL_Reviews_Giveaways = new JKL_Reviews_Giveaways();
-            }
-            
-        } // END __contstruct
-        
-        /**
-         * ACTIVATION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         */
-        
-        /*
-         * Activate the plugin
-         */
-        public static function activate() {
-            
-        } // END activate
-        
-        /*
-         * Deactivate the plugin
-         */
-        public static function deactivate() {
-            
-        } // END deactivate
-        
-        public function get_version() {
-            return $this->version;
-        }
-        
-        /**
-         * SETUP !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         */
-        
-        /**
-         *  Load text domain for localization 
-         */
-        public function jkl_admin_init() {
-            // Set up the settings for this plugin
-            $this->jkl_init_settings();
-            // Possibly do additional admin_init tasks
-        } // END admin_init
-        
-        /*
-         * Initialize some custom settings
-         */
-        public function jkl_init_settings() {
-            
-            /** 
-             * Register the settings for this plugin
-             * @source: http://codex.wordpress.org/Function_Reference/register_setting
-             */
-            require_once( sprintf( "%s/admin/settings.php", dirname( __FILE__ ) ) );
-            $JKL_Reviews_Settings = new JKL_Reviews_Settings();
-            
-        } // END public function init_settings
-  
-
-    } // END class JKL_Reviews
-} // END if(!class_exists())
+if ( ! defined( 'WPINC' ) ) die;
 
 /**
- * BUILD OBJECT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * The class that represents the admin settings page
  */
-if ( class_exists( 'JKL_Reviews' ) ) {
-    
-    // Installation and uninstallation hooks
-    register_activation_hook( __FILE__, array( 'JKL_Reviews', 'activate' ) );
-    register_deactivation_hook( __FILE__, array( 'JKL_Reviews', 'deactivate' ) );
-    
+require_once plugin_dir_path( __FILE__ ) . 'admin/admin-plugins-admin.php';
+
+/**
+ * The class that represents the meta box that will display the fields for the meta box
+ */
+require_once plugin_dir_path( __FILE__ ) . 'admin/class-jkl-reviews-settings.php';
+
+/**
+ * Load the core plugin class that is used to define the meta boxes, settings, etc
+ */
+require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-reviews.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-reviews-metabox.php';
+
+
+
+function run_reviews() {
     // Instantiate the plugin class
-    $jklreviews = new JKL_Reviews();
-    
-    // Add a link to the settings page onto the plugin page
-    if ( isset ( $jklreviews ) ) {
-        
-        // Add the settings link to the plugins page
-        function jkl_plugin_settings_link( $links ) {
-            $settings_link = '<a href="admin.php?page=jkl_reviews_settings">Settings</a>';
-            array_unshift( $links, $settings_link );
-            return $links;
-        }
-        
-        $plugin = plugin_basename( __FILE__ );
-        add_filter( "plugin_action_links_$plugin", 'jkl_plugin_settings_link' );
-    }
+    $JKL_Reviews = new JKL_Reviews( 'jkl-reviews', '2.0.0' );
 }
+
+run_reviews();
