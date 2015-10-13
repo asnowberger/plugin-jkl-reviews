@@ -1,14 +1,64 @@
-.jkl_review {
+/*
+ * Meta box tabs
+ */
+a.nav-tab {
+    margin-bottom: -4px;
+    background: #f1f1f1;
+}
+a.nav-tab-active {
+    background: #fcfcfc;
+}
+
+/*
+ * Meta box Review info choices
+ */
+#jkl-reviews-types {
+    
+}
+#jkl-reviews-types a {
+    text-decoration: none;
+    color: white;
+    background: #777;
+    width: 12.5%;
+    box-sizing: border-box;
+    padding: 10px;
+    display: inline-block;
+    float: left;
+}
+#jkl-reviews-types a:hover,
+#jkl-reviews-types a.active {
+    background: #aaa;
+}
+#jkl-reviews-types i {
+    text-align: center;
+    color: white;
+    display: block;
+}
+#jkl-reviews-types span {
+    color: white;
+    margin-top: 5px;
+    text-align: center;
+    display: block;
+}
+#jkl-reviews-types:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.jkl-review {
     border: 1px solid silver;
     background-color: #fcfcfc;
     padding: 20px;
     width: 100%;
     margin-bottom: 10px;
+    box-sizing: border-box;
+    clear: both;
 }
-.jkl_review input[type=checkbox] {
+.jkl-review input[type=checkbox] {
     margin: -3px 0 0 10px;
 }
-.jkl_review input[type=url] {
+.jkl-review input[type=url] {
     width: 170px;
 }
 .radio {
@@ -16,7 +66,7 @@
     float: left;
     margin: 5px 10px 5px 0; 
 }
-.jkl_review input[type=radio]::first-child {
+.jkl-review input[type=radio]::first-child {
     margin-left: 0px;
 }
 #jkl_cover_preview img {
@@ -30,7 +80,7 @@ td.left-label {
 .rating-label {
     //padding-top: 12px;
 }
-.jkl_review th {
+.jkl-review th {
     padding-bottom: 10px;
     font-size: 1.25em;
     text-align: left;
@@ -88,7 +138,7 @@ td.left-label {
 .fa {
     color: #464646;
     padding: 0 2px;
-    font-size: 16px;
+    /*font-size: 16px;*/
 }
 
 #jkl-options-sample-disclosure {

@@ -150,9 +150,15 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
          */
         public function jkl_enqueue_admin_styles() {
             
+            // Add FontAwesome for our lovely font icons
+            wp_enqueue_style( 
+                    'fontawesome', 
+                    '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'
+            );
+            
             wp_enqueue_style(
                     $this->name . '-admin',
-                    plugins_url( 'jkl-reviews/admin/css/admin.css' ),
+                    plugins_url( 'jkl-reviews-working/admin/css/admin.css' ),
                     false,
                     $this->version
             );
@@ -168,14 +174,21 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
                 
                 wp_enqueue_script(
                         $this->name . '-tabs',
-                        plugins_url( 'jkl-reviews/admin/js/tabs.js' ),
+                        plugins_url( 'jkl-reviews-working/inc/js/tabs.js' ),
                         array( 'jquery' ),
                         $this->version
                 );
                 
                 wp_enqueue_script(
-                        $this->name . '-enqueue-files',
-                        plugins_url( 'jkl-reviews/admin/js/enqueue-files.js' ),
+                        $this->name . '-review-type',
+                        plugins_url( 'jkl-reviews-working/inc/js/review-type.js' ),
+                        array( 'jquery' ),
+                        $this->version
+                );
+                
+                wp_enqueue_script(
+                        $this->name . '-links',
+                        plugins_url( 'jkl-reviews-working/inc/js/add-links.js' ),
                         array( 'jquery' ),
                         $this->version
                 );

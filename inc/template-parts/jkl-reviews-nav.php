@@ -6,16 +6,18 @@
  */
 ?>
 
-<div id="jkl-reviews-navigation">
+<div id="jkl-reviews-meta-nav">
     <h2 class="nav-tab-wrapper current">
         <a class="nav-tab nav-tab-active" href="javascript:;">Product Info</a>
+        <a class="nav-tab" href="javascript:;">Rating</a>
         <a class="nav-tab" href="javascript:;">Links</a>
-        <a class="nav-tab" href="javascript:;">Run Giveaway</a>
+        <a class="nav-tab" href="javascript:;">Giveaway</a>
     </h2>
 
     <?php
         // Include the template parts for rendering the tabbed content
         include_once( 'tab-info.php' );
+        include_once( 'tab-rating.php' );
         include_once( 'tab-links.php' );
         include_once( 'tab-giveaway.php' );
 
