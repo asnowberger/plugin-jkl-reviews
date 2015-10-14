@@ -13,6 +13,6 @@
 
 <div class="inside hidden">
     <p>Add any additional links below.</p>
-    <div id="jkl-reviews-links"></div><!-- #jkl-page-ss-enqueue -->
-    <p><input type="submit" id="jkl-reviews-add-link" value="Add Link" />
+    <div id="jkl-reviews-links"></div><!-- #jkl-reviews-links -->
+    <p><input type="submit" id="jkl-reviews-add-link" value="Add Link" /></p>
 </div>

@@ -50,7 +50,7 @@ class JKL_Reviews_Metabox {
     public function jkl_add_review_metabox() {
         
         add_meta_box(
-                'jkl-review-info',
+                'jkl-review-info-meta-box',
                 __( 'JKL Reviews & Giveaways', 'jkl-reviews' ),
                 array( $this, 'jkl_display_meta_box' ),
                 'post',     // @TODO: Later, let the settings determine where to create this meta box

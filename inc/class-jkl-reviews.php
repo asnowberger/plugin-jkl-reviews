@@ -193,6 +193,13 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
                         $this->version
                 );
                 
+                wp_enqueue_script(
+                        $this->name . '-details',
+                        plugins_url( 'jkl-reviews-working/inc/js/add-details.js' ),
+                        array( 'jquery' ),
+                        $this->version
+                );
+                
             }
             
         } // END jkl_enqueue_admin_scripts()
