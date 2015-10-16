@@ -25,6 +25,15 @@ if ( ! class_exists( 'JKL_Reviews_Metabox' ) ) {
 class JKL_Reviews_Metabox {
     
     /**
+     * Array of the labels for each of the Review Types in the Meta box
+     * 
+     * @since   2.0.1
+     * 
+     * @var     array
+     */
+    private $review_info = array();
+    
+    /**
      * CONSTRUCTOR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      * Register this class with the WordPress API
      * 

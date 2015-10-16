@@ -19,28 +19,25 @@ function createInputElement( $ ) {
      * First, count the number of input fields that already exist.
      * This is how we set the name and ID attributes of the element. 
      */
-    inputCount = $( '#jkl-review-details' ).children().length;
+    inputCount = $( this ).prev( '.jkl-review-detail-info' ).children().length;
+    
+    if ( inputCount > 0 ) {
+        $( this ).next().removeClass( 'hidden' );
+    }
+    
     inputCount++;
     
     // Next, create the actual input element and return it
-    $inputLabel = 
+    $inputDetail = 
             $( '<input />' )
             .attr( 'type', 'text' )
             .attr( 'name', 'jkl-review-detail-label-' + inputCount )
             .attr( 'id', 'jkl-review-detail-label-' + inputCount )
             .attr( 'class', 'jkl-review-detail-label' )
-            .attr( 'placeholder', 'Label' )
-            .attr( 'value', '' );
-    $inputDetail = 
-            $( '<input />' )
-            .attr( 'type', 'text' )
-            .attr( 'name', 'jkl-review-detail-info-' + inputCount )
-            .attr( 'id', 'jkl-review-detail-info-' + inputCount )
-            .attr( 'class', 'jkl-review-detail-info' )
-            .attr( 'placeholder', 'Information' )
+            .attr( 'placeholder', 'Detail' )
             .attr( 'value', '' );
     
-    return $inputLabel.add( $inputDetail );
+    return $inputDetail;
     
 } // END createInputElement($)
 
@@ -49,9 +46,15 @@ function createInputElement( $ ) {
     
     $( function() {
         
-        var $inputElement;
+        /**
+         * 
+         */
+        $( '#jkl-reviews-add-details' ).on( 'click', function( e ) {
+            $( '#jkl-review-details' ).removeClass( 'hidden' );
+            $( this ).addClass( 'hidden' );
+        });
         
-        $( '#jkl-reviews-add-detail' ).on( 'click', function( e ) {
+        $( '.jkl-reviews-add-item' ).on( 'click', function( e ) {
             
             e.preventDefault();
             
@@ -59,7 +62,7 @@ function createInputElement( $ ) {
              * Create a new input element that will be used to capture the 
              * user input and append it to the container just above this button.
              */
-            $( '#jkl-review-details' ).append( createInputElement( $ ) );
+            $( this ).prev().append( createInputElement( $ ) );
             
         }); // END click function
         

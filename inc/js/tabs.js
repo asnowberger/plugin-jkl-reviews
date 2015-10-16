@@ -44,17 +44,17 @@
                     tabIndex = $( this ).index(); // 1-2
                     
                     // Hide the old active content
-                    $( '#jkl-reviews-meta-nav' )
+                    $( '#jkl-review-info' )
                             .children( 'div:not( .inside.hidden ) ' )
                             .addClass( 'hidden' );
                     
-                    $( '#jkl-reviews-meta-nav' )
+                    $( '#jkl-review-info' )
                             .children( 'div:nth-child(' + ( tabIndex ) + ')' )
                             .addClass( 'hidden' );
                     
                     // And display the new content
-                    $( '#jkl-reviews-meta-nav' )
-                            .children( 'div:nth-child(' + ( tabIndex + 3 ) + ')' )
+                    $( '#jkl-review-info' )
+                            .children( 'div:nth-child(' + ( tabIndex + 2 ) + ')' )
                             .removeClass( 'hidden' );
                 } // END if
                 

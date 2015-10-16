@@ -12,6 +12,10 @@ a.nav-tab-active {
     max-width: 900px;
     background: #fcfcfc;
 }
+.divider {
+    border-top: 1px solid gainsboro;
+    margin: 10px 0;
+}
 /*
  * Meta box Review info choices
  */
@@ -44,7 +48,7 @@ a.nav-tab-active {
     text-align: center;
     display: block;
 }
-#jkl-reviews-types:after {
+.group:after {
   content: "";
   display: table;
   clear: both;
@@ -56,6 +60,7 @@ a.nav-tab-active {
 #jkl-review-info {
     border: 1px solid #ccc;
     border-top: none;
+    padding-bottom: 20px;
 }
 .jkl-review { }
 .jkl-label {
@@ -64,14 +69,43 @@ a.nav-tab-active {
     vertical-align: top;
     padding-top: 6px;
 }
+.jkl-label-float {
+    float: left;
+}
 .jkl-review input {
     width: 75%;
     margin-bottom: 10px;
 }
-.jkl-review-detail-label {
-    width: 18%!important;
-    margin-right: 2%;
+.jkl-labeler input {
+    width: 45%;
+    margin-left: 20px;
 }
+.jkl-labeler {
+    width: 100%;
+    clear: both;
+    display: block;
+}
+.jkl-label-preview-container {
+    float: right;
+    padding-top: 6px;
+}
+.jkl-label-preview{
+    font-size: 0.8em;
+    border: 2px solid silver;
+    border-radius: 5px;
+    padding: 2px 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #999;
+    margin-left: 5px;
+}
+#jkl-review-description {
+    width: 75%;
+    height: 100px;
+    margin-left: 1px;
+    margin-bottom: 10px;
+}
+.jkl-review-detail-label { }
 .jkl-review-details-left {
     width: 50%;
     float: left;
@@ -99,7 +133,7 @@ a.nav-tab-active {
 .note {
     color: #999;
     font-style: oblique;
-    margin: 5px;
+    margin: 5px 5px 5px 0;
 }
 span.note {
     margin-left: 22%;
@@ -129,12 +163,6 @@ span.note {
 #star-rating-text {
     position: absolute;
     margin: 6px 0 0 80px;
-}
-#jkl-review-description {
-    width: 75%;
-    height: 100px;
-    margin-left: 1px;
-    margin-bottom: 10px;
 }
 
 .select-dropdown {

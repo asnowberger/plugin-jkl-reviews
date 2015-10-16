@@ -11,41 +11,6 @@
  * @param       object  $   A reference to the jQuery object.
  * @returns     html        HTML to be included in the meta box.
  */
-function bookInfo( $ ) {
-    return $( '<input />' )
-            .attr( 'type', 'text' )
-            .attr( 'name', 'jkl-reviews-link-' + 1 )
-            .attr( 'id', 'jkl-reviews-link-' + 1 )
-            .attr( 'value', '' );
-}
-
-function audioInfo() {
-    
-}
-
-function videoInfo() {
-    
-}
-
-function courseInfo() {
-    
-}
-
-function productInfo() {
-    
-}
-
-function serviceInfo() {
-    
-}
-
-function travelInfo() {
-    
-}
-
-function otherInfo() {
-    
-}
 
 ( function( $ ) {
     'use strict';
