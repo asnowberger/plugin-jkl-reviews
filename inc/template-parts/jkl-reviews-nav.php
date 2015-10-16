@@ -14,7 +14,6 @@ global $_wp_admin_css_colors;
 $admin_color = get_user_option( 'admin_color' );
 $colors      = $_wp_admin_css_colors[$admin_color]->colors;
 
-$review_slugs = get_review_type_slugs( $review_info );
 /**
  * Store all Review Meta strings in an array of arrays to access more easily.
  * 
@@ -195,17 +194,6 @@ $review_info = array(
     
 ); // END $review_info array
 
-function get_review_type_slugs( $array ) {
-    
-    $slug_array = array();
-    
-    foreach( $review_info as $review_type => $data ) {
-        $slug_array.push( $review_type );
-    }
-    
-    return $slug_array;
-}
-
 /**
  * Takes a string that represents the 'slug' of the Review Type and returns a string
  * with the appropriate FontAwesome string for that Review Type
@@ -269,7 +257,7 @@ function get_fa_icon( $string ) {
         <a class="nav-tab nav-tab-active" href="javascript:;">Product Info</a>
         <a class="nav-tab" href="javascript:;">Details</a>
         <a class="nav-tab" href="javascript:;">Rating</a>
-        <a class="nav-tab" href="javascript:;">Giveaway</a>
+        <a class="nav-tab hidden" href="javascript:;">Giveaway</a>
     </h2>
 
     <!-- REVIEW META BOX -->

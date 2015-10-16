@@ -1,12 +1,17 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Provides the "Product Info" view for the corresponding tab in the Post Meta Box.
+ * 
+ * @since       2.0.1
+ * 
+ * @package     JKL_Reviews
+ * @subpackage  JKL_Reviews/inc/template-parts
+ * @author      Aaron Snowberger <jekkilekki@gmail.com>
  */
+
 ?>
-<div id="jkl-review-meta">   
+<div class="jkl-review-meta">   
     <!-- REVIEW INFORMATION TABLE -->
     <!-- Default helper text -->
     <div class="jkl-review"> 
