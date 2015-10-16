@@ -12,7 +12,7 @@
 
 ?>
 
-<div class="jkl-review-meta hidden">
+<div class="jkl-review-meta">
 
     <?php
     /**
@@ -20,14 +20,14 @@
      */
     foreach( $review_info as $review_type => $data ) {
         
-        echo "<div id='$review_type-details' class='jkl-review $review_type-details'>";
+        echo "<div id='$review_type-details' class='jkl-review $review_type-info hidden'>";
         
             /**
              * Call function to load each Review Type's labels in meta boxes
              */
             jkl_reviews_load_detail_part( $review_type, $data );
             
-        //echo "</div><!-- #$review_type-details -->";
+        echo "</div><!-- #$review_type-details -->";
     }
     ?>
     
@@ -92,7 +92,6 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
     <p>Add any additional links below.</p>
     <div id="jkl-reviews-links"></div><!-- #jkl-reviews-links -->
     <p><input type="submit" id="jkl-reviews-add-link" value="Add Link" /></p>
-</div>
 
 <?php
 }

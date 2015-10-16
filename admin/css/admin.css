@@ -124,8 +124,9 @@ a.nav-tab-active {
     margin: -3px 5px 0 0;
     width: auto;
 }
-.jkl-review input[type=url] {
-    width: 170px;
+.jkl-review input[type=url]/*,
+.input-date*/ {
+    width: 170px!important;
 }
 #jkl-cover-preview img {
     max-height: 100px;

@@ -54,7 +54,7 @@
                     
                     // And display the new content
                     $( '#jkl-review-info' )
-                            .children( 'div:nth-child(' + ( tabIndex + 2 ) + ')' )
+                            .children( 'div:nth-child(' + ( tabIndex + 3 ) + ')' )
                             .removeClass( 'hidden' );
                 } // END if
                 

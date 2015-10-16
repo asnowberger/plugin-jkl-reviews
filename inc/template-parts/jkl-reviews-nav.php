@@ -282,6 +282,9 @@ function get_fa_icon( $string ) {
             } 
             ?>
         </section><!-- #jkl-reviews-types Icons Menu -->
+        
+        <!-- Default helper text -->
+        <p class="jkl-review-helper note"><?php _e( 'Select your Review Type from the menu above.', 'jkl-reviews' ); ?></p>
 
         <?php
             // Include the template parts for rendering the tabbed content

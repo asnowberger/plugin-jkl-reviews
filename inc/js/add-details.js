@@ -46,6 +46,10 @@ function createInputElement( $ ) {
     
     $( function() {
         
+        $( '.input-date' ).datepicker({
+            dateFormat : 'yy-mm-dd'
+        });
+        
         /**
          * 
          */

@@ -21,56 +21,58 @@
             
             e.preventDefault();
             
+            $( '.jkl-review-helper' ).addClass( 'hidden' );
+            
             var target = $( this ).attr( "id" );
 
             switch( target ) {
                 case 'book-type':
                     $( '.jkl-review' ).addClass( 'hidden' );
                     $( '#jkl-reviews-types a' ).removeClass( 'active' );
-                    $( '#book-info' ).toggleClass( 'hidden' );
-                    $( '#book-type' ).addClass( 'active' );
+                    $( '.book-info' ).toggleClass( 'hidden' );
+                    $( '.book-type' ).addClass( 'active' );
                     break;
                 case 'audio-type':
                     $( '.jkl-review' ).addClass( 'hidden' );
                     $( '#jkl-reviews-types a' ).removeClass( 'active' );
-                    $( '#audio-info' ).toggleClass( 'hidden' );
-                    $( '#audio-type' ).addClass( 'active' );
+                    $( '.audio-info' ).toggleClass( 'hidden' );
+                    $( '.audio-type' ).addClass( 'active' );
                     break;
                 case 'video-type':
                     $( '.jkl-review' ).addClass( 'hidden' );
                     $( '#jkl-reviews-types a' ).removeClass( 'active' );
-                    $( '#video-info' ).toggleClass( 'hidden' );
-                    $( '#video-type' ).addClass( 'active' );
+                    $( '.video-info' ).toggleClass( 'hidden' );
+                    $( '.video-type' ).addClass( 'active' );
                     break;
                 case 'course-type':
                     $( '.jkl-review' ).addClass( 'hidden' );
                     $( '#jkl-reviews-types a' ).removeClass( 'active' );
-                    $( '#course-info' ).toggleClass( 'hidden' );
-                    $( '#course-type' ).addClass( 'active' );
+                    $( '.course-info' ).toggleClass( 'hidden' );
+                    $( '.course-type' ).addClass( 'active' );
                     break;
                 case 'product-type':
                     $( '.jkl-review' ).addClass( 'hidden' );
                     $( '#jkl-reviews-types a' ).removeClass( 'active' );
-                    $( '#product-info' ).toggleClass( 'hidden' );
-                    $( '#product-type' ).addClass( 'active' );
+                    $( '.product-info' ).toggleClass( 'hidden' );
+                    $( '.product-type' ).addClass( 'active' );
                     break;
                 case 'service-type':
                     $( '.jkl-review' ).addClass( 'hidden' );
                     $( '#jkl-reviews-types a' ).removeClass( 'active' );
-                    $( '#service-info' ).toggleClass( 'hidden' );
-                    $( '#service-type' ).addClass( 'active' );
+                    $( '.service-info' ).toggleClass( 'hidden' );
+                    $( '.service-type' ).addClass( 'active' );
                     break;
                 case 'travel-type':
                     $( '.jkl-review' ).addClass( 'hidden' );
                     $( '#jkl-reviews-types a' ).removeClass( 'active' );
-                    $( '#travel-info' ).toggleClass( 'hidden' );
-                    $( '#travel-type' ).addClass( 'active' );
+                    $( '.travel-info' ).toggleClass( 'hidden' );
+                    $( '.travel-type' ).addClass( 'active' );
                     break;
                 default:
                     $( '.jkl-review' ).addClass( 'hidden' );
                     $( '#jkl-reviews-types a' ).removeClass( 'active' );
-                    $( '#other-info' ).toggleClass( 'hidden' );
-                    $( '#other-type' ).addClass( 'active' );
+                    $( '.other-info' ).toggleClass( 'hidden' );
+                    $( '.other-type' ).addClass( 'active' );
             }
             
             /**

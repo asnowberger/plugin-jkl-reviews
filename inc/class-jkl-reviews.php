@@ -172,6 +172,8 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
             
             if ( 'post' === get_current_screen()->id ) {
                 
+                wp_enqueue_script( 'jquery-ui-datepicker' );
+                
                 wp_enqueue_script(
                         $this->name . '-tabs',
                         plugins_url( 'jkl-reviews-working/inc/js/tabs.js' ),

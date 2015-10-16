@@ -13,10 +13,6 @@
 ?>
 <div class="jkl-review-meta">   
     <!-- REVIEW INFORMATION TABLE -->
-    <!-- Default helper text -->
-    <div class="jkl-review"> 
-        <p class="note"><?php _e( 'Select your Review Type from the menu above.', 'jkl-reviews' ); ?></p>
-    </div>
     
     <?php 
     /**
@@ -63,7 +59,7 @@ function jkl_reviews_load_info_part( $str_type, $array ) {
 
         <!-- Cover image preview. This should only display the cover image IF THERE IS ONE. -->
         <?php //if ( $jklrv_stored_meta['jkl-review-cover'][0] != '' ) { ?>
-        <div id="jkl-cover-preview">    
+            <div id="jkl-cover-preview">    
                 <label for="jkl-review-cover-preview" class="jkl-label"><?php echo __( sprintf( '%s Preview ', $array['cover'] ), 'jkl-reviews' ); ?></label>
             
                 <img src="<?php echo esc_url( $jklrv_stored_meta['jkl-review-cover'][0] ); ?>" />
@@ -106,9 +102,10 @@ function jkl_reviews_load_info_part( $str_type, $array ) {
 
         <!-- Release Date -->
         <label for="jkl-review-date" class="jkl-label"><?php echo $array['date']; ?></label>
-        <input type="text" class="input-text" id="jkl-review-date" name="jkl-review-date" 
+        <input type="text" class="input-date" id="jkl-review-date" name="jkl-review-date" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-date'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-date'][0] ); ?>" />
-
+        <br>
+        
         <!-- Length -->
         <label for="jkl-review-length" class="jkl-label"><?php echo $array['length']; ?></label>
         <input type="text" class="input-text" id="jkl-review-length" name="jkl-review-length" 
