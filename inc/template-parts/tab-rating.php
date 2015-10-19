@@ -7,7 +7,7 @@
  */
 ?>
 
-<div class="inside hidden">
+<div class="inside hidden tab-rating">
     <!-- ##### PRODUCT RATING TABLE -->
     <table class="jkl_review">
         <tr><th colspan="2"><?php _e( 'Product Rating', 'jkl-reviews/languages' ) ?></th></tr>

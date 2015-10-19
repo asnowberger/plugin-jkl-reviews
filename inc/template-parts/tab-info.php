@@ -11,7 +11,7 @@
  */
 
 ?>
-<div class="jkl-review-meta">   
+<div class="jkl-review-meta tab-info">   
     <!-- REVIEW INFORMATION TABLE -->
     
     <?php 

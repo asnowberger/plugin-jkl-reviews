@@ -7,7 +7,7 @@
  */
 ?>
 
-<div class="inside hidden">
+<div class="inside hidden tab-giveaway">
     
     <div class="jkl-reviews-types">
         <ul>

@@ -63,6 +63,9 @@ a.nav-tab-active {
     padding-bottom: 20px;
 }
 .jkl-review { }
+.jkl-review .wp-media-buttons {
+    display: none;
+}
 .jkl-label {
     width: 20%;
     display: inline-block;
@@ -72,8 +75,11 @@ a.nav-tab-active {
 .jkl-label-float {
     float: left;
 }
-.jkl-review input {
+.jkl-review input{
     width: 75%;
+    margin-bottom: 10px;
+}
+.jkl-review select {
     margin-bottom: 10px;
 }
 .jkl-labeler input {
@@ -132,7 +138,7 @@ a.nav-tab-active {
     max-height: 100px;
 }
 .note {
-    color: #999;
+    color: #555;
     font-style: oblique;
     margin: 5px 5px 5px 0;
 }
