@@ -28,7 +28,7 @@ function createLinkElement( $ ) {
     }
     
     // Next, create the actual input element and return it
-    $divElement = $( '<div/>' )
+    $divElement = $( '<span/>' )
             .attr( 'id', 'jkl-reviews-link-' + linkCount + '-container' );
     $faElement = 
             $( '<input />' )
@@ -61,24 +61,24 @@ function createLinkElement( $ ) {
 
 function removeLinkElement( $ ) {
     
-    var $linkElement, linkCount;
+    var linkCount;
     
     /*
      * First, count the number of input fields that already exist.
      * This is how we set the name and ID attributes of the element. 
      */
     
-    linkCount = $( '#jkl-reviews-links' ).children( 'div' ).length;
+    linkCount = $( '#jkl-reviews-links' ).children( 'span' ).length;
     alert( linkCount );
     
-    if ( linkCount <= 0 ) {
+    if ( linkCount < 1 ) {
         $( '#jkl-reviews-remove-link' ).addClass( 'hidden' );
         $( '#jkl-reviews-link-header' ).addClass( 'hidden' );
-    } 
+    } else {
     
-        $( this ).parent().remove();
+        $( this ).parent().children( 'span' ).remove();
+        linkCount--;
 
-    
-    linkCount--;
-    
+    }
+        
 } // END removeLinkElement($)
