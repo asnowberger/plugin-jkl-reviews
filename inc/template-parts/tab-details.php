@@ -49,7 +49,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
         <!-- Label option - to display near title - gives details about the product -->
         <div class="jkl-labeler group">
             
-            <h4>Label</h4>
+            <!--<h4>Label</h4>-->
             <input type='checkbox' id='jkl-review-labeled' name='jkl-review-labeled' value='1' <?php //checked( $options['use_shortcode'], 1 ); ?> />
             <label for="jkl-review-labeled" name="jkl-review-labeled"><?php echo $array['labeled']; ?></label>
             <input type="text" class="" id="jkl-review-details-label" name="jkl-review-details-label" 
@@ -68,7 +68,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
         <!-- Details -->
         <div id="jkl-review-details" class="group">
             
-            <h4>Details</h4>
+            <h4>Detail Lists</h4>
             <p class="note"><?php _e( sprintf( 'Add %s details as lists. Example list headings are shown:', ucwords( $str_type ) ), 'jkl-reviews' ); ?></p>
             
             <div class="jkl-review-details group">
@@ -142,7 +142,14 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
         
         <h4>Links</h4>
     <p class="note"><?php _e( sprintf( 'Add %s link URLs below.', ucwords( $str_type ) ), 'jkl-reviews' ); ?></p>
+    <div id="jkl-reviews-link-header" class="hidden">
+        <label class="jkl-reviews-link-icon"><?php _e( 'Icon Code', 'jkl-reviews' ); ?></label>
+        <label class="jkl-reviews-link-label"><?php _e( 'Link Title', 'jkl-reviews' ); ?></label>
+        <label class="jkl-reviews-link-url"><?php _e( 'Link URL', 'jkl-reviews' ); ?></label>
+    </div>
+    
     <div id="jkl-reviews-links"></div><!-- #jkl-reviews-links -->
+    
     <p>
         <input type="submit" id="jkl-reviews-add-link" class="button" value="+" />
         <input type="submit" id="jkl-reviews-remove-link" class="button hidden" value="-" />
