@@ -147,6 +147,32 @@ span.note {
     margin-top: -20px;
     display: block;
 }
+
+input[type=text].jkl-reviews-link-icon,
+.jkl-reviews-link-icon {
+    width: 10%;
+    margin-right: 2%;
+}
+input[type=text].jkl-reviews-link-label,
+.jkl-reviews-link-label {
+    width: 25%;
+    margin-right: 2%;
+}
+input[type=url].jkl-reviews-link-url,
+.jkl-reviews-link-url {
+    width: 60%!important;
+}
+#jkl-reviews-link-header label {
+    display: inline-block;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+
+
+
 #jkl-review-rating {
     margin-left: 20px;
 }
