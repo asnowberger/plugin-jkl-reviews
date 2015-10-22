@@ -54,8 +54,14 @@ function createLinkElement( $ ) {
             .attr( 'class', 'jkl-reviews-link-url')
             .attr( 'value', '' )
             .attr( 'placeholder', 'URL' );
+    $removeElement =
+            $( '<input />')
+            .attr( 'type', 'submit' )
+            .attr( 'id', 'jkl-reviews-remove-link' )
+            .attr( 'class', 'button' )
+            .attr( 'value', 'x' );
     
-    return $divElement.append( $faElement.add( $labelElement.add( $linkElement ) ) );
+    return $divElement.append( $faElement.add( $labelElement.add( $linkElement.add( $removeElement)  ) ) );
     
 } // END createInputElement($)
 

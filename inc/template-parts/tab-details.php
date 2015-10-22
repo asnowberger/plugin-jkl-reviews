@@ -76,9 +76,12 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
             </p>
             
             <div class="jkl-review-details group">
-                <form>
+                <form class="group">
                     <fieldset class="jkl-review-details-left">
-                        <legend><?php _e( 'List 1:', 'jkl-reviews' ); ?></legend>
+                        <legend>
+                            <input type='checkbox' id='jkl-review-show-list-1' name='jkl-review-show-list-1' value='1' <?php //checked( $options['use_shortcode'], 1 ); ?> />
+                            <?php _e( 'Display List 1:', 'jkl-reviews' ); ?>
+                        </legend>
                         
                         <label for="jkl-detail-list-1-display-type" class="jkl-label"><?php _e( 'Type:', 'jkl-reviews' ); ?></label>
                         <select id="jkl-detail-list-1-display-type" name="jkl-reviews-detail-list-1-display-type">
@@ -86,7 +89,6 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                             <option value="bullet">&bull; Bullet list</option>
                             <option value="csv">, Comma Separated Values</option>
                             <option value="none">No style</option>
-                            <option value="delete">Don't display</option>
                         </select>
                         <br>
                         <label for="jkl-review-detail-label-1" class="jkl-label"><?php _e( 'Label:', 'jkl-reviews' ); ?></label>
@@ -94,19 +96,21 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                                value="<?php echo ( isset( $jklrv_stored_meta['jkl-review-detail-label-1'] ) ? esc_attr( $jklrv_stored_meta['jkl-review-detail-label-1'][0] ) : $array['details-1-label'] ); ?>" />
 
                         <div class="jkl-review-detail-info">
+                            <input type="button" class="jkl-reviews-add-item button" value="+" />
                             <ol>
                                 <li class="sortable">
                                     <input type='text' name='jkl-detail-list-1-item-1' id='jkl-detail-list-1-item-1' class='jkl-review-detail' placeholder='Detail' value='' />
                                 </li>
                             </ol>
-                            
-                            <input type="button" class="jkl-reviews-add-item button" value="Add Detail" />
                         </div>
                         
                     </fieldset>
                     
                     <fieldset class="jkl-review-details-right">
-                        <legend>List 2:</legend>
+                        <legend>
+                            <input type='checkbox' id='jkl-review-show-list-2' name='jkl-review-show-list-2' value='1' <?php //checked( $options['use_shortcode'], 1 ); ?> />
+                            <?php _e( 'Display List 2:', 'jkl-reviews' ); ?>
+                        </legend>
                         
                         <label for="jkl-detail-list-2-display-type" class="jkl-label"><?php _e( 'Type:', 'jkl-reviews' ); ?></label>
                         <select id="jkl-detail-list-2-display-type" name="jkl-reviews-detail-list-2-display-type">
@@ -114,36 +118,36 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                             <option value="bullet">&bull; Bullet list</option>
                             <option value="csv">, Comma Separated Values</option>
                             <option value="none">No style</option>
-                            <option value="delete">Don't display</option>
                         </select>
                         <br>
                         <label for="jkl-review-detail-label-2" class="jkl-label"><?php _e( 'Label:', 'jkl-reviews' ); ?></label>
                         <input type="text" class="jkl-review-detail-label" id="jkl-review-detail-label-2" name="jkl-review-detail-label-2" placeholder="List 2 heading"
                                value="<?php echo ( isset( $jklrv_stored_meta['jkl-review-detail-label-2'] ) ? esc_attr( $jklrv_stored_meta['jkl-review-detail-label-2'][0] ) : $array['details-2-label'] ); ?>" />
-
+                        
                         <div class="jkl-review-detail-info">
+                            <input type="button" class="jkl-reviews-add-item button" value="+" />
                             <ol>
                                 <li class="sortable">
                                     <input type='text' name='jkl-detail-list-2-item-1' id='jkl-detail-list-2-item-1' class='jkl-review-detail' placeholder='Detail' value='' />
                                 </li>
                             </ol>
-                            
-                            <input type="button" class="jkl-reviews-add-item button" value="Add Detail" />
                         </div>
 
                     </fieldset>
                     
-                    <input type="button" class="jkl-reviews-add-row button" value="Add Detail Row" />
                 </form>
+                
+<!--                <input type="button" class="jkl-reviews-add-row button" value="Add Detail Row" />-->
             </div>
             
             <label for="jkl-detail-list-sizing" class="jkl-label"><?php _e( 'Set list widths:', 'jkl-reviews' ); ?></label>
-            <br>
-            <span class="range-number-left">0</span> 
-                <input type="range" min="0" max="100" step="10" list="list-width" onchange="showValue(this.value)" 
-                           id="jkl-detail-list-sizing" name="jkl-detail-list-sizing" 
+            <br><br>
+            
+            <label for="jkl-detail-list-sizing">
+                <span class="range-number-left jkl-label">Left List</span> 
+                <input type="range" list="list-sizing" min="0" max="100" step="10" id="jkl-detail-list-sizing-slider" name="jkl-detail-list-sizing-slider" 
                            value="<?php echo isset( $jklrv_stored_meta['jkl_review_rating'] ) ? $jklrv_stored_meta['jkl_review_rating'][0] : 0; ?>" />
-                <datalist id="list-width">
+                <datalist id="list-sizing">
                     <option>0</option>
                     <option>10</option>
                     <option>20</option>
@@ -156,19 +160,19 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                     <option>90</option>
                     <option>100</option>
                 </datalist>
-                <span class="range-number-right">100</span>
                 
-                <output for="jkl-detail-list-sizing" id="jkl-review-detail-list-sizing">
-                    <?php echo isset( $jklrv_stored_meta['jkl_review_rating'] ) ? $jklrv_stored_meta['jkl_review_rating'][0] : 0; ?>
-                </output>
-                <span id="star-rating-text"><?php _e( 'Stars', 'jkl-reviews/languages' ) ?></span>
-                
-                <!-- Simple function to dynamically update the output value of the range slider after user releases the mouse button -->
-                <script>
-                function showValue(rating) {
-                    document.querySelector('#jkl-detail-list-sizing').value = rating;
-                }
-                </script>
+                <span class="range-number-right jkl-label">Right List</span>
+            </label>
+
+<!--            <output for="jkl-detail-list-sizing" id="jkl-detail-list-sizing-output" class="jkl-detail-list-sizing-output">
+                <?php //echo isset( $jklrv_stored_meta['jkl_review_detail_list_sizing'] ) ? $jklrv_stored_meta['jkl_review_detail_list_sizing'][0] : 0; ?>
+            </output>
+            <span id="star-rating-text"><?php //_e( 'Stars', 'jkl-reviews' ) ?></span>-->
+
+            <!-- Simple function to dynamically update the output value of the range slider after user releases the mouse button -->
+            <script>
+
+            </script>
             
         </div><!-- #jkl-review-details --> 
         
@@ -186,7 +190,6 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
 
         <p>
             <input type="submit" id="jkl-reviews-add-link" class="button" value="+" />
-            <input type="submit" id="jkl-reviews-remove-link" class="button hidden" value="-" />
         </p>
 
 <?php

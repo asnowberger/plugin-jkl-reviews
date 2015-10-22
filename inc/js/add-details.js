@@ -13,18 +13,14 @@
  */
 function createDetailElement( $ ) {
     
-    var $listElement, listCount;
+    var $listElement, $inputElement, $removeElement, listCount;
     
     /*
      * First, count the number of input fields that already exist.
      * This is how we set the name and ID attributes of the element. 
      */
-    listCount = $( this ).prev( '.jkl-review-detail-info' ).children().length;
+    listCount = $( this ).next( '.jkl-review-detail-info' ).children().length;
     listCount++;
-    
-    if ( listCount > 1 ) {
-        $( this ).next().removeClass( 'hidden' );
-    }
     
     // Next, create the actual input element and return it
     $listElement = 
@@ -34,19 +30,21 @@ function createDetailElement( $ ) {
             $( '<input />' )
             .attr( 'type', 'text' )
             .attr( 'name', 'jkl-review-detail-label-' + listCount )
-            .attr( 'id', 'jkl-review-detail-label-' + listCount )
-            .attr( 'class', 'jkl-review-detail-label' )
+            .attr( 'id', 'jkl-review-detail' )
+            .attr( 'class', 'jkl-review-detail' )
             .attr( 'placeholder', 'Detail' )
             .attr( 'value', '' );
-    $spanElement = 
-            $( '<span>&times;</span>' )
-            .attr( 'class', 'jkl-review-remove-detail' );
+    $removeElement = 
+            $( '<input />' )
+            .attr( 'type', 'submit' )
+            .attr( 'name', 'jkl-review-detail-' + listCount + '-remove' )
+            .attr( 'id', 'jkl-review-remove-detail' )
+            .attr( 'class', 'jkl-reviews-remove-detail button' )
+            .attr( 'value', 'x' )
     
-    return $listElement.append( $inputElement.add( $spanElement ) );
+    return $listElement.append( $inputElement.add( $removeElement ) );
     
 } // END createInputElement($)
-
-
 
 
 
@@ -73,6 +71,10 @@ function createDetailElement( $ ) {
             dateFormat : 'yy-mm-dd'
         });
         
+        $('#jkl-detail-list-sizing').on("change", function() {
+            $('.output').val(this.value + "% Left / " + (100-this.value) + "% Right" );
+        }).trigger("change");
+        
         /**
          * 
          */
@@ -92,7 +94,7 @@ function createDetailElement( $ ) {
              * Create a new input element that will be used to capture the 
              * user input and append it to the container just above this button.
              */
-            $( this ).prev().append( createDetailElement( $ ) );
+            $( this ).next().append( createDetailElement( $ ) );
             
         }); // END click function
         
@@ -115,11 +117,12 @@ function createDetailElement( $ ) {
         /**
          * Button functionality to REMOVE items from the Links Section
          */
-        $( '#jkl-reviews-remove-link' ).on( 'click', function( e ) {
+        $( '#jkl-reviews-remove-detail' ).on( 'click', function( e ) {
             
             e.preventDefault();
             
-            $( '#jkl-reviews-links' ).remove( removeLinkElement( $ ) );
+               $( this ).parents('li').remove();
+               
         });
         
     }); // END main function
