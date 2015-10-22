@@ -23,14 +23,29 @@ function createInputElement( $ ) {
     inputCount++;
     
     // Next, create the actual input element and return it
+    $faElement = 
+            $( '<input />' )
+            .attr( 'type', 'text' )
+            .attr( 'name', 'jkl-reviews-link-' + inputCount + 'icon' )
+            .attr( 'id', 'jkl-reviews-link-' + inputCount + 'icon' )
+            .attr( 'value', 'fa-' )
+            .attr( 'placeholder', 'fa-code' );
+    $labelElement = 
+            $( '<input />' )
+            .attr( 'type', 'text' )
+            .attr( 'name', 'jkl-reviews-link-' + inputCount + 'label' )
+            .attr( 'id', 'jkl-reviews-link-' + inputCount + 'label' )
+            .attr( 'value', 'fa' )
+            .attr( 'placeholder', _e( 'Label', 'jkl-reviews' ) );
     $inputElement = 
             $( '<input />' )
             .attr( 'type', 'text' )
             .attr( 'name', 'jkl-reviews-link-' + inputCount )
             .attr( 'id', 'jkl-reviews-link-' + inputCount )
-            .attr( 'value', '' );
+            .attr( 'value', '' )
+            .attr( 'placeholder', _e( 'URL', 'jkl-reviews' ) );
     
-    return $inputElement;
+    return $faElement.add( $labelElement.add( $inputElement ) );
     
 } // END createInputElement($)
 
