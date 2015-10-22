@@ -11,7 +11,7 @@
  * @param       object  $   A reference to the jQuery object.
  * @returns     object      A file to be enqueued in the webpage.
  */
-function createListElements( $ ) {
+function createDetailElement( $ ) {
     
     var $listElement, listCount;
     
@@ -20,15 +20,17 @@ function createListElements( $ ) {
      * This is how we set the name and ID attributes of the element. 
      */
     listCount = $( this ).prev( '.jkl-review-detail-info' ).children().length;
+    listCount++;
     
-    if ( listCount > 0 ) {
+    if ( listCount > 1 ) {
         $( this ).next().removeClass( 'hidden' );
     }
     
-    listCount++;
-    
     // Next, create the actual input element and return it
-    $listDetail = 
+    $listElement = 
+            $( '<li></li>' )
+            .attr( 'class', 'sortable' );
+    $inputElement =
             $( '<input />' )
             .attr( 'type', 'text' )
             .attr( 'name', 'jkl-review-detail-label-' + listCount )
@@ -36,8 +38,11 @@ function createListElements( $ ) {
             .attr( 'class', 'jkl-review-detail-label' )
             .attr( 'placeholder', 'Detail' )
             .attr( 'value', '' );
+    $spanElement = 
+            $( '<span>&times;</span>' )
+            .attr( 'class', 'jkl-review-remove-detail' );
     
-    return $listDetail;
+    return $listElement.append( $inputElement.add( $spanElement ) );
     
 } // END createInputElement($)
 
@@ -87,7 +92,7 @@ function createListElements( $ ) {
              * Create a new input element that will be used to capture the 
              * user input and append it to the container just above this button.
              */
-            $( this ).prev().append( createInputElement( $ ) );
+            $( this ).prev().append( createDetailElement( $ ) );
             
         }); // END click function
         

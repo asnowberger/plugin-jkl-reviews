@@ -69,42 +69,76 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
         <div id="jkl-review-details" class="group">
             
             <!--<h4>Details</h4>-->
-            <p class="note"><?php _e( sprintf( 'Add %s details as lists. Example list headings are shown:', ucwords( $str_type ) ), 'jkl-reviews' ); ?></p>
+            
+            <p class="note"><?php _e( 'The following section allows you to add 1-2 lists of details'
+                    . ' about the product. The lists will be shown side-by-side in the review and '
+                    . ' you determine the list width and type of list at the bottom of the section.', 'jkl-reviews' ); ?>
+            </p>
             
             <div class="jkl-review-details group">
-                <div class="jkl-review-details-left">
-                    <label for="jkl-review-detail-label-1" class="jkl-label"><?php _e( 'Details 1:', 'jkl-reviews' ); ?></label>
-                    <input type="text" class="jkl-review-detail-label" id="jkl-review-detail-label-1" name="jkl-review-detail-label-1" placeholder="List 1 heading"
-                           value="<?php echo ( isset( $jklrv_stored_meta['jkl-review-detail-label-1'] ) ? esc_attr( $jklrv_stored_meta['jkl-review-detail-label-1'][0] ) : $array['details-1-label'] ); ?>" />
+                <form>
+                    <fieldset class="jkl-review-details-left">
+                        <legend><?php _e( 'List 1:', 'jkl-reviews' ); ?></legend>
+                        
+                        <label for="jkl-detail-list-1-display-type" class="jkl-label"><?php _e( 'Type:', 'jkl-reviews' ); ?></label>
+                        <select id="jkl-detail-list-1-display-type" name="jkl-reviews-detail-list-1-display-type">
+                            <option value="numbered">1. Numbered list</option>
+                            <option value="bullet">&bull; Bullet list</option>
+                            <option value="csv">, Comma Separated Values</option>
+                            <option value="none">No style</option>
+                            <option value="delete">Don't display</option>
+                        </select>
+                        <br>
+                        <label for="jkl-review-detail-label-1" class="jkl-label"><?php _e( 'Label:', 'jkl-reviews' ); ?></label>
+                        <input type="text" class="jkl-review-detail-label" id="jkl-review-detail-label-1" name="jkl-review-detail-label-1" placeholder="List 1 heading"
+                               value="<?php echo ( isset( $jklrv_stored_meta['jkl-review-detail-label-1'] ) ? esc_attr( $jklrv_stored_meta['jkl-review-detail-label-1'][0] ) : $array['details-1-label'] ); ?>" />
 
-                    <div class="jkl-review-detail-info"></div>
+                        <div class="jkl-review-detail-info">
+                            <ol>
+                                <li class="sortable">
+                                    <input type='text' name='jkl-detail-list-1-item-1' id='jkl-detail-list-1-item-1' class='jkl-review-detail' placeholder='Detail' value='' />
+                                </li>
+                            </ol>
+                            
+                            <input type="button" class="jkl-reviews-add-item button" value="Add Detail" />
+                        </div>
+                        
+                    </fieldset>
+                    
+                    <fieldset class="jkl-review-details-right">
+                        <legend>List 2:</legend>
+                        
+                        <label for="jkl-detail-list-2-display-type" class="jkl-label"><?php _e( 'Type:', 'jkl-reviews' ); ?></label>
+                        <select id="jkl-detail-list-2-display-type" name="jkl-reviews-detail-list-2-display-type">
+                            <option value="numbered">1. Numbered list</option>
+                            <option value="bullet">&bull; Bullet list</option>
+                            <option value="csv">, Comma Separated Values</option>
+                            <option value="none">No style</option>
+                            <option value="delete">Don't display</option>
+                        </select>
+                        <br>
+                        <label for="jkl-review-detail-label-2" class="jkl-label"><?php _e( 'Label:', 'jkl-reviews' ); ?></label>
+                        <input type="text" class="jkl-review-detail-label" id="jkl-review-detail-label-2" name="jkl-review-detail-label-2" placeholder="List 2 heading"
+                               value="<?php echo ( isset( $jklrv_stored_meta['jkl-review-detail-label-2'] ) ? esc_attr( $jklrv_stored_meta['jkl-review-detail-label-2'][0] ) : $array['details-2-label'] ); ?>" />
 
-                    <input type="button" class="jkl-reviews-add-item button" value="+" />
-                    <input type="button" class="jkl-reviews-remove-item button hidden" value="-" />
-                </div>
-                <div class="jkl-review-details-right">
-                    <label for="jkl-review-detail-label-2" class="jkl-label"><?php _e( 'Details 2:', 'jkl-reviews' ); ?></label>
-                    <input type="text" class="jkl-review-detail-label" id="jkl-review-detail-label-2" name="jkl-review-detail-label-2" placeholder="List 2 heading"
-                           value="<?php echo ( isset( $jklrv_stored_meta['jkl-review-detail-label-2'] ) ? esc_attr( $jklrv_stored_meta['jkl-review-detail-label-2'][0] ) : $array['details-2-label'] ); ?>" />
+                        <div class="jkl-review-detail-info">
+                            <ol>
+                                <li class="sortable">
+                                    <input type='text' name='jkl-detail-list-2-item-1' id='jkl-detail-list-2-item-1' class='jkl-review-detail' placeholder='Detail' value='' />
+                                </li>
+                            </ol>
+                            
+                            <input type="button" class="jkl-reviews-add-item button" value="Add Detail" />
+                        </div>
 
-                    <div class="jkl-review-detail-info"></div>
-
-                    <input type="button" class="jkl-reviews-add-item button" value="+" />
-                    <input type="button" class="jkl-reviews-remove-item button hidden" value="-" />
-                </div>
+                    </fieldset>
+                    
+                    <input type="button" class="jkl-reviews-add-row button" value="Add Detail Row" />
+                </form>
             </div>
             
-            <label for="jkl-detail-list-display-type" class="jkl-label"><?php _e( 'Display Lists as:', 'jkl-reviews' ); ?></label>
-            <select id="jkl-detail-list-display-type" name="jkl-reviews-detail-list-display-type">
-                <option value="numbered">Numbered list</option>
-                <option value="bullet">Bullet list</option>
-                <option value="labels">Inline labels</option>
-                <option value="csv">Comma Separated Values</option>
-                <option value="none">No special style</option>
-            </select>
+            <label for="jkl-detail-list-sizing" class="jkl-label"><?php _e( 'Set list widths:', 'jkl-reviews' ); ?></label>
             <br>
-            
-            <label for="jkl-detail-list-sizing" class="jkl-label"><?php _e( 'Specify list sizing:', 'jkl-reviews' ); ?></label>
             <span class="range-number-left">0</span> 
                 <input type="range" min="0" max="100" step="10" list="list-width" onchange="showValue(this.value)" 
                            id="jkl-detail-list-sizing" name="jkl-detail-list-sizing" 
@@ -140,30 +174,20 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
         
         <div class="divider"></div>
         
-<<<<<<< HEAD
         <!--<h4>Links</h4>-->
         <p class="note"><?php _e( sprintf( 'Add %s link URLs below.', ucwords( $str_type ) ), 'jkl-reviews' ); ?></p>
+        <div id="jkl-reviews-link-header" class="hidden">
+            <label class="jkl-reviews-link-icon"><?php _e( 'Icon Code', 'jkl-reviews' ); ?></label>
+            <label class="jkl-reviews-link-label"><?php _e( 'Link Title', 'jkl-reviews' ); ?></label>
+            <label class="jkl-reviews-link-url"><?php _e( 'Link URL', 'jkl-reviews' ); ?></label>
+        </div>
+
         <div id="jkl-reviews-links"></div><!-- #jkl-reviews-links -->
+
         <p>
             <input type="submit" id="jkl-reviews-add-link" class="button" value="+" />
             <input type="submit" id="jkl-reviews-remove-link" class="button hidden" value="-" />
         </p>
-=======
-        <h4>Links</h4>
-    <p class="note"><?php _e( sprintf( 'Add %s link URLs below.', ucwords( $str_type ) ), 'jkl-reviews' ); ?></p>
-    <div id="jkl-reviews-link-header" class="hidden">
-        <label class="jkl-reviews-link-icon"><?php _e( 'Icon Code', 'jkl-reviews' ); ?></label>
-        <label class="jkl-reviews-link-label"><?php _e( 'Link Title', 'jkl-reviews' ); ?></label>
-        <label class="jkl-reviews-link-url"><?php _e( 'Link URL', 'jkl-reviews' ); ?></label>
-    </div>
-    
-    <div id="jkl-reviews-links"></div><!-- #jkl-reviews-links -->
-    
-    <p>
-        <input type="submit" id="jkl-reviews-add-link" class="button" value="+" />
-        <input type="submit" id="jkl-reviews-remove-link" class="button hidden" value="-" />
-    </p>
->>>>>>> origin/oop
 
 <?php
 }
