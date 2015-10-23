@@ -91,6 +91,8 @@ function createDetailElement( $ ) {
         
         /**
          * REMOVE Detail List items
+         * 
+         * @link    http://jsfiddle.net/jaredwilli/tzpg4/4/
          */
         $( '.jkl-reviews-remove-item' ).live( 'click', function() {
             $( this ).parents( 'li' ).remove();
@@ -113,6 +115,8 @@ function createDetailElement( $ ) {
         
         /**
          * REMOVE Link items
+         * 
+         * @link    http://jsfiddle.net/jaredwilli/tzpg4/4/
          */
         $( '.jkl-reviews-remove-link' ).live( 'click', function() {
             $( this ).parents( 'li' ).remove();
@@ -145,6 +149,8 @@ function createDetailElement( $ ) {
         
         /**
          * REMOVE Rating items
+         * 
+         * @link    http://jsfiddle.net/jaredwilli/tzpg4/4/
          */
         $( '.jkl-reviews-remove-rating' ).live( 'click', function() {
             $( this ).parents( 'li' ).remove();

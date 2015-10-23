@@ -172,6 +172,8 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
             
             if ( 'post' === get_current_screen()->id ) {
                 
+                wp_enqueue_media();
+                
                 wp_enqueue_script( 'jquery-ui-datepicker' );
                 
                 wp_enqueue_script(
@@ -205,6 +207,13 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
                 wp_enqueue_script(
                         $this->name . '-ratings',
                         plugins_url( 'jkl-reviews-working/inc/js/add-rating.js' ),
+                        array( 'jquery' ),
+                        $this->version
+                );
+                
+                wp_enqueue_script(
+                        $this->name . '-media',
+                        plugins_url( 'jkl-reviews-working/inc/js/add-image.js' ),
                         array( 'jquery' ),
                         $this->version
                 );

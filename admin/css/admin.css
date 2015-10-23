@@ -1,5 +1,5 @@
 /*
- * Meta box tabs
+ * Meta box tabs================================================================
  */
 a.nav-tab {
     margin-bottom: -4px;
@@ -17,7 +17,7 @@ a.nav-tab-active {
     margin: 10px 0;
 }
 /*
- * Meta box Review info choices
+ * Meta box Review Type choices=================================================
  */
 #jkl-reviews-types {
     margin: -15px -12px 0;
@@ -55,7 +55,7 @@ a.nav-tab-active {
 }
 
 /*
- * Meta box data collection areas.
+ * Meta box Product Info Tab====================================================
  */
 #jkl-review-info {
     border: 1px solid #ccc;
@@ -72,9 +72,15 @@ a.nav-tab-active {
     vertical-align: top;
     padding-top: 6px;
 }
-.jkl-label-float {
-    float: left;
+/* @TODO: Dashicon not showing */
+#jkl-review-cover-button.button:before {
+    font-family: Dashicons;
+    content: "\f128";
+    margin-right: 5px;
 }
+/*.jkl-label-float {
+    float: left;
+}*/
 .jkl-review input{
     width: 75%;
     margin-bottom: 10px;
@@ -195,7 +201,7 @@ label[for=jkl-detail-list-sizing] {
 label[for=jkl-detail-list-sizing]:after {
     
 }
-input[type=range] {
+/*input[type=range] {
     display: inline-block;
     margin: 10px auto;
     padding: 0;
@@ -212,7 +218,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 input[type=range]::-webkit-slider-runnable-track {
     position: relative;
-    /* prep for creating rulers */
+     prep for creating rulers 
 }
 input[type=range]::-webkit-slider-runnable-track:before,
 input[type=range]::-webkit-slider-runnable-track:after {
@@ -220,7 +226,7 @@ input[type=range]::-webkit-slider-runnable-track:after {
 }
 input[type=range]::-ms-track {
     border: none;
-    color: silver;
+    color: red;
 }
 input[type=range]::-webkit-slider-thumb,
 input[type=range]::-moz-range-thumb,
@@ -229,42 +235,42 @@ input[type=range]::-ms-thumb {
     border: solid 0 transparent;
     border-radius: 50%;
     cursor: ew-resize;
-}
+}*/
 
 
 /**
  * Specifics
- */
+ 
 input[type='range']#jkl-detail-list-sizing-slider {
   width: 80%;
   height: 2em;
-/*  background: -webkit-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 70%) no-repeat 50% 2.6875em;
+  background: -webkit-radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 70%) no-repeat 50% 2.6875em;
   background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 70%) no-repeat 50% 2.6875em;
-  background-size: 90% 0.625em;*/
-  /* ------- the track ------- */
-  /* ------- the fill ------- */
-  /* ------- the ruler ------- */
-  /* ------- the thumb ------- */
-  /* ------- the tip ------- */
+  background-size: 90% 0.625em;
+   ------- the track ------- 
+   ------- the fill ------- 
+   ------- the ruler ------- 
+   ------- the thumb ------- 
+   ------- the tip ------- 
 }
 input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-runnable-track {
   width: 80%;
   height: 1em;
-/*  border-radius: .375em;*/
-/*  background: -webkit-linear-gradient(#ffffff, #d5d5d5);
-  background: linear-gradient(#ffffff, #d5d5d5);*/
+  border-radius: .375em;
+  background: -webkit-linear-gradient(#ffffff, #d5d5d5);
+  background: linear-gradient(#ffffff, #d5d5d5);
 }
 input[type='range']#jkl-detail-list-sizing-slider::-moz-range-track {
   width: 80%;
   height: 1em;
-/*  border-radius: .375em;
-  background: linear-gradient(#ffffff, #d5d5d5);*/
+  border-radius: .375em;
+  background: linear-gradient(#ffffff, #d5d5d5);
 }
 input[type='range']#jkl-detail-list-sizing-slider::-ms-track {
   width: 80%;
   height: 1em;
-/*  border-radius: .375em;
-  background: linear-gradient(#ffffff, #d5d5d5);*/
+  border-radius: .375em;
+  background: linear-gradient(#ffffff, #d5d5d5);
 }
 input[type='range']#jkl-detail-list-sizing-slider::-ms-fill-lower {
   display: none;
@@ -278,8 +284,8 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-runnable-track
   bottom: 0;
   left: 0;
     font: 0.85em / 2.35294em trebuchet ms, verdana, arial, sans-serif;
-  /*color: #777;
-  text-shadow: 0 0 1px rgba(85, 85, 85, 0.5);*/
+  color: #777;
+  text-shadow: 0 0 1px rgba(85, 85, 85, 0.5);
 }
 input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-runnable-track:before {
   text-indent: 2.14706em;
@@ -348,13 +354,38 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
 }
 .js input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
   content: "0%";
-}
+}*/
 
 
 
 
 #jkl-review-rating {
     
+}
+#jkl-rating-add-alert {
+    background: #ff5252;
+    padding: 3px 8px;
+    border-radius: 5px;
+    color: white;
+    font-style: italic;
+    margin-left: 10px;
+    box-shadow: none;
+    border: none;
+}
+#jkl-rating-add-alert button {
+    padding: 3px;
+}
+.jkl-radio {
+    display: block;
+    margin-top: 10px;
+}
+#jkl-review-rating-type .jkl-radio {
+    display: inline-block;
+    margin-top: 0;
+}
+.jkl-reviews-rating-desc {
+    width: 95%;
+    /*margin-bottom: 10px;*/
 }
 .range-number-left{
     display: inline;

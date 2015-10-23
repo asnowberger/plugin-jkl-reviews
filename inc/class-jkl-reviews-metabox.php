@@ -43,6 +43,7 @@ class JKL_Reviews_Metabox {
         
         add_action( 'add_meta_boxes', array( $this, 'jkl_add_review_metabox' ) );
         add_action( 'save_post', array( $this, 'jkl_save_review_metabox' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'jkl_add_media_button' ) );
         
     } // END __construct()
     
@@ -172,6 +173,38 @@ class JKL_Reviews_Metabox {
         require_once plugin_dir_path( __FILE__ ) . 'template-parts/single-post-metabox.php';
         
     } // END jkl_render_meta_box()
+    
+    
+    
+    
+    /*
+ * ##### 3 #####
+ * Third, use the WP IMAGE MANAGER (i.e. load Image Management JS)
+ */
+
+public function jkl_add_media_button() {
+    // Determine the current Post type
+    // 
+    echo '<a href="#" id="jkl-choose-cover" class="button">Add Media</a>';
+//    global $typenow;
+//    
+//    if( $typenow == 'post' ) {
+//        wp_enqueue_media();
+//        
+//        // Registers and enqueues the required JS
+//        wp_register_script( 'upload-image', plugin_dir_url( __FILE__ ) . 'admin/js/upload-image.js', array( 'jquery' ) );
+//        wp_localize_script( 'upload-image', 'jkl_review_cover',
+//                array(
+//                    'title' => __( 'Select a Cover', 'jkl-reviews/languages' ),
+//                    'button' => __( 'Use this Cover', 'jkl-reviews/languages' ),
+//                )
+//        );
+//        wp_enqueue_script( 'upload-image' );
+//        
+//        wp_register_script( 'box-style', plugin_dir_url( __FILE__ ) . 'admin/js/box-style.js', array( 'jquery' ) );
+//        wp_enqueue_script( 'box-style' );
+//    }
+}
     
 } // END JKL_Reviews_Metabox
 } // END if ( ! class_exists( 'JKL_Reviews_Metabox' )

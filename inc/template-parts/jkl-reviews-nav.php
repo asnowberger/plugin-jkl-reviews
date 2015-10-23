@@ -258,6 +258,9 @@ function get_fa_icon( $string ) {
     #jkl-reviews-types a.active {
         background-color: <?php echo $colors[2]; ?>;
     }
+    #jkl-rating-add-alert {
+        // background-color: <?php // echo $colors[4]; ?>;
+    }
 </style>
 
 <div id="jkl-reviews-meta-nav">

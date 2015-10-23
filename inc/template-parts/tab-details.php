@@ -139,7 +139,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                 <span class="range-number-left jkl-label">Left List</span> 
                 <input type="range" list="list-sizing" min="0" max="100" step="10" id="jkl-detail-list-sizing-slider" name="jkl-detail-list-sizing-slider" 
                            value="<?php echo isset( $jklrv_stored_meta['jkl_review_rating'] ) ? $jklrv_stored_meta['jkl_review_rating'][0] : 0; ?>" />
-<!--                <datalist id="list-sizing">
+                <datalist id="list-sizing">
                     <option>0</option>
                     <option>10</option>
                     <option>20</option>
@@ -151,7 +151,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                     <option>80</option>
                     <option>90</option>
                     <option>100</option>
-                </datalist>-->
+                </datalist>
                 
                 <span class="range-number-right jkl-label">Right List</span>
             </label>

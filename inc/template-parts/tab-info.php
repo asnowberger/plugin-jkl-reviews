@@ -55,11 +55,11 @@ function jkl_reviews_load_info_part( $str_type, $array ) {
         <label for="jkl-review-cover" class="jkl-label"><?php echo __( sprintf( 'Set %s ', $array['cover'] ), 'jkl-reviews' ); ?></label>
         <input type="url" id="jkl-review-cover" name="jkl-review-cover" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-cover'] ) ) echo esc_url( $jklrv_stored_meta['jkl-review-cover'][0] ); ?>" />
-        <input type="button" id="jkl-review-cover-button" class="button" value="<?php _e( 'Choose or Upload an Image', 'jkl-review' )?>" />
+        <input type="button" id="jkl-review-cover-button" class="button" value="<?php _e( 'Choose an Image', 'jkl-review' )?>" />
 
         <!-- Cover image preview. This should only display the cover image IF THERE IS ONE. -->
         <?php //if ( $jklrv_stored_meta['jkl-review-cover'][0] != '' ) { ?>
-            <div id="jkl-cover-preview">    
+            <div id="jkl-cover-preview" class="hidden">    
                 <label for="jkl-review-cover-preview" class="jkl-label"><?php echo __( sprintf( '%s Preview ', $array['cover'] ), 'jkl-reviews' ); ?></label>
             
                 <img src="<?php echo esc_url( $jklrv_stored_meta['jkl-review-cover'][0] ); ?>" />
