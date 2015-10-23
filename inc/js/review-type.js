@@ -22,6 +22,7 @@
             e.preventDefault();
             
             $( '.jkl-review-helper' ).addClass( 'hidden' );
+            $( '#jkl-review-rating' ).removeClass( 'hidden' );
             
             var target = $( this ).attr( "id" );
 

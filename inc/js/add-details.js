@@ -38,8 +38,8 @@ function createDetailElement( $ ) {
             $( '<input />' )
             .attr( 'type', 'submit' )
             .attr( 'name', 'jkl-review-detail-' + listCount + '-remove' )
-            .attr( 'id', 'jkl-review-remove-detail' )
-            .attr( 'class', 'jkl-reviews-remove-detail button' )
+            .attr( 'id', 'jkl-review-remove-item' )
+            .attr( 'class', 'jkl-reviews-remove-item button' )
             .attr( 'value', 'x' )
     
     return $listElement.append( $inputElement.add( $removeElement ) );
@@ -75,20 +75,11 @@ function createDetailElement( $ ) {
             $('.output').val(this.value + "% Left / " + (100-this.value) + "% Right" );
         }).trigger("change");
         
-        /**
-         * 
-         */
-        $( '#jkl-reviews-add-details' ).on( 'click', function( e ) {
-            $( '#jkl-review-details' ).removeClass( 'hidden' );
-            $( this ).addClass( 'hidden' );
-        });
         
         /**
-         * Button functionality to add items to the Detail Lists
-         */
-        $( '.jkl-reviews-add-item' ).on( 'click', function( e ) {
-            
-            e.preventDefault();
+         * ADD Detail Lists items
+         */        
+        $( '.jkl-reviews-add-item' ).live( 'click', function() {
             
             /**
              * Create a new input element that will be used to capture the 
@@ -96,33 +87,67 @@ function createDetailElement( $ ) {
              */
             $( this ).next().append( createDetailElement( $ ) );
             
-        }); // END click function
+        }); // END live function
+        
+        /**
+         * REMOVE Detail List items
+         */
+        $( '.jkl-reviews-remove-item' ).live( 'click', function() {
+            $( this ).parents( 'li' ).remove();
+        });
         
         
         /**
-         * Button functionality to ADD items to the Links Section of the Meta box
-         */
+         * ADD Link items
+         */        
         $( '#jkl-reviews-add-link' ).on( 'click', function( e ) {
             
             e.preventDefault();
-            
             /**
              * Create a new input element that will be used to capture the 
              * user input and append it to the container just above this button.
              */
             $( '#jkl-reviews-links' ).append( createLinkElement( $ ) );
             
-        }); // END #jkl-reviews-add-link click function
+        }); // END live function
         
         /**
-         * Button functionality to REMOVE items from the Links Section
+         * REMOVE Link items
          */
-        $( '#jkl-reviews-remove-detail' ).on( 'click', function( e ) {
+        $( '.jkl-reviews-remove-link' ).live( 'click', function() {
+            $( this ).parents( 'li' ).remove();
+            
+            if( $( '#jkl-reviews-links' ).children( 'li' ).length < 1 ) {
+                $( '#jkl-reviews-link-header' ).addClass( 'hidden' );
+            }
+        });
+        
+        
+        /**
+         * ADD Rating items
+         */        
+        $( '#jkl-reviews-add-rating' ).live( 'click', function( e ) {
             
             e.preventDefault();
+            /**
+             * Create a new input element that will be used to capture the 
+             * user input and append it to the container just above this button.
+             */
+            var ratingType;
+            ratingType = $( 'input[name=jkl-rating-radio]:checked', '#jkl-review-rating-type' ).val();
+            if ( !ratingType ) {
+                $( '#jkl-rating-add-alert' ).removeClass( 'hidden' );
+            } else {
+                $( '#jkl-review-rating-scales' ).append( createRatingElement( $, ratingType ) );
+            }
             
-               $( this ).parents('li').remove();
-               
+        }); // END live function
+        
+        /**
+         * REMOVE Rating items
+         */
+        $( '.jkl-reviews-remove-rating' ).live( 'click', function() {
+            $( this ).parents( 'li' ).remove();
         });
         
     }); // END main function

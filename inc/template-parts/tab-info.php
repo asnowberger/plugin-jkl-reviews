@@ -12,7 +12,7 @@
 
 ?>
 <div class="jkl-review-meta tab-info">   
-    <!-- REVIEW INFORMATION TABLE -->
+    <!-- REVIEW INFORMATION TAB -->
     
     <?php 
     /**

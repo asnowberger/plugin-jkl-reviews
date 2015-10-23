@@ -97,11 +97,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
 
                         <div class="jkl-review-detail-info">
                             <input type="button" class="jkl-reviews-add-item button" value="+" />
-                            <ol>
-                                <li class="sortable">
-                                    <input type='text' name='jkl-detail-list-1-item-1' id='jkl-detail-list-1-item-1' class='jkl-review-detail' placeholder='Detail' value='' />
-                                </li>
-                            </ol>
+                            <ol class="jkl-detail-list"></ol>
                         </div>
                         
                     </fieldset>
@@ -126,11 +122,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                         
                         <div class="jkl-review-detail-info">
                             <input type="button" class="jkl-reviews-add-item button" value="+" />
-                            <ol>
-                                <li class="sortable">
-                                    <input type='text' name='jkl-detail-list-2-item-1' id='jkl-detail-list-2-item-1' class='jkl-review-detail' placeholder='Detail' value='' />
-                                </li>
-                            </ol>
+                            <ol class="jkl-detail-list"></ol>
                         </div>
 
                     </fieldset>
@@ -147,7 +139,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                 <span class="range-number-left jkl-label">Left List</span> 
                 <input type="range" list="list-sizing" min="0" max="100" step="10" id="jkl-detail-list-sizing-slider" name="jkl-detail-list-sizing-slider" 
                            value="<?php echo isset( $jklrv_stored_meta['jkl_review_rating'] ) ? $jklrv_stored_meta['jkl_review_rating'][0] : 0; ?>" />
-                <datalist id="list-sizing">
+<!--                <datalist id="list-sizing">
                     <option>0</option>
                     <option>10</option>
                     <option>20</option>
@@ -159,7 +151,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                     <option>80</option>
                     <option>90</option>
                     <option>100</option>
-                </datalist>
+                </datalist>-->
                 
                 <span class="range-number-right jkl-label">Right List</span>
             </label>
@@ -180,17 +172,15 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
         
         <!--<h4>Links</h4>-->
         <p class="note"><?php _e( sprintf( 'Add %s link URLs below.', ucwords( $str_type ) ), 'jkl-reviews' ); ?></p>
+        <p><input type="submit" id="jkl-reviews-add-link" class="button" value="+" /></p>
+        
         <div id="jkl-reviews-link-header" class="hidden">
             <label class="jkl-reviews-link-icon"><?php _e( 'Icon Code', 'jkl-reviews' ); ?></label>
             <label class="jkl-reviews-link-label"><?php _e( 'Link Title', 'jkl-reviews' ); ?></label>
             <label class="jkl-reviews-link-url"><?php _e( 'Link URL', 'jkl-reviews' ); ?></label>
+            <ol id="jkl-reviews-links"></ol><!-- #jkl-reviews-links -->
+        
         </div>
-
-        <div id="jkl-reviews-links"></div><!-- #jkl-reviews-links -->
-
-        <p>
-            <input type="submit" id="jkl-reviews-add-link" class="button" value="+" />
-        </p>
 
 <?php
 }
