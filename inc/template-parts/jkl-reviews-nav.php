@@ -249,10 +249,18 @@ function get_fa_icon( $string ) {
     /**
      * @TODO: Later, put this in a 'head' call as a function?
      */
-    #jkl-reviews-types a {
+    #jkl-reviews-types a,
+    .ui-datepicker th {
         background-color: <?php echo $colors[1]; ?>;
     }
-    #jkl-reviews-types a:hover {
+    .ui-datepicker thead,
+    .ui-datepicker .ui-datepicker-header,
+    .ui-datepicker .ui-datepicker-header .ui-state-hover {
+        background: <?php echo $colors[0]; ?>;
+    }
+    #jkl-reviews-types a:hover,
+    .ui-datepicker td .ui-state-active,
+    .ui-datepicker td .ui-state-hover {
         background-color: <?php echo $colors[2]; ?>;
     }
     #jkl-reviews-types a.active {

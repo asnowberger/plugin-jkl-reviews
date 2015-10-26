@@ -163,6 +163,13 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
                     $this->version
             );
             
+            wp_enqueue_style(
+                    $this->name . '-datepicker',
+                    plugins_url( 'jkl-reviews-working/admin/css/datepicker.css' ),
+                    false,
+                    $this->version
+            );
+            
         } // END jkl_enqueue_admin_styles()
         
         /**
