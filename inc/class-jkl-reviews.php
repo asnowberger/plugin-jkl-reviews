@@ -213,7 +213,7 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
                 
                 wp_enqueue_script(
                         $this->name . '-media',
-                        plugins_url( 'jkl-reviews-working/inc/js/add-image.js' ),
+                        plugins_url( 'jkl-reviews-working/inc/js/upload-cover.js' ),
                         array( 'jquery' ),
                         $this->version
                 );

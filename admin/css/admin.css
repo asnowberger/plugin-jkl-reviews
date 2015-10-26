@@ -76,7 +76,13 @@ a.nav-tab-active {
 #jkl-review-cover-button.button:before {
     font-family: Dashicons;
     content: "\f128";
-    margin-right: 5px;
+    margin-right: 3px;
+    vertical-align: bottom;
+}
+#jkl-review-remove-cover-button.button:before {
+    font-family: Dashicons;
+    content: "\f153";
+    vertical-align: bottom;
 }
 /*.jkl-label-float {
     float: left;
@@ -87,6 +93,7 @@ a.nav-tab-active {
 }
 .jkl-review select {
     margin-bottom: 10px;
+    width: 75%;
 }
 .jkl-labeler input {
     width: 45%;
@@ -181,9 +188,16 @@ input[type=text].jkl-reviews-link-label,
     margin-right: 1%;
 }
 input[type=url].jkl-reviews-link-url,
-.jkl-reviews-link-url {
-    width: 55%!important;
+.jkl-reviews-link-url,
+input.input-date {
+    width: 52%!important;
     margin-right: 1%;
+}
+#jkl-review-date:after {
+    font-family: "FontAwesome";
+    content: '\f073';
+    font-size: 24px;
+    color: gray;
 }
 #jkl-reviews-link-header label {
     display: inline-block;

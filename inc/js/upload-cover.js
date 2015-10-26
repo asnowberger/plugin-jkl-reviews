@@ -18,7 +18,7 @@
 function renderMediaUploader( $ ) {
     'use strict';
     
-    var file_frame, image_data;
+    var file_frame, image_data, json;
     
     /**
      * If an instance of file_frame already exists, then open it - don't create a new one.
@@ -46,9 +46,23 @@ function renderMediaUploader( $ ) {
      * @returns {undefined}
      */
     file_frame = wp.media.frames.file_frame = wp.media({
+        
+        // 'select' or 'post' are our choices. 'post' is for using the CURRENT post ID - so 'select' is better for general uploads
         frame:      'post',
         state:      'insert', 
-        multiple:   false
+        
+        // default is true, so let's change it to false
+        multiple:   false,
+        
+        // populate the title with our custom text
+        title:      'Select a Review Cover Image',
+
+        // force the type of media to show to the user - we want images
+        library: { type: 'image' },
+
+        // customize the button text - default is 'Select'
+        button: { text: 'Select' }
+        
     });
     
     /** 
@@ -71,16 +85,23 @@ function renderMediaUploader( $ ) {
         }
         
         // After that, set the properties of the image and display it
-        $( '#jkl-cover-preview' )
-            .children( 'img' )
+        $( '#jkl-cover-img' )
+            // .children( 'img' )
                 .attr( 'src', json.url )
                 .attr( 'alt', json.caption )
                 .attr( 'title', json.title )
-                        .show()
-            .parent()
+                        .show();
+        $( '#jkl-cover-preview' )
             .removeClass( 'hidden' );
     
-        // Next, hide the anchor responsible for allowing the user to select
+        // Next, hide the button responsible for allowing the user to select
+        $( '#jkl-review-cover-button' ).addClass( 'hidden' );
+        
+        // Display button for removing the featured image
+        $( '#jkl-review-remove-cover-button' ).removeClass( 'hidden' );
+        
+        // Send the attachment URL to our custom input field via jQuery
+        $( '#jkl-review-cover' ).val( json.url );
         
     });
     
@@ -88,18 +109,57 @@ function renderMediaUploader( $ ) {
     file_frame.open();
 }
 
+
+/**
+ * Callback function for the 'click' event to Remove the Cover Image.
+ * 
+ * Resets the meta box by hiding the image and the Remove Cover button.
+ * 
+ * @since   2.0.1
+ * 
+ * @param   object  $   A reference to the jQuery object
+ */
+function resetUploadForm( $ ) {
+    'use strict';
+    
+    // First, hide the image
+    $( '#jkl-cover-preview' )
+            .children( 'img' )
+            .hide();
+    
+    // Display the Cover select button 
+    $( '#jkl-review-cover-button' ).removeClass( 'hidden' );
+    
+    // Finally, add 'hidden class back to the proper places
+    $( '#jkl-cover-preview' ).addClass( 'hidden' );
+    $( '#jkl-review-remove-cover-button' ).addClass( 'hidden' );
+    
+    // Remove the link value from the input box
+    $( '#jkl-review-cover' ).val( '' );
+}
+
 ( function( $ ) {
     'use strict';
     
     $( function() {
        
-        $( '#jkl-review-cover-button' ).on( 'click', function( e ) {
+        $( '#jkl-review-cover-button, #jkl-cover-img' ).on( 'click', function( e ) {
            
             // Stop the default behavior
             e.preventDefault();
             
             // Display the media uploader
             renderMediaUploader( $ );
+            
+        });
+        
+        $( '#jkl-review-remove-cover-button' ).on( 'click', function( e ) {
+           
+            // Stop default behavior
+            e.preventDefault();
+            
+            // Remove the image, toggle the anchors
+            resetUploadForm( $ );
             
         });
         
