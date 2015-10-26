@@ -76,12 +76,6 @@
                     $( '.other-type' ).addClass( 'active' );
             }
             
-            /**
-             * Create a new input element that will be used to capture the 
-             * user input and append it to the container just above this button.
-             */
-            $( '#jkl-reviews-links' ).append( createInputElement( $ ) );
-            
         }); // END click function
         
     }); // END main function

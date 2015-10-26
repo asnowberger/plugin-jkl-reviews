@@ -144,4 +144,31 @@ function createRatingElement( $, type ) {
     
     return $divElement.append( $finalElement );
     
-} // END createInputElement($)
+} // END createRatingElement($,type)
+
+function displayDisclosure( $, type ) {
+    
+    $( '#jkl-review-disclosure-preview' ).removeClass( 'hidden' );
+    
+    switch( type ) {
+        case 'none'         :
+            return 'No';
+            break;
+        case 'affiliate'    :
+            
+            break;
+        case 'sample'       :
+            
+            break;
+        case 'sponsored'    :
+            
+            break;
+        case 'shareholder'  :
+            
+            break;
+        default: // this takes care of the 'remove' case as well
+            $( '#jkl-review-disclosure-preview' ).addClass( 'hidden' );
+            return;
+    }
+    
+} // END createDisclosePreview($)

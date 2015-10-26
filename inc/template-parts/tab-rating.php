@@ -15,7 +15,7 @@
 <div class="jkl-review-meta hidden tab-rating">
     
     <!-- ##### PRODUCT RATING TAB -->
-    <div id="jkl-review-rating" class="hidden">
+    <div id="jkl-review-rating" class="hidden group">
         
         <p class="note"><?php _e( 'Select the Rating Scale type for this review first. '
                 . 'You can then add as many Scales as you want to review and rank different features.', 'jkl-reviews' ); ?>
@@ -56,40 +56,44 @@
             <label class="jkl-label"><?php _e('Material Disclosure: ', 'jkl-reviews')?></label>
 
             <label for="jkl-remove-type" id="jkl-remove-type" class="jkl-radio">
-                <input type="radio" name="jkl_disclose" id="jkl-disclose-remove" value="remove" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'remove' ); ?>>
+                <input type="radio" name="jkl-disclose" id="jkl-disclose-remove" value="remove" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'remove' ); ?>>
                 <span><?php _e('No Disclosure', 'jkl-reviews')?></span>
             </label>
             <label for="jkl-no-type" id="jkl-no-type" class="jkl-radio">
-                <input type="radio" name="jkl_disclose" id="jkl-disclose-none" value="none" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'none' ); ?>>
+                <input type="radio" name="jkl-disclose" id="jkl-disclose-none" value="none" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'none' ); ?>>
                 <span><?php _e('No Connection', 'jkl-reviews')?></span>
             </label>
             <label for="jkl-aff-type" id="jkl-aff-type" class="jkl-radio">
-                <input type="radio" name="jkl_disclose" id="jkl-disclose-aff" value="affiliate" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'affiliate' ); ?>>
+                <input type="radio" name="jkl-disclose" id="jkl-disclose-aff" value="affiliate" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'affiliate' ); ?>>
                 <span><?php _e('Affiliate Link', 'jkl-reviews')?></span>
             </label>
             <label for="jkl-sample-type" id="jkl-sample-type" class="jkl-radio">
-                <input type="radio" name="jkl_disclose" id="jkl-disclose-sample" value="sample" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'sample' ); ?>>
+                <input type="radio" name="jkl-disclose" id="jkl-disclose-sample" value="sample" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'sample' ); ?>>
                 <span><?php _e('Review or Sample', 'jkl-reviews')?></span>
             </label>
             <label for="jkl-sponsored-type" id="jkl-sponsored-type" class="jkl-radio">
-                <input type="radio" name="jkl_disclose" id="jkl-disclose-sponsor" value="sponsored" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'sponsored' ); ?>>
+                <input type="radio" name="jkl-disclose" id="jkl-disclose-sponsor" value="sponsored" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'sponsored' ); ?>>
                 <span><?php _e('Sponsored Post', 'jkl-reviews')?></span>
             </label>
             <label for="jkl-shareholder-type" id="jkl-shareholder-type" class="jkl-radio">
-                <input type="radio" name="jkl_disclose" id="jkl-disclose-shareholder" value="shareholder" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'shareholder' ); ?>>
+                <input type="radio" name="jkl-disclose" id="jkl-disclose-shareholder" value="shareholder" <?php if ( isset( $jklrv_stored_meta['jkl_disclose'] ) ) checked( $jklrv_stored_meta['jkl_disclose'][0], 'shareholder' ); ?>>
                 <span><?php _e('Employee/Shareholder', 'jkl-reviews')?></span>
             </label>
         </div>
         
-        <?php if (isset( $jklrv_stored_meta['jkl_disclose'][0] ) && !checked( $jklrv_stored_meta['jkl_disclose'][0], 'remove' ) ) { ?>
-        <div class="jkl-review-disclosure-preview">
-            <label for="jkl-disclosure-preview" class="jkl-label"><?php _e('Disclosure Preview: ', 'jkl-reviews')?></label>
+        <?php // if (isset( $jklrv_stored_meta['jkl_disclose'][0] ) && !checked( $jklrv_stored_meta['jkl_disclose'][0], 'remove' ) ) { ?>
+        <form class="jkl-review-disclosure-preview hidden">
+            <fieldset class="jkl-review-disclosure">
+                <legend>
+                    <?php _e('Disclosure Preview: ', 'jkl-reviews')?>
+                </legend>
 
-            <small class="note"><?php echo wp_kses_post( jkl_get_material_disclosure( $jklrv_stored_meta['jkl_disclose'][0] ) ); ?></small>
-        </div>
+            <!--<small class="note"><?php // echo wp_kses_post( jkl_get_material_disclosure( $jklrv_stored_meta['jkl_disclose'][0] ) ); ?></small>-->
+            </fieldset>
+        </form>
         <?php 
         
-            } // End Disclosure Type check
+            // } // End Disclosure Type check
         //} // End Show Material Disclosure from WP Options page check 
             
         ?>

@@ -111,6 +111,7 @@ function jkl_reviews_load_info_part( $str_type, $array ) {
         <label for="jkl-review-date" class="jkl-label"><?php echo $array['date']; ?></label>
         <input type="text" class="input-date" id="jkl-review-date" name="jkl-review-date" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-date'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-date'][0] ); ?>" />
+        <i id="jkl-review-date-button" class="fa fa-calendar fa-lg"></i>
         <br>
         
         <!-- Length -->

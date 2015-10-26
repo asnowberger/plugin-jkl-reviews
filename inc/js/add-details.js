@@ -156,6 +156,16 @@ function createDetailElement( $ ) {
             $( this ).parents( 'li' ).remove();
         });
         
+        /**
+         * Disclosure selector
+         */
+        $( 'input[name=jkl-disclose]:radio' ).change( function() {
+            var $disclosureType = $(this).val();
+            
+            $( '#jkl-review-disclosure-preview' ).append( displayDisclosure( $, $disclosureType ) );
+            
+        });
+        
     }); // END main function
     
 }) ( jQuery );

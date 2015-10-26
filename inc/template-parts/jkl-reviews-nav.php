@@ -202,6 +202,31 @@ $review_info = array(
     
 ); // END $review_info array
 
+/*
+ * Return the appropriate Material Disclosure based on the type selected in the Meta Box
+ */
+$disclosure_note = array(
+        'none' =>           __( 'I have received no compensation of any kind for '
+                                    . 'writing this post, nor do I have any connection '
+                                    . 'with the brands, products, or services mentioned. ', 'jkl-reviews/languages' ),
+        'affiliate' =>      __( 'Some of the links above are "affiliate links." '
+                                    . 'This means that I will receive a small commission '
+                                    . 'if you click on and purchase the item. Nevertheless, ', 'jkl-reviews/languages' ),
+        'sample' =>         __( 'I received one or more of the products or services '
+                                    . 'mentioned above in the hope that I would mention it '
+                                    . 'on my blog. Nevertheless, ', 'jkl-reviews/languages' ),
+        'sponsored' =>      __( 'This is a "sponsored post." The company who sponsored it '
+                                    . 'compensated me in some way to write it. Nevertheless, ', 'jkl-reviews/languages' ),
+        'shareholder' =>    __( 'I am an employee or shareholder of the company that produced '
+                                    . 'this product. Nevertheless, ', 'jkl-reviews/languages' ),
+        'default' =>        __( 'I only recommend products and services that I personally '
+                                    . 'believe in and use. This disclosure is in '
+                                    . 'accordance with the <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html"'
+                                    . 'alt="FTC Disclosure Guidelines">FTC\'s 16 CFR, Part 255</a>: '
+                                    . '"Guides Concerning the Use of Endorsements and '
+                                    . 'Testimonials in Advertising."', 'jkl-reviews/languages' )
+); // END $disclosure_note
+
 /**
  * Takes a string that represents the 'slug' of the Review Type and returns a string
  * with the appropriate FontAwesome string for that Review Type

@@ -78,15 +78,17 @@ a.nav-tab-active {
     content: "\f128";
     margin-right: 3px;
     vertical-align: bottom;
+    font-size: 16px;
 }
 #jkl-review-remove-cover-button.button:before {
     font-family: Dashicons;
     content: "\f153";
     vertical-align: bottom;
+    font-size: 16px;
 }
-/*.jkl-label-float {
+.jkl-label-float {
     float: left;
-}*/
+}
 .jkl-review input{
     width: 75%;
     margin-bottom: 10px;
@@ -147,6 +149,12 @@ a.nav-tab-active {
 .input-date*/ {
     width: 170px!important;
 }
+.input-date {
+    width: 40%!important;
+}
+#jkl-review-date-button {
+    margin-left: 5px;
+}
 #jkl-cover-preview img {
     max-height: 100px;
 }
@@ -166,7 +174,8 @@ span.note {
 
 
 .jkl-review-details-left,
-.jkl-review-details-right {
+.jkl-review-details-right,
+.jkl-review-disclosure {
     border: 1px solid gainsboro;
     padding: 10px;
     margin: 10px auto;
@@ -188,8 +197,7 @@ input[type=text].jkl-reviews-link-label,
     margin-right: 1%;
 }
 input[type=url].jkl-reviews-link-url,
-.jkl-reviews-link-url,
-input.input-date {
+.jkl-reviews-link-url {
     width: 52%!important;
     margin-right: 1%;
 }
@@ -215,17 +223,18 @@ label[for=jkl-detail-list-sizing] {
 label[for=jkl-detail-list-sizing]:after {
     
 }
-/*input[type=range] {
+input[type=range] {
     display: inline-block;
     margin: 10px auto;
     padding: 0;
     background: transparent;
     cursor: ew-resize;
+    width: 65%;
 }
 input[type=range]:focus {
     outline: none;
 }
-input[type=range],
+/*input[type=range],
 input[type=range]::-webkit-slider-runnable-track,
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
@@ -426,6 +435,22 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
 .select-dropdown {
     width: 170px;
 }
+
+
+.jkl-review-disclosure-type {
+    width: 33%;
+    margin-right: 2%;
+    display: inline-block;
+    box-sizing: border-box;
+    float: left;
+}
+.jkl-review-disclosure {
+    width: 65%;
+    display: inline-block;
+    box-sizing: border-box;
+    float: left;
+}
+
 
 #jkl-options-sample-disclosure {
     background-color: #fff;
