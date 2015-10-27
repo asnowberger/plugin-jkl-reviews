@@ -185,7 +185,7 @@ class JKL_Reviews_Metabox {
 public function jkl_add_media_button() {
     // Determine the current Post type
     // 
-    echo '<a href="#" id="jkl-choose-cover" class="button">Add Media</a>';
+    //echo '<a href="#" id="jkl-choose-cover" class="button">Add Media</a>';
 //    global $typenow;
 //    
 //    if( $typenow == 'post' ) {

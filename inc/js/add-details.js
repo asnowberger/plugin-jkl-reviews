@@ -25,7 +25,7 @@ function createDetailElement( $ ) {
     // Next, create the actual input element and return it
     $listElement = 
             $( '<li></li>' )
-            .attr( 'class', 'sortable' );
+            //.attr( 'class', 'sortable' );
     $inputElement =
             $( '<input />' )
             .attr( 'type', 'text' )
@@ -70,6 +70,28 @@ function createDetailElement( $ ) {
         $( '.input-date' ).datepicker({
             dateFormat : 'yy-mm-dd'
         });
+        
+        /**
+         * Make lists sortable using jQuery UI Sortable
+         */
+        $( '.jkl-detail-list, #jkl-reviews-links, #jkl-review-rating-scales' ).sortable();
+        //$( '#jkl-reviews-link-header' ).sortable();
+        
+        /**
+         * Add jQuery UI Range Slider functionality
+         * 
+         * @link    https://jqueryui.com/slider/#rangemin
+         */
+        $( '.jkl-range input' ).slider({
+            range: "min",
+            value: 0,
+            min: 0, 
+            max: 5,
+            slide: function( event, ui )  {
+                $( '#amount' ).val( "$" + ui.value );
+            }
+        });
+        $( '#amount' ).val( "$" + $( ".jkl-range input" ).slider( "value" ) );
         
         $('#jkl-detail-list-sizing').on("change", function() {
             $('.output').val(this.value + "% Left / " + (100-this.value) + "% Right" );

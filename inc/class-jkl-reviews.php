@@ -182,6 +182,8 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
                 wp_enqueue_media();
                 
                 wp_enqueue_script( 'jquery-ui-datepicker' );
+                wp_enqueue_script( 'jquery-ui-sortable' );
+                wp_enqueue_script( 'jquery-ui-slider' );
                 
                 wp_enqueue_script(
                         $this->name . '-tabs',

@@ -13,9 +13,18 @@
  */
 function createRatingElement( $, type ) {
     
-    var $divElement, $labelElement, $sliderElement, $datalistElement, 
-            $finalElement, $rangeNumLeft, $rangeNumRight, $feedbackElement, 
-            $removeElement, $descElement, ratingCount;
+    var $divElement, 
+        $divRangeElement, 
+        $labelElement, 
+        $sliderElement, 
+        $datalistElement, 
+        $finalElement, 
+        $rangeNumLeft, 
+        $rangeNumRight, 
+        $feedbackElement, 
+        $removeElement, 
+        $descElement, 
+        ratingCount;
     
     /*
      * First, count the number of input fields that already exist.
@@ -30,6 +39,8 @@ function createRatingElement( $, type ) {
     $divElement = $( '<li></li>' )
             .attr( 'id', 'jkl-reviews-rating-' + ratingCount + '-container' )
             .attr( 'class', 'sortable' );
+    $divRangeElement = $( '<div></div>' )
+            .attr( 'class', 'jkl-range' );
     $labelElement = 
             $( '<input />' )
             .attr( 'type', 'text' )
@@ -60,8 +71,8 @@ function createRatingElement( $, type ) {
                                 <option>3</option>\n\
                                 <option>4</option>\n\
                                 <option>5</option>' );
-        $rangeNumLeft = $( '<span class="range-number-left jkl-label">0 Stars</span>' );
-                $rangeNumRight = $( '<span class="range-number-right jkl-label">5 Stars</span>' );
+        $rangeNumLeft = $( '<span class="range-number-left">0 Stars</span>' );
+                $rangeNumRight = $( '<span class="range-number-right">5 Stars</span>' );
             } 
 
             else if ( type === "bar" ) {
@@ -90,8 +101,8 @@ function createRatingElement( $, type ) {
                                 <option>8</option>\n\
                                 <option>9</option>\n\
                                 <option>10</option>' );
-        $rangeNumLeft = $( '<span class="range-number-left jkl-label">0 Bars</span>' );
-                $rangeNumRight = $( '<span class="range-number-right jkl-label">10 Bars</span>' );
+        $rangeNumLeft = $( '<span class="range-number-left">0 Bars</span>' );
+                $rangeNumRight = $( '<span class="range-number-right">10 Bars</span>' );
             } 
 
             else if ( type === "percent" ) {
@@ -120,8 +131,8 @@ function createRatingElement( $, type ) {
                                 <option>80</option>\n\
                                 <option>90</option>\n\
                                 <option>100</option>' );
-                $rangeNumLeft = $( '<span class="range-number-left jkl-label">0%</span>' );
-                $rangeNumRight = $( '<span class="range-number-right jkl-label">100%</span>' );
+                $rangeNumLeft = $( '<span class="range-number-left">0%</span>' );
+                $rangeNumRight = $( '<span class="range-number-right">100%</span>' );
             }
     
     $feedbackElement = $( '' );
@@ -140,7 +151,8 @@ function createRatingElement( $, type ) {
             .attr( 'value', '' )
             .attr( 'placeholder', 'Description (optional short clarification of the rating)' );
     
-    $finalElement = $labelElement.add( $rangeNumLeft.add( $sliderElement.add( $rangeNumRight.add( $datalistElement.add( $removeElement.add( $descElement) ) ) ) ) );
+    $rangeElement = $divRangeElement.append( $rangeNumLeft.add( $sliderElement.add( $rangeNumRight.add( $datalistElement ) ) ) );
+    $finalElement = $labelElement.add( $descElement.add( $removeElement.add( $rangeElement) ) );
     
     return $divElement.append( $finalElement );
     

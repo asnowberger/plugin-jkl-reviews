@@ -223,16 +223,35 @@ label[for=jkl-detail-list-sizing] {
 label[for=jkl-detail-list-sizing]:after {
     
 }
+.jkl-range {
+    display: block;
+    width: 100%;
+    position: relative;
+}
 input[type=range] {
-    display: inline-block;
-    margin: 10px auto;
     padding: 0;
     background: transparent;
     cursor: ew-resize;
-    width: 65%;
+    width: 70%;
+    margin: 0 auto;
+    display: block;
 }
 input[type=range]:focus {
     outline: none;
+}
+.range-number-left{
+    display: inline;
+    margin-right: 10px;
+    position: absolute;
+    top: 6px;
+    left: 0;
+}
+.range-number-right {
+    display: inline;
+    margin-left: 10px;
+    position: absolute;
+    top: 6px;
+    right: 0;
 }
 /*input[type=range],
 input[type=range]::-webkit-slider-runnable-track,
@@ -382,8 +401,15 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
 
 
 
-#jkl-review-rating {
-    
+#jkl-review-rating-scales li {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed gainsboro;
+}
+#jkl-review-rating-scales li:last-child {
+    border: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 #jkl-rating-add-alert {
     background: #ff5252;
@@ -406,17 +432,14 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
     display: inline-block;
     margin-top: 0;
 }
+.jkl-reviews-rating-label {
+    width: 20%;
+    margin-right: 1%;
+}
 .jkl-reviews-rating-desc {
-    width: 95%;
-    /*margin-bottom: 10px;*/
-}
-.range-number-left{
-    display: inline;
-    margin-right: 10px;
-}
-.range-number-right {
-    display: inline;
-    margin-left: 10px;
+    width: 70%;
+    margin-right: 1%;
+    margin-bottom: 10px;
 }
 #star-rating {
     position: absolute;
