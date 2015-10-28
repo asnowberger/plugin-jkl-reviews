@@ -1,0 +1,58 @@
+.jkl-range-slider.ui-corner-all,
+.jkl-range-slider .ui-corner-all {
+  border-radius: 0;
+}
+
+.jkl-range-slider.ui-slider {
+  border: 0;
+  background: #ccd0f7;
+  border-radius: 50px;
+}
+
+.jkl-range-slider.ui-slider-horizontal {
+  height: 10px;
+}
+
+.jkl-range-slider.ui-slider-vertical {
+  height: 15em;
+  width: 10px;
+}
+
+.jkl-range-slider .ui-slider-handle {
+  width: 15px;
+  height: 20px;
+  background: #1f33b1;
+  border-radius: 1px;
+  border: none;
+  cursor: pointer;
+}
+
+.jkl-range-slider.ui-slider-horizontal .ui-slider-handle {
+  top: 50%;
+  margin-top: -10px;
+}
+
+.jkl-range-slider.ui-slider-vertical .ui-slider-handle {
+  left: 50%;
+  margin-left: -7.5px;
+}
+
+.jkl-range-slider .ui-slider-handle:hover {
+  opacity: .8;
+}
+
+.jkl-range-slider .ui-slider-range {
+  border: 0;
+  border-radius: 50;
+  background: #ff9999;
+}
+
+.jkl-range-slider.ui-slider-horizontal .ui-slider-range {
+  top: 0;
+  height: 10px;
+}
+
+.jkl-range-slider.ui-slider-vertical .ui-slider-range {
+  left: 0;
+  width: 10px;
+}

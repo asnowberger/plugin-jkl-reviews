@@ -280,7 +280,8 @@ function get_fa_icon( $string ) {
     }
     .ui-datepicker thead,
     .ui-datepicker .ui-datepicker-header,
-    .ui-datepicker .ui-datepicker-header .ui-state-hover {
+    .ui-datepicker .ui-datepicker-header .ui-state-hover,
+    .ui-datepicker-title select{
         background: <?php echo $colors[0]; ?>;
     }
     #jkl-reviews-types a:hover,

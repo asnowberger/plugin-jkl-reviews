@@ -68,30 +68,39 @@ function createDetailElement( $ ) {
          * Add Date Picker functionality to the Date area in the Info Section of the Meta box
          */
         $( '.input-date' ).datepicker({
-            dateFormat : 'yy-mm-dd'
+            dateFormat : 'yy-mm-dd', 
+            changeMonth: true,
+            changeYear: true,
         });
         
         /**
          * Make lists sortable using jQuery UI Sortable
+         * 
+         * 1: Detail Lists = Connected
+         * 2. Link Lists = 
+         * 3. Rating Lists = 
          */
-        $( '.jkl-detail-list, #jkl-reviews-links, #jkl-review-rating-scales' ).sortable();
-        //$( '#jkl-reviews-link-header' ).sortable();
+        $( '#jkl-detail-list-right, #jkl-detail-list-left' ).sortable( {
+            connectWith: ".connectedSortable"
+        });
+        $( '#jkl-reviews-links, #jkl-review-rating-scales' ).sortable();
         
         /**
          * Add jQuery UI Range Slider functionality
          * 
          * @link    https://jqueryui.com/slider/#rangemin
          */
-        $( '.jkl-range input' ).slider({
+        $( '.jkl-range-slider' ).slider({
             range: "min",
-            value: 0,
+            value: 50,
             min: 0, 
-            max: 5,
+            max: 100,
+            step: 5,
             slide: function( event, ui )  {
                 $( '#amount' ).val( "$" + ui.value );
             }
         });
-        $( '#amount' ).val( "$" + $( ".jkl-range input" ).slider( "value" ) );
+        $( '#amount' ).val( "$" + $( ".jkl-range-slider" ).slider( "value" ) );
         
         $('#jkl-detail-list-sizing').on("change", function() {
             $('.output').val(this.value + "% Left / " + (100-this.value) + "% Right" );

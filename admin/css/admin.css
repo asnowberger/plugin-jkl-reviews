@@ -126,6 +126,34 @@ a.nav-tab-active {
     margin-left: 1px;
     margin-bottom: 10px;
 }
+.jkl-detail-list {
+    list-style-type: none;
+    margin: 10px 0;
+}
+.jkl-detail-list li {
+    margin: 0;
+    background: #f1f1f1;
+    border: 1px solid white;
+    padding: 10px 4px;
+}
+/*.jkl-detail-list li::before {
+    content: counter(list-num);
+    background: #f1f1f1;
+    padding: 0;
+    margin: 0;
+}*/
+.jkl-detail-list input {
+    margin-bottom: 0;
+}
+.jkl-detail-list li:before {
+    font-family: "FontAwesome";
+    content: '\f142\f142';
+    margin: 0 4px;
+    font-size: 1.2em;
+    letter-spacing: 2px;
+    color: silver;
+    vertical-align: middle;
+}
 .jkl-review-detail-label { }
 .jkl-review-details-left {
     width: 50%;
