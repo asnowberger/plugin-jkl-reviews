@@ -5,7 +5,7 @@
 
 .jkl-range-slider.ui-slider {
   border: 0;
-  background: #ccd0f7;
+  background: gainsboro;
   border-radius: 50px;
 }
 
@@ -21,10 +21,13 @@
 .jkl-range-slider .ui-slider-handle {
   width: 15px;
   height: 20px;
-  background: #1f33b1;
+  /*background: silver;*/
   border-radius: 1px;
   border: none;
   cursor: pointer;
+  display: block;
+  position: absolute;
+  outline: none;
 }
 
 .jkl-range-slider.ui-slider-horizontal .ui-slider-handle {
@@ -43,8 +46,8 @@
 
 .jkl-range-slider .ui-slider-range {
   border: 0;
-  border-radius: 50;
-  background: #ff9999;
+  border-radius: 50px 0 0 50px;
+/*  background: #ff9999;*/
 }
 
 .jkl-range-slider.ui-slider-horizontal .ui-slider-range {

@@ -43,9 +43,11 @@
         <p>
             <input type="submit" id="jkl-reviews-add-rating" class="button" value="+" />
             <span id="jkl-rating-add-alert" class="hidden">Please select a Rating Scale first!</span>
+            <span class="note hidden"><a id="jkl-reviews-change-rating" href="#">Change Rating Type</a> (removes all current ratings)</span>
+            <!-- @TODO: Use JS to set the value of the "alert" message and class depending on circumstances (only use ONE) -->
         </p>
         
-        <ol id="jkl-review-rating-scales"></ol>
+        <ol id="jkl-review-rating-scales" class="jkl-detail-list group"></ol>
         
         <?php // if ( $jklrv_stored_options[ 'jklrv_display_disclosure' ] ) { // Only display the following IF Disclosure is enabled on WP Options page ?> 
         

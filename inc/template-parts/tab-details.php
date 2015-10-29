@@ -133,23 +133,21 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
             </div>
             
             <label for="jkl-detail-list-sizing" class="jkl-label"><?php _e( 'Set list widths:', 'jkl-reviews' ); ?></label>
-            <br><br>
+            <br>
             
             <div id="jkl-detail-list-sizing" class="jkl-range">
-                <span class="range-number-left">Left List</span> 
                 <div class="jkl-range-slider"></div>
-                <span class="range-number-right">Right List</span>
+                <div class="jkl-range-slider-data">
+                    <p class="range-number-left">
+                        <label for="left-amt">Left List :</label>
+                        <input type="text" id="left-amt" readonly>
+                    </p>
+                    <p class="range-number-right">
+                        <input type="text" id="rt-amt" readonly>
+                        <label for="rt-amt">: Right List</label>
+                    </p> 
+                </div>
             </div>
-
-<!--            <output for="jkl-detail-list-sizing" id="jkl-detail-list-sizing-output" class="jkl-detail-list-sizing-output">
-                <?php //echo isset( $jklrv_stored_meta['jkl_review_detail_list_sizing'] ) ? $jklrv_stored_meta['jkl_review_detail_list_sizing'][0] : 0; ?>
-            </output>
-            <span id="star-rating-text"><?php //_e( 'Stars', 'jkl-reviews' ) ?></span>-->
-
-            <!-- Simple function to dynamically update the output value of the range slider after user releases the mouse button -->
-            <script>
-
-            </script>
             
         </div><!-- #jkl-review-details --> 
         

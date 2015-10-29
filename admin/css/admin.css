@@ -173,7 +173,7 @@ a.nav-tab-active {
     margin: -3px 5px 0 0;
     width: auto;
 }
-.jkl-review input[type=url]/*,
+#jkl-review-cover /*,
 .input-date*/ {
     width: 170px!important;
 }
@@ -224,7 +224,6 @@ input[type=text].jkl-reviews-link-label,
     width: 25%;
     margin-right: 1%;
 }
-input[type=url].jkl-reviews-link-url,
 .jkl-reviews-link-url {
     width: 52%!important;
     margin-right: 1%;
@@ -256,6 +255,12 @@ label[for=jkl-detail-list-sizing]:after {
     width: 100%;
     position: relative;
 }
+.jkl-range-slider {
+    margin-top: 10px;
+}
+.jkl-range-slider-data {
+    margin-top: -10px;
+}
 input[type=range] {
     padding: 0;
     background: transparent;
@@ -268,18 +273,37 @@ input[type=range]:focus {
     outline: none;
 }
 .range-number-left{
-    display: inline;
+/*    display: inline;
     margin-right: 10px;
     position: absolute;
     top: 6px;
-    left: 0;
+    left: 0;*/
+    float: left;
 }
 .range-number-right {
-    display: inline;
+/*    display: inline;
     margin-left: 10px;
     position: absolute;
     top: 6px;
-    right: 0;
+    right: 0;*/
+    float: right;
+}
+#left-amt,
+#rt-amt {
+    max-width: 50px;
+    background-color: transparent;
+    outline: none;
+    border: 0;
+    box-shadow: none;
+    color: #ff5252;
+    font-weight: bold;
+    margin: 0;
+}
+#left-amt {
+    text-align: left;
+}
+#rt-amt {
+    text-align: right;
 }
 /*input[type=range],
 input[type=range]::-webkit-slider-runnable-track,
@@ -449,6 +473,9 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
     box-shadow: none;
     border: none;
 }
+#jkl-reviews-change-rating {
+    margin-left: 10px;
+}
 #jkl-rating-add-alert button {
     padding: 3px;
 }
@@ -517,4 +544,16 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
 }
 #jkl-options-sample-disclosure.Dark strong {
     color: #aaa;
+}
+
+@media screen and ( max-width: 1090px ) {
+    
+    .jkl-review-detail,
+    .jkl-reviews-rating-desc {
+        width: 60%!important;
+    }
+    .jkl-reviews-link-url {
+        width: 45%!important;
+    }
+    
 }

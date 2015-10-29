@@ -92,19 +92,48 @@ function createDetailElement( $ ) {
          */
         $( '.jkl-range-slider' ).slider({
             range: "min",
-            value: 50,
+            value: 30,
             min: 0, 
             max: 100,
-            step: 5,
+            step: 10,
             slide: function( event, ui )  {
-                $( '#amount' ).val( "$" + ui.value );
+                $( '#left-amt' ).val( ui.value + "%" );
+                $( '#rt-amt' ).val( 100 - ui.value + "%" );
             }
         });
-        $( '#amount' ).val( "$" + $( ".jkl-range-slider" ).slider( "value" ) );
+        $( '#left-amt' ).val( $( ".jkl-range-slider" ).slider( "value" ) + "%" );
+        $( '#rt-amt' ).val( 100 - $( ".jkl-range-slider" ).slider( "value" ) + "%" );
         
-        $('#jkl-detail-list-sizing').on("change", function() {
-            $('.output').val(this.value + "% Left / " + (100-this.value) + "% Right" );
-        }).trigger("change");
+        $( '.jkl-star-slider' ).each( function() {
+            // read initial values from markup and remove that
+            var value = parseInt( $( this ).text(), 10 );
+            $( this ).empty().slider({
+                range: "min",
+                value: 0,
+                min: 0,
+                max: 5,
+                step: 0.5,
+                slide: function( event, ui ) {}
+            });
+        });
+        
+        $( '.jkl-bar-slider' ).slider({
+            range: "min",
+            value: 0,
+            min: 0,
+            max: 10,
+            step: 0.5,
+            slide: function( event, ui ) {}
+        });
+        
+        $( '.jkl-percent-slider' ).slider({
+            range: "min",
+            value: 0,
+            min: 0,
+            max: 100,
+            step: 1,
+            slide: function( event, ui ) {}
+        });
         
         
         /**
@@ -174,6 +203,8 @@ function createDetailElement( $ ) {
                 $( '#jkl-rating-add-alert' ).removeClass( 'hidden' );
             } else {
                 $( '#jkl-review-rating-scales' ).append( createRatingElement( $, ratingType ) );
+                $( 'input[name=jkl-rating-radio]' ).attr( "disabled", true );
+                $( '#jkl-reviews-change-rating' ).parent( 'span' ).removeClass( 'hidden' );
             }
             
         }); // END live function
@@ -185,6 +216,18 @@ function createDetailElement( $ ) {
          */
         $( '.jkl-reviews-remove-rating' ).live( 'click', function() {
             $( this ).parents( 'li' ).remove();
+        });
+        
+        /**
+         * REMOVE ALL Rating items (change rating scale)
+         */
+        $( '#jkl-reviews-change-rating' ).live( 'click', function( e ) {
+            
+            e.preventDefault();
+            
+           $( '#jkl-review-rating-scales' ).children().remove();
+           $( this ).parent( 'span' ).addClass( 'hidden' );
+           $( 'input[name=jkl-rating-radio]' ).attr( "disabled", false );
         });
         
         /**

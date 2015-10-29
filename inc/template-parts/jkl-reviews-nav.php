@@ -275,18 +275,20 @@ function get_fa_icon( $string ) {
      * @TODO: Later, put this in a 'head' call as a function?
      */
     #jkl-reviews-types a,
-    .ui-datepicker th {
+    .ui-datepicker th,
+    .jkl-range-slider .ui-slider-handle {
         background-color: <?php echo $colors[1]; ?>;
     }
     .ui-datepicker thead,
     .ui-datepicker .ui-datepicker-header,
     .ui-datepicker .ui-datepicker-header .ui-state-hover,
-    .ui-datepicker-title select{
+    .ui-datepicker-title select {
         background: <?php echo $colors[0]; ?>;
     }
     #jkl-reviews-types a:hover,
     .ui-datepicker td .ui-state-active,
-    .ui-datepicker td .ui-state-hover {
+    .ui-datepicker td .ui-state-hover,
+    .jkl-range-slider .ui-slider-range {
         background-color: <?php echo $colors[2]; ?>;
     }
     #jkl-reviews-types a.active {

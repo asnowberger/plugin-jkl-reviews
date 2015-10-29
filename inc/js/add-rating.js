@@ -52,85 +52,28 @@ function createRatingElement( $, type ) {
     
     // Create a unique range slider depending on the Rating Scale type desired (passed in)
             if ( type == "star" ) {
-                    $sliderElement = 
-                        $( '<input />' )
-                        .attr( 'type', 'range' )
-                        .attr( 'list', 'rating-scale' )
-                        .attr( 'min', '0' )
-                        .attr( 'max', '5' )
-                        .attr( 'step', '0.5' )
-                        .attr( 'name', 'jkl-reviews-rating-scale-' + ratingCount )
+                $sliderElement = 
+                        $( '<div></div>' )
                         .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
-                        .attr( 'class', 'jkl-reviews-rating-scale' )
-                        .attr( 'value', '' );
-                    $datalistElement = 
-                            $( '<datalist id="rating-scale">\n\
-                                <option>0</option>\n\
-                                <option>1</option>\n\
-                                <option>2</option>\n\
-                                <option>3</option>\n\
-                                <option>4</option>\n\
-                                <option>5</option>' );
-        $rangeNumLeft = $( '<span class="range-number-left">0 Stars</span>' );
+                        .attr( 'class', 'jkl-star-slider jkl-range-slider' );
+                $rangeNumLeft = $( '<span class="range-number-left">0 Stars</span>' );
                 $rangeNumRight = $( '<span class="range-number-right">5 Stars</span>' );
             } 
 
             else if ( type === "bar" ) {
                 $sliderElement = 
-                    $sliderElement = 
-                    $( '<input />' )
-                    .attr( 'type', 'range' )
-                    .attr( 'list', 'rating-scale' )
-                    .attr( 'min', '0' )
-                    .attr( 'max', '10' )
-                    .attr( 'step', '0.5' )
-                    .attr( 'name', 'jkl-reviews-rating-scale-' + ratingCount )
+                    $( '<div></div>' )
                     .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
-                    .attr( 'class', 'jkl-reviews-rating-scale' )
-                    .attr( 'value', '' );
-            $datalistElement = 
-                            $( '<datalist id="rating-scale">\n\
-                                <option>0</option>\n\
-                                <option>1</option>\n\
-                                <option>2</option>\n\
-                                <option>3</option>\n\
-                                <option>4</option>\n\
-                                <option>5</option>\n\
-                                <option>6</option>\n\
-                                <option>7</option>\n\
-                                <option>8</option>\n\
-                                <option>9</option>\n\
-                                <option>10</option>' );
-        $rangeNumLeft = $( '<span class="range-number-left">0 Bars</span>' );
+                    .attr( 'class', 'jkl-bar-slider jkl-range-slider' );
+                $rangeNumLeft = $( '<span class="range-number-left">0 Bars</span>' );
                 $rangeNumRight = $( '<span class="range-number-right">10 Bars</span>' );
             } 
 
             else if ( type === "percent" ) {
                 $sliderElement = 
-                    $sliderElement = 
-                    $( '<input />' )
-                    .attr( 'type', 'range' )
-                    .attr( 'list', 'rating-scale' )
-                    .attr( 'min', '0' )
-                    .attr( 'max', '100' )
-                    .attr( 'step', '1' )
-                    .attr( 'name', 'jkl-reviews-rating-scale-' + ratingCount )
+                    $( '<div></div>' )
                     .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
-                    .attr( 'class', 'jkl-reviews-rating-scale' )
-                    .attr( 'value', '' );
-            $datalistElement = 
-                            $( '<datalist id="rating-scale">\n\
-                                <option>0</option>\n\
-                                <option>10</option>\n\
-                                <option>20</option>\n\
-                                <option>30</option>\n\
-                                <option>40</option>\n\
-                                <option>50</option>\n\
-                                <option>60</option>\n\
-                                <option>70</option>\n\
-                                <option>80</option>\n\
-                                <option>90</option>\n\
-                                <option>100</option>' );
+                    .attr( 'class', 'jkl-percent-slider jkl-range-slider' );
                 $rangeNumLeft = $( '<span class="range-number-left">0%</span>' );
                 $rangeNumRight = $( '<span class="range-number-right">100%</span>' );
             }
