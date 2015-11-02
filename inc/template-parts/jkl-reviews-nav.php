@@ -208,17 +208,17 @@ $review_info = array(
 $disclosure_note = array(
         'none' =>           __( 'I have received no compensation of any kind for '
                                     . 'writing this post, nor do I have any connection '
-                                    . 'with the brands, products, or services mentioned. ', 'jkl-reviews/languages' ),
+                                    . 'with the brands, products, or services mentioned.', 'jkl-reviews/languages' ),
         'affiliate' =>      __( 'Some of the links above are "affiliate links." '
                                     . 'This means that I will receive a small commission '
-                                    . 'if you click on and purchase the item. Nevertheless, ', 'jkl-reviews/languages' ),
+                                    . 'if you click on and purchase the item. Nevertheless,', 'jkl-reviews/languages' ),
         'sample' =>         __( 'I received one or more of the products or services '
                                     . 'mentioned above in the hope that I would mention it '
-                                    . 'on my blog. Nevertheless, ', 'jkl-reviews/languages' ),
+                                    . 'on my blog. Nevertheless,', 'jkl-reviews/languages' ),
         'sponsored' =>      __( 'This is a "sponsored post." The company who sponsored it '
-                                    . 'compensated me in some way to write it. Nevertheless, ', 'jkl-reviews/languages' ),
+                                    . 'compensated me in some way to write it. Nevertheless,', 'jkl-reviews/languages' ),
         'shareholder' =>    __( 'I am an employee or shareholder of the company that produced '
-                                    . 'this product. Nevertheless, ', 'jkl-reviews/languages' ),
+                                    . 'this product. Nevertheless,', 'jkl-reviews/languages' ),
         'default' =>        __( 'I only recommend products and services that I personally '
                                     . 'believe in and use. This disclosure is in '
                                     . 'accordance with the <a href="http://www.access.gpo.gov/nara/cfr/waisidx_03/16cfr255_03.html"'

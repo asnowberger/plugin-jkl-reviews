@@ -233,10 +233,43 @@ function createDetailElement( $ ) {
         /**
          * Disclosure selector
          */
-        $( 'input[name=jkl-disclose]:radio' ).change( function() {
+        $( 'input[name=jkl-disclose]:radio' ).change( function( e ) {
+            
+            e.preventDefault();
+            
             var $disclosureType = $(this).val();
             
-            $( '#jkl-review-disclosure-preview' ).append( displayDisclosure( $, $disclosureType ) );
+            $( '.jkl-review-disclosure-preview' ).removeClass( 'hidden' );
+            
+            switch( $disclosureType ) {
+                case 'none' :
+                    $( '.disclosure-preview' ).addClass( 'hidden' );
+                    $( '#none-disclosure' ).removeClass( 'hidden' );
+                    break;
+                case 'affiliate' :
+                    $( '.disclosure-preview' ).addClass( 'hidden' );
+                    $( '#affiliate-disclosure' ).removeClass( 'hidden' );
+                    break;
+                case 'sample' :
+                    $( '.disclosure-preview' ).addClass( 'hidden' );
+                    $( '#sample-disclosure' ).removeClass( 'hidden' );
+                    break;
+                case 'sponsored' :
+                    $( '.disclosure-preview' ).addClass( 'hidden' );
+                    $( '#sponsored-disclosure' ).removeClass( 'hidden' );
+                    break;
+                case 'shareholder' :
+                    $( '.disclosure-preview' ).addClass( 'hidden' );
+                    $( '#shareholder-disclosure' ).removeClass( 'hidden' );
+                    break;
+                case 'default' :
+                    $( '.disclosure-preview' ).addClass( 'hidden' );
+                    $( '#default-disclosure' ).removeClass( 'hidden' );
+                    break;
+                default:
+                    $( '.jkl-review-disclosure-preview' ).addClass( 'hidden' );
+                    $( '.disclosure-preview' ).addClass( 'hidden' );
+            }
             
         });
         

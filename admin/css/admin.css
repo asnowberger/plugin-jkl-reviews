@@ -527,6 +527,9 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
     display: inline-block;
     box-sizing: border-box;
     float: left;
+    background: #f1f1f1;
+    padding: 10px 20px 15px;
+    border-width: 0px;
 }
 
 

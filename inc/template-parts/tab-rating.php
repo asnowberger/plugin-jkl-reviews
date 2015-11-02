@@ -90,6 +90,24 @@
                     <?php _e('Disclosure Preview: ', 'jkl-reviews')?>
                 </legend>
 
+                <?php 
+                /** 
+                 * Disclosure notices preview
+                 */
+                $disclosure_note_default = end( $disclosure_note );
+                
+                foreach( $disclosure_note as $disclosure_type => $data ) {
+                    
+                    echo "<small id='$disclosure_type-disclosure' class='disclosure-preview hidden note'>";
+                    
+                        echo $data;
+                        if( $disclosure_type != 'default' ) {
+                            echo $disclosure_note_default;
+                        }
+                        
+                    echo "</small>";
+                }
+                ?>
             <!--<small class="note"><?php // echo wp_kses_post( jkl_get_material_disclosure( $jklrv_stored_meta['jkl_disclose'][0] ) ); ?></small>-->
             </fieldset>
         </form>
