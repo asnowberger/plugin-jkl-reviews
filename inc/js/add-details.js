@@ -207,6 +207,18 @@ function createDetailElement( $ ) {
                 $( '#jkl-reviews-change-rating' ).parent( 'span' ).removeClass( 'hidden' );
             }
             
+            $( '.jkl-range-slider' ).slider({
+            range: "min",
+            value: 30,
+            min: 0, 
+            max: 100,
+            step: 10,
+            slide: function( event, ui )  {
+                $( '#rating-value' ).val( ui.value + "%" );
+            }
+        });
+        $( '#rating-value' ).val( $( ".jkl-range-slider" ).slider( "value" ) + "%" );
+            
         }); // END live function
         
         /**

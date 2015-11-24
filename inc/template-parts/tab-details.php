@@ -132,7 +132,9 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
 <!--                <input type="button" class="jkl-reviews-add-row button" value="Add Detail Row" />-->
             </div>
             
-            <label for="jkl-detail-list-sizing" class="jkl-label"><?php _e( 'Set list widths:', 'jkl-reviews' ); ?></label>
+            <!-- DEPRECATED: List sizing
+            
+            <label for="jkl-detail-list-sizing" class="jkl-label"><?php // _e( 'Set list widths:', 'jkl-reviews' ); ?></label>
             <br>
             
             <div id="jkl-detail-list-sizing" class="jkl-range">
@@ -147,7 +149,7 @@ function jkl_reviews_load_detail_part( $str_type, $array ) {
                         <label for="rt-amt">: Right List</label>
                     </p> 
                 </div>
-            </div>
+            </div>-->
             
         </div><!-- #jkl-review-details --> 
         

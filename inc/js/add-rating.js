@@ -17,10 +17,11 @@ function createRatingElement( $, type ) {
         $divRangeElement, 
         $labelElement, 
         $sliderElement, 
+        $sliderDataElement,
         $datalistElement, 
-        $finalElement, 
-        $rangeNumLeft, 
-        $rangeNumRight, 
+        $finalElement,
+        $rangeElement,
+        $dataValueElement, 
         $feedbackElement, 
         $removeElement, 
         $descElement, 
@@ -35,12 +36,13 @@ function createRatingElement( $, type ) {
     
     $( '#jkl-rating-add-alert' ).addClass( 'hidden' );
     
-    // Next, create ALL the rest of the elements necessary
+    // Next, create ALL the rest of the necessary elements
+    // #1: Create the <li> housing for the rest of the ratings
     $divElement = $( '<li></li>' )
             .attr( 'id', 'jkl-reviews-rating-' + ratingCount + '-container' )
             .attr( 'class', 'sortable' );
-    $divRangeElement = $( '<div></div>' )
-            .attr( 'class', 'jkl-range' );
+    
+    // #2: Create the Label <input>
     $labelElement = 
             $( '<input />' )
             .attr( 'type', 'text' )
@@ -50,41 +52,7 @@ function createRatingElement( $, type ) {
             .attr( 'value', '' )
             .attr( 'placeholder', 'Label' );
     
-    // Create a unique range slider depending on the Rating Scale type desired (passed in)
-            if ( type == "star" ) {
-                $sliderElement = 
-                        $( '<div></div>' )
-                        .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
-                        .attr( 'class', 'jkl-star-slider jkl-range-slider' );
-                $rangeNumLeft = $( '<span class="range-number-left">0 Stars</span>' );
-                $rangeNumRight = $( '<span class="range-number-right">5 Stars</span>' );
-            } 
-
-            else if ( type === "bar" ) {
-                $sliderElement = 
-                    $( '<div></div>' )
-                    .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
-                    .attr( 'class', 'jkl-bar-slider jkl-range-slider' );
-                $rangeNumLeft = $( '<span class="range-number-left">0 Bars</span>' );
-                $rangeNumRight = $( '<span class="range-number-right">10 Bars</span>' );
-            } 
-
-            else if ( type === "percent" ) {
-                $sliderElement = 
-                    $( '<div></div>' )
-                    .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
-                    .attr( 'class', 'jkl-percent-slider jkl-range-slider' );
-                $rangeNumLeft = $( '<span class="range-number-left">0%</span>' );
-                $rangeNumRight = $( '<span class="range-number-right">100%</span>' );
-            }
-    
-    $feedbackElement = $( '' );
-    $removeElement =
-            $( '<input />')
-            .attr( 'type', 'submit' )
-            .attr( 'id', '' )
-            .attr( 'class', 'jkl-reviews-remove-link button' )
-            .attr( 'value', 'x' );
+    // #3: Create the Description <input>
     $descElement = 
             $( '<input />' )
             .attr( 'type', 'text' )
@@ -94,10 +62,62 @@ function createRatingElement( $, type ) {
             .attr( 'value', '' )
             .attr( 'placeholder', 'Description (optional short clarification of the rating)' );
     
-    $rangeElement = $divRangeElement.append( $rangeNumLeft.add( $sliderElement.add( $rangeNumRight.add( $datalistElement ) ) ) );
-    $finalElement = $labelElement.add( $descElement.add( $removeElement.add( $rangeElement) ) );
+    // #4: Create the REMOVE X
+    $removeElement =
+            $( '<input />')
+            .attr( 'type', 'submit' )
+            .attr( 'id', '' )
+            .attr( 'class', 'jkl-reviews-remove-link button' )
+            .attr( 'value', 'x' );
     
-    return $divElement.append( $finalElement );
+    // #5: Create the slider <div> housing
+    $divRangeElement = $( '<div></div>' )
+            .attr( 'id', 'jkl-rating-scale-' + ratingCount ) // change foreach
+            .attr( 'class', 'jkl-range' );
+
+    // #6: Create the ACTUAL jQuery Slider
+    $sliderElement = $( '<div></div>' )
+            .attr( 'class', 'jkl-range-slider' );
+    
+    $sliderDataElement = $( '<div></div>' )
+            .attr( 'class', 'jkl-range-slider-data' );
+    
+    $dataValueElement = $( '<p class="jkl-rating-value"><input type="text" id="rating-value-' + ratingCount + '" readonly><label for="rating-value"> Stars</label></p>');
+    
+    // #7: Create a unique range slider DATA depending on the Rating Scale type desired (passed in)
+//            if ( type == "star" ) {
+//                $sliderElement = 
+//                        $( '<div></div>' )
+//                        .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
+//                        .attr( 'class', 'jkl-star-slider jkl-range-slider' );
+//                $rangeNumLeft = $( '<span class="range-number-left">0 Stars</span>' );
+//                $rangeNumRight = $( '<span class="range-number-right">5 Stars</span>' );
+//            } 
+//
+//            else if ( type === "bar" ) {
+//                $sliderElement = 
+//                    $( '<div></div>' )
+//                    .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
+//                    .attr( 'class', 'jkl-bar-slider jkl-range-slider' );
+//                $rangeNumLeft = $( '<span class="range-number-left">0 Bars</span>' );
+//                $rangeNumRight = $( '<span class="range-number-right">10 Bars</span>' );
+//            } 
+//
+//            else if ( type === "percent" ) {
+//                $sliderElement = 
+//                    $( '<div></div>' )
+//                    .attr( 'id', 'jkl-reviews-rating-scale-' + ratingCount )
+//                    .attr( 'class', 'jkl-percent-slider jkl-range-slider' );
+//                $rangeNumLeft = $( '<span class="range-number-left">0%</span>' );
+//                $rangeNumRight = $( '<span class="range-number-right">100%</span>' );
+//            }
+    
+    
+    
+    $rangeElement = $( '<div></div>' ).append( $sliderDataElement.append( $dataValueElement ).add( $( '<div style="width: 80%; float: right;"></div>' ).append( $sliderElement ) ) );
+    $finalElement = $labelElement.add( $descElement.add( $removeElement ) );
+    
+    return $divElement.append( $finalElement.add( $rangeElement ) );
     
 } // END createRatingElement($,type)
 

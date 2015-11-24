@@ -4,6 +4,9 @@
 a.nav-tab {
     margin-bottom: -4px;
     background: #f1f1f1;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 20px;
 }
 a.nav-tab-active {
     background: #fcfcfc;
@@ -254,12 +257,17 @@ label[for=jkl-detail-list-sizing]:after {
     display: block;
     width: 100%;
     position: relative;
+    padding: 10px 0px 30px;
 }
 .jkl-range-slider {
     margin-top: 10px;
 }
 .jkl-range-slider-data {
     margin-top: -10px;
+    width: 20%;
+}
+.jkl-rating-value input {
+    width: 50px;
 }
 input[type=range] {
     padding: 0;
