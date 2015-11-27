@@ -304,7 +304,7 @@ function get_fa_icon( $string ) {
         <a class="nav-tab nav-tab-active" href="javascript:;">Product Info</a>
         <a class="nav-tab" href="javascript:;">Details</a>
         <a class="nav-tab" href="javascript:;">Rating</a>
-        <a class="nav-tab hidden" href="javascript:;">Giveaway</a>
+        <a class="nav-tab" href="javascript:;">Giveaway</a>
     </h2>
 
     <!-- REVIEW META BOX -->

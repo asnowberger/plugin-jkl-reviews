@@ -89,26 +89,29 @@
 if ( ! defined( 'WPINC' ) ) die;
 
 /**
- * The class that represents the admin settings page
+ * The class that represents the MAIN JKL ADMIN settings page
  */
 require_once plugin_dir_path( __FILE__ ) . 'admin/admin-plugins-admin.php';
 
 /**
- * The class that represents the meta box that will display the fields for the meta box
+ * The class that represents THIS plugin settings page
  */
 require_once plugin_dir_path( __FILE__ ) . 'admin/class-jkl-reviews-settings.php';
+
+/**
+ * The class that represents the meta box that will display the fields for the meta box
+ */
+require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-reviews-metabox.php';
 
 /**
  * Load the core plugin class that is used to define the meta boxes, settings, etc
  */
 require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-reviews.php';
-require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-reviews-metabox.php';
-
 
 
 function run_reviews() {
     // Instantiate the plugin class
-    $JKL_Reviews = new JKL_Reviews( 'jkl-reviews', '2.0.0' );
+    $JKL_Reviews = new JKL_Reviews( 'jkl-reviews', '2.0.1' );
 }
 
 run_reviews();

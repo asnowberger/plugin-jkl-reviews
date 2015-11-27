@@ -26,10 +26,10 @@ class JKL_Reviews_Settings {
     private $options        = array();
     
     
-    private $general_settings_key = 'general';
-    private $style_settings_key = 'style';
-    private $plugin_options_key = 'jkl_reviews_settings';
-    private $plugin_tabs = array();
+    private $general_settings_key   = 'general';
+    private $style_settings_key     = 'style';
+    private $plugin_options_key     = 'jkl_reviews_settings2';
+    private $plugin_tabs            = array();
 
     /**
      * CONSTRUCTOR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -237,13 +237,13 @@ class JKL_Reviews_Settings {
         /**
          * Create a submenu page for THIS plugin
          */
-        add_submenu_page(
-                'jkl-plugins-main-menu',
-                __( 'JKL Reviews Plugin Settings', 'jkl-reviews' ),
-                __( 'JKL Reviews', 'jkl-reviews' ),
-                'manage_options',
-                $this->plugin_options_key,
-                array( $this, 'jkl_create_settings_page' )
+        add_submenu_page(                                       
+                'jkl-plugins-main-menu',                 // $parent_slug
+                __( 'JKL Reviews Plugin Settings', 'jkl-reviews' ),     // $page_title
+                __( 'JKL Reviews', 'jkl-reviews' ),                     // $menu_title
+                'manage_options',                                       // $capability
+                $this->plugin_options_key,                              // $menu_slug
+                array( $this, 'jkl_create_settings_page' )              // $function
         );
        
         /**
@@ -252,16 +252,17 @@ class JKL_Reviews_Settings {
          * !!!! Add AFTER add_submenu_page() to not duplicate the name       !!!!
          * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
          */
-        if ( empty ( $GLOBALS[ 'admin_page_hooks' ][ 'jkl-plugins-main-menu' ] ) ) {
+
+        //if ( empty ( $GLOBALS[ 'admin_page_hooks' ][ 'jkl-plugins-main-menu' ] ) ) {
             add_menu_page(
-                    __( 'JKL Plugins', 'jkl-reviews' ),
-                    __( 'JKL Plugins', 'jkl-reviews' ),
-                    'manage_options',
-                    'jkl-plugins-main-menu',
-                    'jkl_plugins_main_page',
-                    'dashicons-admin-plugins'
+                    __( 'JKL Plugins', 'jkl-reviews' ),     // $page_title
+                    __( 'JKL Plugins', 'jkl-reviews' ),     // $menu_title
+                    'manage_options',                       // $capability
+                    'jkl-plugins-main-menu',                // $menu_slug
+                    'jkl_plugins_main_page',                // $function
+                    'dashicons-admin-plugins'               // $icon
             );
-       }
+       //}
 
     } // END jkl_add_menu()
 
@@ -271,7 +272,7 @@ class JKL_Reviews_Settings {
     public function jkl_create_settings_page() {
 
         // Get pre-existing settings
-        $this->options = get_option( 'jkl_reviews_settings' );
+        $this->options = get_option( $this->plugin_options_key );
         
         $tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $this->general_settings_key;
         ?>

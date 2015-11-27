@@ -42,8 +42,8 @@ class JKL_Reviews_Metabox {
     public function __construct() {
         
         add_action( 'add_meta_boxes', array( $this, 'jkl_add_review_metabox' ) );
-        add_action( 'save_post', array( $this, 'jkl_save_review_metabox' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'jkl_add_media_button' ) );
+        //add_action( 'save_post', array( $this, 'jkl_save_review_metabox' ) );
+        //add_action( 'admin_enqueue_scripts', array( $this, 'jkl_add_media_button' ) );
         
     } // END __construct()
     
@@ -80,131 +80,6 @@ class JKL_Reviews_Metabox {
         include_once( 'template-parts/jkl-reviews-nav.php' );
         
     } // END jkl_display_meta_box()
-    
-    /**
-     * Sanitizes and serializes the information associated with this post.
-     * 
-     * @since   2.0.1
-     * 
-     * @param   int     $post_id    The ID of the post that's currently being edited.
-     */
-    public function jkl_save_review_metabox() {
-//        
-//        // If not the right Post type or the user doesn't have privilege to save, exit
-//        if ( ! $this->jkl_is_valid_post_type() || ! $this->jkl_user_can_save( $post_id, 'jkl_page_ss_nonce', 'jkl_page_ss_save' ) ) {
-//            exit;
-//        }
-//        
-    } // END jkl_save_post()
-    
-    /**
-     * Verifies that the post type being saved is actually a Post.
-     * 
-     * @since   2.0.1
-     * @access  private
-     * @return  bool    Return true if we're in a post.
-     */
-//    private function jkl_is_valid_post_type() {
-//        return ! empty( $_POST[ 'post_type' ] ) && 'post' == $_POST[ 'post_type' ];
-//    }
-    
-    /**
-     * Determines whether or not this user has the ability to Save the post
-     * 
-     * @since   2.0.1
-     * @access  private
-     * @param   int     $post_id        The ID of the post being saved.
-     * @param   string  $nonce_action   The name of the action associated with the nonce.
-     * @param   string  $nonce_id       The ID of the nonce field.
-     * @return  bool                    Whether or not the user has the ability to Save.
-     */
-//    private function jkl_user_can_save( $post_id, $nonce_action, $nonce_id ) {
-//        
-//        $is_autosave = wp_is_post_autosave( $post_id );
-//        $is_revision = wp_is_post_revision( $post_id );
-//        $is_valid_nonce = ( isset( $_POST[ $nonce_action ] ) && wp_verify_nonce( $_POST[ $nonce_action ], $nonce_id ) );
-//        
-//        // Return true if the user is able to save
-//        return ! ( $is_autosave || $is_revision ) && $is_valid_nonce;
-//        
-//    }
-    
-    
-    
-    
-    /**
-     * Enqueues the stylesheet to display the Single Post Metabox on the Dashboard
-     */
-    public function jkl_single_meta_box_style() {
-        
-        wp_enqueue_style(
-                'jkl-single-post-meta-box',
-                plugin_dir_url( __FILE__ ) . 'css/single-post-metabox.css',
-                array(),
-                $this->version,
-                FALSE
-        );
-        
-    } // END jkl_single_meta_box_style()
-    
-    /**
-     * Add Metabox to the Post content type
-     * Doc: http://codex.wordpress.org/Function_Reference/add_meta_box/
-     */
-    public function jkl_add_meta_box() {
-        
-        add_meta_box( 
-            'review_info',                                  // Unique ID
-            __('Review Information', 'jkl-reviews'),        // Title
-            array( $this, 'jkl_render_meta_box' ),          // Callback function
-            'post',                                         // Post type to display on
-            'normal',                                       // Context
-            'core'                                          // Priority
-                                                            // Callback_args
-        );
-        
-    } // END jkl_add_meta_box()
-    
-    /**
-     * Callback to get the file to create the metabox
-     */
-    public function jkl_render_meta_box() {
-        
-        require_once plugin_dir_path( __FILE__ ) . 'template-parts/single-post-metabox.php';
-        
-    } // END jkl_render_meta_box()
-    
-    
-    
-    
-    /*
- * ##### 3 #####
- * Third, use the WP IMAGE MANAGER (i.e. load Image Management JS)
- */
-
-public function jkl_add_media_button() {
-    // Determine the current Post type
-    // 
-    //echo '<a href="#" id="jkl-choose-cover" class="button">Add Media</a>';
-//    global $typenow;
-//    
-//    if( $typenow == 'post' ) {
-//        wp_enqueue_media();
-//        
-//        // Registers and enqueues the required JS
-//        wp_register_script( 'upload-image', plugin_dir_url( __FILE__ ) . 'admin/js/upload-image.js', array( 'jquery' ) );
-//        wp_localize_script( 'upload-image', 'jkl_review_cover',
-//                array(
-//                    'title' => __( 'Select a Cover', 'jkl-reviews/languages' ),
-//                    'button' => __( 'Use this Cover', 'jkl-reviews/languages' ),
-//                )
-//        );
-//        wp_enqueue_script( 'upload-image' );
-//        
-//        wp_register_script( 'box-style', plugin_dir_url( __FILE__ ) . 'admin/js/box-style.js', array( 'jquery' ) );
-//        wp_enqueue_script( 'box-style' );
-//    }
-}
     
 } // END JKL_Reviews_Metabox
 } // END if ( ! class_exists( 'JKL_Reviews_Metabox' )

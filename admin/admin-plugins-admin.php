@@ -17,7 +17,7 @@ class JKL_Plugins_Admin {
      */
     public function __construct() {
 
-        add_action( 'admin_menu', array( &$this, 'jkl_add_plugins_menu' ) );
+        // add_action( 'admin_menu', array( &$this, 'jkl_add_plugins_menu' ) );
         
     } // END __construct()
     
@@ -31,12 +31,12 @@ class JKL_Plugins_Admin {
          */
         if ( empty ( $GLOBALS[ 'admin_page_hooks' ][ 'jkl-plugins-main-menu' ] ) ) 
             add_menu_page(
-                    __( 'JKL Plugins', 'jkl-reviews' ),
-                    __( 'JKL Plugins', 'jkl-reviews' ),
-                    'manage_options',
-                    'jkl-plugins-main-menu',
-                    'jkl_plugins_main_page',
-                    'dashicons-admin-plugins'
+                    __( 'JKL Plugins', 'jkl-reviews' ),     // $page_title
+                    __( 'JKL Plugins', 'jkl-reviews' ),     // $menu_title
+                    'manage_options',                       // $capability
+                    'jkl-plugins-main-menu',                // $menu_slug
+                    'jkl_plugins_main_page',                // $function
+                    'dashicons-admin-plugins'               // $icon
             );
          
     }

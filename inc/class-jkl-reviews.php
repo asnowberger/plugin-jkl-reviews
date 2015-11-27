@@ -70,27 +70,13 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
             
             // Get the initial plugin options (should it be 'protected' or 'public'?
             //$this->options = get_option( 'jkl_reviews_options' );;
-            //$this->loader = [];
             
             $this->settings_page = new JKL_Reviews_Settings();
             $this->meta_box = new JKL_Reviews_Metabox();
             
             add_action( 'admin_enqueue_scripts', array( $this, 'jkl_enqueue_admin_styles' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'jkl_enqueue_admin_scripts' ) );
-            
-            // 
-            //$this->load_dependencies();
-            //$this->define_admin_hooks();
-            
-            
-            // Incorporate Metaboxes
-            //require_once( sprintf ( "%s/inc/class-jkl-reviews-metabox.php", dirname( __FILE__ ) ) );
-            //$JKL_Reviews_Metabox = new JKL_Reviews_Metabox();
-            
-            // Incorporate Settings
-            $this->jkl_admin_init();
-            
-            
+
             /**
              * Load optional plugin components
              */
@@ -245,53 +231,10 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
         /**
          *  Load text domain for localization 
          */
-        public function jkl_admin_init() {
-            // Set up the settings for this plugin
-            $this->jkl_init_settings();
-            // Possibly do additional admin_init tasks
-        } // END admin_init
         
-        /*
-         * Initialize some custom settings
-         */
-        public function jkl_init_settings() {
-            
-            /** 
-             * Register the settings for this plugin
-             * @source: http://codex.wordpress.org/Function_Reference/register_setting
-             */
-            //require_once( sprintf( "%s/admin/settings.php", dirname( __FILE__ ) ) );
-            //$JKL_Reviews_Settings = new JKL_Reviews_Settings();
-            
-        } // END public function init_settings
   
 
     } // END class JKL_Reviews
 } // END if(!class_exists())
 
-/**
- * BUILD OBJECT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- */
-if ( class_exists( 'JKL_Reviews' ) ) {
-    
-    // Installation and uninstallation hooks
-    //register_activation_hook( __FILE__, array( 'JKL_Reviews', 'activate' ) );
-    //register_deactivation_hook( __FILE__, array( 'JKL_Reviews', 'deactivate' ) );
-    
-    // Instantiate the plugin class
-    //$jklreviews = new JKL_Reviews();
-    
-    // Add a link to the settings page onto the plugin page
-    //if ( isset ( $jklreviews ) ) {
-        
-        // Add the settings link to the plugins page
-        //function jkl_plugin_settings_link( $links ) {
-            //$settings_link = '<a href="admin.php?page=jkl_reviews_settings">Settings</a>';
-            //array_unshift( $links, $settings_link );
-            //return $links;
-        //}
-        
-        //$plugin = plugin_basename( __FILE__ );
-        //add_filter( "plugin_action_links_$plugin", 'jkl_plugin_settings_link' );
-    //}
-}
+
