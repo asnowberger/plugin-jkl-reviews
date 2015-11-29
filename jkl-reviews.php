@@ -12,14 +12,14 @@
  * Plugin Name: JKL Reviews Working
  * Plugin URI:  https://github.com/jekkilekki/plugin-jkl-reviews
  * Description: A simple Reviews plugin to review books, music, movies, products, or online courses with Star Ratings and links out to related sites.
- * Version:     2.0.0
+ * Version:     2.0.1
  * Author:      Aaron Snowberger
  * Author URI:  http://www.aaronsnowberger.com
  * Text Domain: jkl-reviews
  * License:     GPL2
  * 
  * Requires at least: 3.5
- * Tested up to: 4.3.1
+ * Tested up to: 4.4
  */
 
 /**

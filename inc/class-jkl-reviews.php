@@ -34,6 +34,8 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
          */
         private $version; 
         
+        private $admin_settings;
+        
         /**
          * Admin Settings Page
          * 
@@ -71,6 +73,7 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
             // Get the initial plugin options (should it be 'protected' or 'public'?
             //$this->options = get_option( 'jkl_reviews_options' );;
             
+            $this->admin_settings = new JKL_Plugins_Admin();
             $this->settings_page = new JKL_Reviews_Settings();
             $this->meta_box = new JKL_Reviews_Metabox();
             

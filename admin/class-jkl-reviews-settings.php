@@ -28,7 +28,7 @@ class JKL_Reviews_Settings {
     
     private $general_settings_key   = 'general';
     private $style_settings_key     = 'style';
-    private $plugin_options_key     = 'jkl_reviews_settings2';
+    private $plugin_options_key     = 'jkl_reviews_settings';
     private $plugin_tabs            = array();
 
     /**
@@ -43,7 +43,7 @@ class JKL_Reviews_Settings {
         add_action( 'init', array( &$this, 'jkl_load_settings' ) );
         add_action( 'admin_init', array( &$this, 'jkl_register_general_settings' ) );
         add_action( 'admin_init', array( &$this, 'jkl_register_style_settings' ) );
-        add_action( 'admin_menu', array( &$this, 'jkl_add_menus' ) );
+        add_action( 'admin_menu', array( &$this, 'jkl_create_menu_page' ) );
         
     } // END __construct()
 
@@ -230,9 +230,9 @@ class JKL_Reviews_Settings {
     }
     
     /* 
-     * Admin Settings Page Add a Menu 
+     * Admin Settings Page Create a Menu Page for the plugin
      */
-    public function jkl_add_menus() {
+    public function jkl_create_menu_page() {
        
         /**
          * Create a submenu page for THIS plugin
@@ -254,14 +254,14 @@ class JKL_Reviews_Settings {
          */
 
         //if ( empty ( $GLOBALS[ 'admin_page_hooks' ][ 'jkl-plugins-main-menu' ] ) ) {
-            add_menu_page(
-                    __( 'JKL Plugins', 'jkl-reviews' ),     // $page_title
-                    __( 'JKL Plugins', 'jkl-reviews' ),     // $menu_title
-                    'manage_options',                       // $capability
-                    'jkl-plugins-main-menu',                // $menu_slug
-                    'jkl_plugins_main_page',                // $function
-                    'dashicons-admin-plugins'               // $icon
-            );
+//            add_menu_page(
+//                    __( 'JKL Plugins', 'jkl-reviews' ),     // $page_title
+//                    __( 'JKL Plugins', 'jkl-reviews' ),     // $menu_title
+//                    'manage_options',                       // $capability
+//                    'jkl-plugins-main-menu',                // $menu_slug
+//                    'jkl_plugins_main_page',                // $function
+//                    'dashicons-admin-plugins'               // $icon
+//            );
        //}
 
     } // END jkl_add_menu()
