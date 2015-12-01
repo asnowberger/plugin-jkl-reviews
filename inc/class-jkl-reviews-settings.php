@@ -107,7 +107,7 @@ class JKL_Reviews_Settings {
         
                 add_settings_field(
                         'add_shortcode',                            // ID
-                        __( 'Enable Shortcode', 'jkl-reviews' ),    // Title
+                        __( 'Enable fdaShortcode', 'jkl-reviews' ),    // Title
                         array( $this, 'enable_shortcode' ),         // Callback
                         $this->general_settings_key,                            // Page
                         'components_section'                        // Section
@@ -277,18 +277,40 @@ class JKL_Reviews_Settings {
         $tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $this->general_settings_key;
         ?>
 
-        <div class="wrap">
-            <?php $this->jkl_create_settings_tabs(); ?>
+        <div class="jkl-wrap">
+            <div class="header">
+                <nav role="navigation" class="header-nav drawer-nav nav-horizontal">
+                    <ul class="main-nav">
+                        <li class="jkl-logo">
+                            <a href="#" title="JKL Plugins" class="current">
+                                <span>JKL Plugins</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="wrapper">
+                <div class="background"></div>
+                <div class="page-content landing">
+                    <div class="jkl-content">
+                        <h1 title="Just Keep Learning (JKL) Plugins">Just Keep Learning (JKL) Plugins</h1>
+                        <p class="jkl-intro">Just Keep Learning. Never stop learning.</p>
+                        
+                        <?php $this->jkl_create_settings_tabs(); ?>
 
-            <form method="post" action="options.php"> <!-- Add enctype="mutlipart/form-data" if allowing user to upload data -->
-            <?php
-                wp_nonce_field( 'update-options' );
-                // This prints out all hidden setting fields
-                settings_fields( $tab ); // WP takes care of security and nonces with this function
-                do_settings_sections( $tab );
-                submit_button();
-            ?>
-            </form>
+                        <form method="post" action="options.php"> <!-- Add enctype="mutlipart/form-data" if allowing user to upload data -->
+                        <?php
+                            wp_nonce_field( 'update-options' );
+                            // This prints out all hidden setting fields
+                            settings_fields( $tab ); // WP takes care of security and nonces with this function
+                            do_settings_sections( $tab );
+                            submit_button();
+                        ?>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
 
         <?php
@@ -301,13 +323,13 @@ class JKL_Reviews_Settings {
 
         $current_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : $this->general_settings_key;
         
-        echo '<h2>JKL Reviews: ' . ucwords( $current_tab ) . ' Settings</h2>';
         echo '<h2 class="nav-tab-wrapper">';
         foreach ( $this->plugin_tabs as $tab_key => $tab_caption ) {
             $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
             echo '<a class="nav-tab ' . $active . '" href="?page=' . $this->plugin_options_key . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
         }
         echo '</h2>';
+        echo '<h2>JKL Reviews: ' . ucwords( $current_tab ) . ' Settings</h2>';
         
     }
 
@@ -361,10 +383,19 @@ class JKL_Reviews_Settings {
         if( ! isset( $options[ 'use_shortcode' ] ) )
             $options[ 'use_shortcode' ] = 1;
         ?>
-        <h3><?php _e( 'Shortcode', 'jkl-reviews' ); ?></h3>
-        <p><?php _e( 'Enabling this option will turn on the [jkl-reviews] shortcode which will allow you to place the Review box anywhere within your content.', 'jkl-reviews' ); ?></p>
-        <input type='checkbox' id='jkl_reviews_settings[use_shortcode]' name='jkl_reviews_settings[use_shortcode]' value='1' <?php checked( $options['use_shortcode'], 1 ); ?> />
-        <label for='jkl_reviews_settings[use_shortcode]' class='note'><?php _e('Enable Shortcode?', 'jkl-reviews') ?></label>
+        
+        <div class="jkl-component-card-top">
+            <div class="name column-name">
+                <h3><?php _e( 'Shortcode', 'jkl-reviews' ); ?></h3>
+            </div>
+            <div class="desc column-description">
+                <p><?php _e( 'Enabling this option will turn on the [jkl-reviews] shortcode which will allow you to place the Review box anywhere within your content.', 'jkl-reviews' ); ?></p>
+            </div>
+        </div>
+        <div class="jkl-component-card-bottom">
+            <input type='checkbox' id='jkl_reviews_settings[use_shortcode]' name='jkl_reviews_settings[use_shortcode]' value='1' <?php checked( $options['use_shortcode'], 1 ); ?> />
+            <label for='jkl_reviews_settings[use_shortcode]' class='note'><?php _e('Enable Shortcode?', 'jkl-reviews') ?></label>
+        </div>
     
     <?php
     }

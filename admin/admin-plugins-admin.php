@@ -46,17 +46,32 @@ class JKL_Plugins_Admin {
      */
     public function jkl_plugins_main_page() { ?>
         
-        <div class="wrap">
-            <h2>JKL Plugins MAIN</h2>
-            <form method="post" action="options.php"> <!-- Add enctype="mutlipart/form-data" if allowing user to upload data -->
-            <?php
-                wp_nonce_field( 'update-options' );
-                // This prints out all hidden setting fields
-                settings_fields( $tab ); // WP takes care of security and nonces with this function
-                do_settings_sections( $tab );
-                submit_button();
-            ?>
-            </form>
+        <div class="jkl-wrap">
+            <div class="header">
+                <nav role="navigation" class="header-nav drawer-nav nav-horizontal">
+                    <ul class="main-nav">
+                        <li class="jkl-logo">
+                            <a href="#" title="JKL Plugins" class="current">
+                                <span>JKL Plugins</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="wrapper">
+                <div class="background"></div>
+                <div class="page-content landing">
+                    <div class="jkl-content">
+                        <h1 title="Just Keep Learning (JKL) Plugins">Just Keep Learning (JKL) Plugins</h1>
+                        <p class="jkl-intro">Just Keep Learning. Never stop learning.</p>
+                        <div class="row">
+                            <div class="col">
+                                Something
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     <?php   
     }

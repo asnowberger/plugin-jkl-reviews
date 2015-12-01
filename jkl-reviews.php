@@ -96,7 +96,7 @@ require_once plugin_dir_path( __FILE__ ) . 'admin/admin-plugins-admin.php';
 /**
  * The class that represents THIS plugin settings page
  */
-require_once plugin_dir_path( __FILE__ ) . 'admin/class-jkl-reviews-settings.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-reviews-settings.php';
 
 /**
  * The class that represents the meta box that will display the fields for the meta box

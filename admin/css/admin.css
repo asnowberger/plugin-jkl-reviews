@@ -1,4 +1,23 @@
 /*
+ * JKL PLUGINS ADMIN Settings Page
+ */
+.jkl-content h1 {
+    font: 300 2.57143em/1em "poxima-nova", "Open Sans", Helvetica, Arial, sans-serif;
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+}
+.jkl-intro {
+    text-align: center;
+    font-size: 1.24em;
+    line-height: 175%;
+}
+
+/* 
+ * JKL Reviews Settings Page
+ */
+/*
  * Meta box tabs================================================================
  */
 a.nav-tab {
