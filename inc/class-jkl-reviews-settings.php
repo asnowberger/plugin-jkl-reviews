@@ -443,6 +443,7 @@ class JKL_Reviews_Settings {
         </div>
         <div class="plugin-card-bottom">
             <input type='checkbox' id='jkl_reviews_settings[use_shortcode]' name='jkl_reviews_settings[use_shortcode]' value='1' <?php checked( $options['use_shortcode'], 1 ); ?> />
+            <span class="toggle"></span>
             <label for='jkl_reviews_settings[use_shortcode]' class='note'><?php _e('Enable Shortcode?', 'jkl-reviews') ?></label>
         </div>
             

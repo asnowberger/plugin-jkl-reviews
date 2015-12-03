@@ -9,7 +9,13 @@
     text-align: center;
 }
 .jkl-content .wp-filter {
-    margin-bottom: 0;
+    /*margin-bottom: 0;*/
+}
+.jkl-content .submit {
+    text-align: center;
+}
+.jkl-content .button-large {
+    font-size: 110%;
 }
 .jkl-intro {
     text-align: center;
@@ -29,17 +35,16 @@
 }
 .jkl-primary {
     padding: 25px 15px 10px 15px;
-    border-bottom: 1px solid #eee;
 }
 .jkl-attribution {
     color: #bbb;
     font-size: 0.78571em;
     text-transform: uppercase;
 }
-.jkl-footer .secondary-footer {
-    padding: 8px 15px 10px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid #eee;
+.jkl-secondary {
+    padding: 15px;
+    border-top: 1px solid #e3e3e3;
+    border-bottom: 1px solid #e3e3e3;
 }
 
 /* 
