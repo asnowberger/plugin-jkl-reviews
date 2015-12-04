@@ -1,7 +1,15 @@
 /*
  * JKL PLUGINS ADMIN Settings Page
  */
-.jkl-content h1 {
+.jkl-wrap .header {
+    background: url('../../imgs/banner-learning.jpg') top center no-repeat;
+    background-size: cover;
+    height: 200px;
+    margin: 0 -22px;
+    padding: 10px 22px;
+}
+
+.jkl-wrap h1 {
     font: 300 2.57143em/1em "poxima-nova", "Open Sans", Helvetica, Arial, sans-serif;
     position: relative;
     z-index: 3;
@@ -9,7 +17,7 @@
     text-align: center;
 }
 .jkl-content .wp-filter {
-    /*margin-bottom: 0;*/
+    margin-top: 0;
 }
 .jkl-content .submit {
     text-align: center;
@@ -46,6 +54,15 @@
     border-top: 1px solid #e3e3e3;
     border-bottom: 1px solid #e3e3e3;
 }
+.jkl-content .plugin-card-bottom {
+    color: #999;
+}
+.jkl-content .plugin-card-bottom span {
+    margin-right: 5px;
+}
+.jkl-content .toggle-on {
+    color: #0a0;
+}
 
 /* 
  * JKL Reviews Settings Page
@@ -75,8 +92,8 @@ a.nav-tab-active {
  * Meta box Review Type choices=================================================
  */
 #jkl-reviews-types {
-    margin: -15px -12px 0;
-    padding: 15px 0;
+    margin: -6px -12px 0;
+    padding: 10px 0 15px;
 }
 #jkl-reviews-types a {
     text-decoration: none;
@@ -116,6 +133,9 @@ a.nav-tab-active {
     border: 1px solid #ccc;
     border-top: none;
     padding-bottom: 20px;
+}
+#jkl-reviews-meta-nav .nav-tab-wrapper {
+    padding-bottom: 3px;
 }
 .jkl-review { }
 .jkl-review .wp-media-buttons {

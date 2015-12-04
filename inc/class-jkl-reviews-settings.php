@@ -288,13 +288,14 @@ class JKL_Reviews_Settings {
                         </li>
                     </ul>
                 </nav>
+                
+                <h1 title="JKL Reviews Settings">JKL Reviews Settings</h1>
+                <p class="jkl-intro">Just Keep Learning. Never stop learning.</p>
             </div><!-- .header -->
             <div class="wrapper">
                 <div class="background"></div>
                 <div class="page-content landing">
                     <div class="jkl-content">
-                        <h1 title="JKL Reviews Settings">JKL Reviews Settings</h1>
-                        <p class="jkl-intro">Just Keep Learning. Never stop learning.</p>
                         
                         <?php $this->jkl_create_settings_tabs(); ?>
 
@@ -317,18 +318,18 @@ class JKL_Reviews_Settings {
                                     
                                 </div><!-- #the-list -->
                             </div><!-- .wp-list-table .widefat -->
-                            <div id="jkl-reviews-style-settings" class="wp-list-table widefat">
+                            <div id="jkl-reviews-style-settings" class="wp-list-table widefat hidden">
                                 <h2 class="screen-reader-text">Style</h2>
                             
-                                <?php //$this->style_section_info(); ?>
+                                <?php $this->style_section_info(); ?>
 
-                                <?php //$this->box_style_setting(); ?>
-                                <?php //$this->color_scheme_setting(); ?>
-                                <?php //$this->custom_css_setting(); ?>
+                                <?php $this->box_style_setting(); ?>
+                                <?php $this->color_scheme_setting(); ?>
+                                <?php $this->custom_css_setting(); ?>
 
-                                <?php //$this->other_section_info(); ?>
-                                <?php //$this->disclosure_setting(); ?>
-                                <?php //$this->attribution_setting(); ?>
+                                <?php $this->other_section_info(); ?>
+                                <?php $this->disclosure_setting(); ?>
+                                <?php $this->attribution_setting(); ?>
 
                                 <?php // do_settings_sections( $tab ); ?>
                                 <?php submit_button( 'Save all changes', 'large' ); ?>
@@ -435,16 +436,32 @@ class JKL_Reviews_Settings {
         
         <div class="plugin-card-top">
             <div class="name column-name">
-                <h3><?php _e( 'Shortcode', 'jkl-reviews' ); ?></h3>
+                <h3>
+                    <img src="<?php echo plugins_url( '../imgs/shortcode.png', __FILE__ ); ?>" class="plugin-icon" alt="Shortcode Image" />
+                    <?php _e( 'Shortcode', 'jkl-reviews' ); ?>
+                </h3>
+            </div>
+            <div class="action-links">
+                <ul class="plugin-action-buttons">
+                    <li>
+                        <a href="#" class="thickbox" aria-label="More information about the JKL Reviews Shortcode" data-title="JKL Reviews Shortcode">More Details</a>
+                    </li>
+                </ul>
             </div>
             <div class="desc column-description">
                 <p><?php _e( 'Enabling this option will turn on the [jkl-reviews] shortcode which will allow you to place the Review box anywhere within your content.', 'jkl-reviews' ); ?></p>
             </div>
         </div>
         <div class="plugin-card-bottom">
-            <input type='checkbox' id='jkl_reviews_settings[use_shortcode]' name='jkl_reviews_settings[use_shortcode]' value='1' <?php checked( $options['use_shortcode'], 1 ); ?> />
-            <span class="toggle"></span>
-            <label for='jkl_reviews_settings[use_shortcode]' class='note'><?php _e('Enable Shortcode?', 'jkl-reviews') ?></label>
+            <label for='jkl_reviews_settings[use_shortcode]' class=''>
+                <?php if( $options[ 'use_shortcode' ] == 1 ) { ?>
+                    <span class="fa fa-toggle-on fa-lg toggle-on"></span>
+                    <?php _e('Shortcode ACTIVE', 'jkl-reviews') ?>
+                <?php } else { ?>
+                    <span class="fa fa-toggle-off fa-lg toggle-off"></span>
+                    <?php _e('Shortcode INACTIVE', 'jkl-reviews') ?>
+                <?php } ?>
+            </label>
         </div>
             
         </div><!-- .jkl-component .plugin-card -->
@@ -466,15 +483,32 @@ class JKL_Reviews_Settings {
 
         <div class="plugin-card-top">
             <div class="name column-name">
-                <h3><?php _e( 'Custom Post Type', 'jkl-reviews' ); ?></h3>
+                <h3>
+                    <img src="<?php echo plugins_url( '../imgs/custom-types-taxonomies.jpg', __FILE__ ); ?>" class="plugin-icon" alt="Custom Post Type Image" />
+                    <?php _e( 'Custom Post Type', 'jkl-reviews' ); ?>
+                </h3>
+            </div>
+            <div class="action-links">
+                <ul class="plugin-action-buttons">
+                    <li>
+                        <a href="#" class="thickbox" aria-label="More information about the JKL Reviews Custom Post Type" data-title="JKL Reviews Shortcode">More Details</a>
+                    </li>
+                </ul>
             </div>
             <div class="desc column-description">
                 <p><?php _e( 'Enabling this option will turn on the "Reviews" Custom Post Type which will allow you to keep your Reviews separate from Posts.', 'jkl-reviews' ); ?></p>
             </div>
         </div>
         <div class="plugin-card-bottom">
-            <input type='checkbox' id='jkl_reviews_settings[use_cpt]' name='jkl_reviews_settings[use_cpt]' value='1' <?php checked( $options['use_cpt'], 1 ); ?> />
-            <label for='jkl_reviews_settings[use_cpt]' class='note'><?php _e('Enable Custom Post Type?', 'jkl-reviews') ?></label>
+            <label for='jkl_reviews_settings[use_cpt]' class=''>
+                <?php if( $options[ 'use_cpt' ] == 1 ) { ?>
+                    <span class="fa fa-toggle-on fa-lg toggle-on"></span>
+                    <?php _e('Custom Post Type ACTIVE', 'jkl-reviews') ?>
+                <?php } else { ?>
+                    <span class="fa fa-toggle-off fa-lg toggle-off"></span>
+                    <?php _e('Custom Post Type INACTIVE', 'jkl-reviews') ?>
+                <?php } ?>
+            </label>
         </div>
             
         </div><!-- .jkl-component .plugin-card -->
@@ -496,15 +530,32 @@ class JKL_Reviews_Settings {
             
         <div class="plugin-card-top">
             <div class="name column-name">
-                <h3><?php _e( 'Sidebar Widget', 'jkl-reviews' ); ?></h3>
+                <h3>
+                    <img src="<?php echo plugins_url( '../imgs/widgets.jpg', __FILE__ ); ?>" class="plugin-icon" alt="Widget Image" />
+                    <?php _e( 'Sidebar Widget', 'jkl-reviews' ); ?>
+                </h3>
+            </div>
+            <div class="action-links">
+                <ul class="plugin-action-buttons">
+                    <li>
+                        <a href="#" class="thickbox" aria-label="More information about the JKL Reviews Sidebar Widget" data-title="JKL Reviews Shortcode">More Details</a>
+                    </li>
+                </ul>
             </div>
             <div class="desc column-description">
                 <p><?php _e( 'Enabling this option will turn on a Dynamic Sidebar Widget that shows the cover image and most stats for your Review, leaving the main article area free to hold your content.', 'jkl-reviews' ); ?></p>
             </div>
         </div>
         <div class="plugin-card-bottom">
-            <input type='checkbox' id='jkl_reviews_settings[use_widget]' name='jkl_reviews_settings[use_widget]' value='1' <?php checked( $options['use_widget'], 1 ); ?> />
-            <label for='jkl_reviews_settings[use_widget]' class='note'><?php _e('Enable Dynamic Sidebar Widget?', 'jkl-reviews') ?></label>
+            <label for='jkl_reviews_settings[use_widget]' class=''>
+                <?php if( $options[ 'use_widget' ] == 1 ) { ?>
+                    <span class="fa fa-toggle-on fa-lg toggle-on"></span>
+                    <?php _e('Sidebar Widget ACTIVE', 'jkl-reviews') ?>
+                <?php } else { ?>
+                    <span class="fa fa-toggle-off fa-lg toggle-off"></span>
+                    <?php _e('Sidebar Widget INACTIVE', 'jkl-reviews') ?>
+                <?php } ?>
+            </label>
         </div>
         
         </div><!-- .jkl-component .plugin-card -->
@@ -526,15 +577,32 @@ class JKL_Reviews_Settings {
             
         <div class="plugin-card-top">
             <div class="name column-name">
-                <h3><?php _e( 'Giveaways Tab', 'jkl-reviews' ); ?></h3>
+                <h3>
+                    <img src="<?php echo plugins_url( '../imgs/giveaways.png', __FILE__ ); ?>" class="plugin-icon" alt="Giveaways Image" />
+                    <?php _e( 'Giveaways Tab', 'jkl-reviews' ); ?>
+                </h3>
+            </div>
+            <div class="action-links">
+                <ul class="plugin-action-buttons">
+                    <li>
+                        <a href="#" class="thickbox" aria-label="More information about the JKL Reviews Giveaways Tab" data-title="JKL Reviews Shortcode">More Details</a>
+                    </li>
+                </ul>
             </div>
             <div class="desc column-description">
                 <p><?php _e( 'Enabling this option will turn on an additional Metabox tab (and other options) allowing your to run a Giveaway of the Reviewed material through your website.', 'jkl-reviews' ); ?></p>
             </div>
         </div>
         <div class="plugin-card-bottom">
-            <input type='checkbox' id='jkl_reviews_settings[use_giveaways]' name='jkl_reviews_settings[use_giveaways]' value='1' <?php checked( $options['use_giveaways'], 1 ); ?> />
-        <label for='jkl_reviews_settings[use_giveaways]' class='note'><?php _e('Enable Giveaways?', 'jkl-reviews') ?></label>
+            <label for='jkl_reviews_settings[use_giveaways]' class=''>
+                <?php if( $options[ 'use_giveaways' ] == 1 ) { ?>
+                    <span class="fa fa-toggle-on fa-lg toggle-on"></span>
+                    <?php _e('Giveaways Tab ACTIVE', 'jkl-reviews') ?>
+                <?php } else { ?>
+                    <span class="fa fa-toggle-off fa-lg toggle-off"></span>
+                    <?php _e('Giveaways Tab INACTIVE', 'jkl-reviews') ?>
+                <?php } ?>
+            </label>
         </div>
         
         </div><!-- .jkl-component .plugin-card -->
