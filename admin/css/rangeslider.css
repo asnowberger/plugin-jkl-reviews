@@ -1,5 +1,13 @@
-.jkl-range-slider {
-    
+.jkl-range-slider-box {
+    width: 75%;
+    float: right;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.jkl-rating-label-box {
+    width: 95%;
+    float: right;
 }
 
 .jkl-range-slider.ui-corner-all,
@@ -30,13 +38,14 @@
   border: none;
   cursor: pointer;
   display: block;
-  position: absolute;
+  position: relative;
   outline: none;
+  margin: -20px -10px;
 }
 
 .jkl-range-slider.ui-slider-horizontal .ui-slider-handle {
   top: 50%;
-  margin-top: -10px;
+  margin-top: -20px;
 }
 
 .jkl-range-slider.ui-slider-vertical .ui-slider-handle {
@@ -45,7 +54,7 @@
 }
 
 .jkl-range-slider .ui-slider-handle:hover {
-  opacity: .8;
+  /* opacity: .8; */
 }
 
 .jkl-range-slider .ui-slider-range {
@@ -62,4 +71,18 @@
 .jkl-range-slider.ui-slider-vertical .ui-slider-range {
   left: 0;
   width: 10px;
+}
+
+.jkl-rating-value {
+    width: 20%;
+    float: left;
+    margin-left: 10px;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+.jkl-rating-value input {
+    border: 0;
+    box-shadow: none;
+    outline: 0;
+    color: transparent;
 }

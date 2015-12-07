@@ -28,6 +28,7 @@ class JKL_Reviews_Settings {
     
     private $general_settings_key   = 'general';
     private $style_settings_key     = 'style';
+    private $documentation_key      = 'documentation';
     private $plugin_options_key     = 'jkl_reviews_settings';
     private $plugin_tabs            = array();
 
@@ -401,15 +402,6 @@ class JKL_Reviews_Settings {
             $new_input[ 'category' ] = sanitize_text_field( $input[ 'category' ] );
 
         return $new_input;
-    }
-    
-    /**
-     * MAIN SECTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     */
-    
-    // Print Main Section Text
-    public function main_section_info() {
-        echo '<p>This plugin was designed to make </p>';
     }
     
     /**

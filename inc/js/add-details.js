@@ -90,50 +90,50 @@ function createDetailElement( $ ) {
          * 
          * @link    https://jqueryui.com/slider/#rangemin
          */
-        $( '.jkl-range-slider' ).slider({
-            range: "min",
-            value: 30,
-            min: 0, 
-            max: 100,
-            step: 10,
-            slide: function( event, ui )  {
-                $( '#left-amt' ).val( ui.value + "%" );
-                $( '#rt-amt' ).val( 100 - ui.value + "%" );
-            }
-        });
-        $( '#left-amt' ).val( $( ".jkl-range-slider" ).slider( "value" ) + "%" );
-        $( '#rt-amt' ).val( 100 - $( ".jkl-range-slider" ).slider( "value" ) + "%" );
+//        $( '.jkl-range-slider' ).slider({
+//            range: "min",
+//            value: 30,
+//            min: 0, 
+//            max: 100,
+//            step: 10,
+//            slide: function( event, ui )  {
+//                $( '#left-amt' ).val( ui.value + "%" );
+//                $( '#rt-amt' ).val( 100 - ui.value + "%" );
+//            }
+//        });
+//        $( '#left-amt' ).val( $( ".jkl-range-slider" ).slider( "value" ) + "%" );
+//        $( '#rt-amt' ).val( 100 - $( ".jkl-range-slider" ).slider( "value" ) + "%" );
         
-        $( '.jkl-star-slider' ).each( function() {
-            // read initial values from markup and remove that
-            var value = parseInt( $( this ).text(), 10 );
-            $( this ).empty().slider({
-                range: "min",
-                value: 0,
-                min: 0,
-                max: 5,
-                step: 0.5,
-                slide: function( event, ui ) {}
-            });
-        });
-        
-        $( '.jkl-bar-slider' ).slider({
-            range: "min",
-            value: 0,
-            min: 0,
-            max: 10,
-            step: 0.5,
-            slide: function( event, ui ) {}
-        });
-        
-        $( '.jkl-percent-slider' ).slider({
-            range: "min",
-            value: 0,
-            min: 0,
-            max: 100,
-            step: 1,
-            slide: function( event, ui ) {}
-        });
+//        $( '.jkl-star-slider' ).each( function() {
+//            // read initial values from markup and remove that
+//            var value = parseInt( $( this ).text(), 10 );
+//            $( this ).empty().slider({
+//                range: "min",
+//                value: 0,
+//                min: 0,
+//                max: 5,
+//                step: 0.5,
+//                slide: function( event, ui ) {}
+//            });
+//        });
+//        
+//        $( '.jkl-bar-slider' ).slider({
+//            range: "min",
+//            value: 0,
+//            min: 0,
+//            max: 10,
+//            step: 0.5,
+//            slide: function( event, ui ) {}
+//        });
+//        
+//        $( '.jkl-percent-slider' ).slider({
+//            range: "min",
+//            value: 0,
+//            min: 0,
+//            max: 100,
+//            step: 1,
+//            slide: function( event, ui ) {}
+//        });
         
         
         /**
@@ -207,17 +207,18 @@ function createDetailElement( $ ) {
                 $( '#jkl-reviews-change-rating' ).parent( 'span' ).removeClass( 'hidden' );
             }
             
+            
             $( '.jkl-range-slider' ).slider({
-            range: "min",
-            value: 30,
-            min: 0, 
-            max: 100,
-            step: 10,
-            slide: function( event, ui )  {
-                $( '#rating-value' ).val( ui.value + "%" );
-            }
-        });
-        $( '#rating-value' ).val( $( ".jkl-range-slider" ).slider( "value" ) + "%" );
+                range: "min",
+                value: 30,
+                min: 0, 
+                max: 100,
+                step: 10,
+                slide: function( event, ui )  {
+                    $( '#rating-value' ).val( ui.value + "%" );
+                }
+            });
+            $( '#rating-value' ).val( $( ".jkl-range-slider" ).slider( "value" ) + "%" );
             
         }); // END live function
         

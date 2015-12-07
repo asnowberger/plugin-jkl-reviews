@@ -534,13 +534,8 @@ input[type='range']#jkl-detail-list-sizing-slider::-webkit-slider-thumb:after {
 
 
 #jkl-review-rating-scales li {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     padding-bottom: 10px;
-    border-bottom: 1px dashed gainsboro;
-}
-#jkl-review-rating-scales li:last-child {
-    border: none;
-    margin-bottom: 0;
     padding-bottom: 0;
 }
 #jkl-rating-add-alert {
