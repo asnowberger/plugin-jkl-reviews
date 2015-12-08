@@ -95,7 +95,7 @@ function createRatingElement( $, type ) {
     
             // #3.3: Create the ACTUAL jQuery Slider
             $sliderElement = $( '<div></div>' )
-                    .attr( 'class', 'jkl-range-slider' );
+                    .attr( 'class', 'jkl-star-slider' );
 
     /**
      * Put together the entire jQuery element

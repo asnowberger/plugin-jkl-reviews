@@ -207,18 +207,55 @@ function createDetailElement( $ ) {
                 $( '#jkl-reviews-change-rating' ).parent( 'span' ).removeClass( 'hidden' );
             }
             
-            
-            $( '.jkl-range-slider' ).slider({
-                range: "min",
-                value: 30,
-                min: 0, 
-                max: 100,
-                step: 10,
-                slide: function( event, ui )  {
-                    $( '#rating-value' ).val( ui.value + "%" );
-                }
-            });
-            $( '#rating-value' ).val( $( ".jkl-range-slider" ).slider( "value" ) + "%" );
+            //if ( ratingType == "star" ) {
+                $( '.jkl-star-slider' ).slider({
+                    range: "min",
+                    value: 2.5,
+                    min: 0, 
+                    max: 5,
+                    step: 0.25,
+                    slide: function( event, ui )  {
+                        $( '#rating-value' ).val( ui.value + " Stars" );
+                    }
+                });
+                $( '#rating-value' ).val( $( ".jkl-star-slider" ).slider( "value" ) + " Stars" );
+//            } else if ( ratingType == "bar" ) {
+//                $( '.jkl-bar-slider' ).slider({
+//                    range: "min",
+//                    value: 5,
+//                    min: 0, 
+//                    max: 10,
+//                    step: 0.5,
+//                    slide: function( event, ui )  {
+//                        $( '#rating-value' ).val( ui.value + " Bars" );
+//                    }
+//                });
+//                $( '#rating-value' ).val( $( ".jkl-bar-slider" ).slider( "value" ) + " Bars" );
+//            } else if ( ratingType == "percent" ) {
+//                $( '.jkl-percent-slider' ).slider({
+//                    range: "min",
+//                    value: 50,
+//                    min: 0, 
+//                    max: 100,
+//                    step: 1,
+//                    slide: function( event, ui )  {
+//                        $( '#rating-value' ).val( ui.value + " %" );
+//                    }
+//                });
+//                $( '#rating-value' ).val( $( ".jkl-percent-slider" ).slider( "value" ) + " %" );
+//            } else {
+//                $( '.jkl-range-slider' ).slider({
+//                    range: "min",
+//                    value: 30,
+//                    min: 0, 
+//                    max: 100,
+//                    step: 10,
+//                    slide: function( event, ui )  {
+//                        $( '#rating-value' ).val( ui.value + "%" );
+//                    }
+//                });
+//                $( '#rating-value' ).val( $( ".jkl-range-slider" ).slider( "value" ) + "%" );
+//            }
             
         }); // END live function
         
