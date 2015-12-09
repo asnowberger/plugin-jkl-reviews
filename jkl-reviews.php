@@ -92,6 +92,7 @@ if ( ! defined( 'WPINC' ) ) die;
  * The class that represents the MAIN JKL ADMIN settings page
  */
 require_once plugin_dir_path( __FILE__ ) . 'admin/admin-plugins-admin.php';
+//require_once plugin_dir_path( __FILE__ ) . 'inc/class-jkl-reviews-widgets.php';
 
 /**
  * The class that represents THIS plugin settings page

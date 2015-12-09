@@ -35,6 +35,8 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
         private $version; 
         
         private $admin_settings;
+        private $widget_info;
+        private $widget_list;
         
         /**
          * Admin Settings Page
@@ -76,6 +78,8 @@ if ( ! class_exists( 'JKL_Reviews' ) ) {
             $this->admin_settings = new JKL_Plugins_Admin();
             $this->settings_page = new JKL_Reviews_Settings();
             $this->meta_box = new JKL_Reviews_Metabox();
+            //$this->widget_info = new JKL_Reviews_Widget_Info_Box();
+            //$this->widget_list = new JKL_Reviews_Widget_List_Box();
             
             add_action( 'admin_enqueue_scripts', array( $this, 'jkl_enqueue_admin_styles' ) );
             add_action( 'admin_enqueue_scripts', array( $this, 'jkl_enqueue_admin_scripts' ) );
