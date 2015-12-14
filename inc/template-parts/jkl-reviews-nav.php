@@ -14,6 +14,156 @@ global $_wp_admin_css_colors;
 $admin_color = get_user_option( 'admin_color' );
 $colors      = $_wp_admin_css_colors[$admin_color]->colors;
 
+// Holds the array of Review Meta Box Labels
+$review_info = get_review_labels_array();
+
+// Holds the array of disclosure Strings
+$disclosure_note = get_disclosure_array();
+
+// Get currently stored post meta data
+$review_stored_meta = get_post_meta( get_the_ID() );
+//    $cover      = $review_stored_meta['cover'][0];
+//    $id         = $review_stored_meta['id-num'][0];
+//    $title      = $review_stored_meta['title'][0];
+//    $author     = $review_stored_meta['author'][0];
+//    $publister  = $review_stored_meta['publisher'][0];
+//    $genre      = $review_stored_meta['genre'][0];
+//    $series     = $review_stored_meta['series'][0];
+//    $date       = $review_stored_meta['date'][0];
+//    $length     = $review_stored_meta['length'][0];
+//    $format     = $review_stored_meta['format'][0];
+//    $description = $review_stored_meta['description'][0];
+//    $label      = $review_stored_meta['label'][0];
+//    $details1   = $review_stored_meta['details-1'][0]; // Array of values
+//    $details2   = $review_stored_meta['details-2'][0]; // Array of values
+
+// Get WP Settings Page settings
+$review_plugin_settings = get_option( 'jkl_review_settings' ); 
+
+?>
+
+<style>
+    /**
+     * @TODO: Later, put this in a 'head' call as a function?
+     */
+    #jkl-reviews-types a,
+    .ui-datepicker th,
+    .jkl-range-slider .ui-slider-handle {
+        background-color: <?php echo $colors[1]; ?>;
+    }
+    .ui-datepicker thead,
+    .ui-datepicker .ui-datepicker-header,
+    .ui-datepicker .ui-datepicker-header .ui-state-hover,
+    .ui-datepicker-title select {
+        background: <?php echo $colors[0]; ?>;
+    }
+    #jkl-reviews-types a:hover,
+    .ui-datepicker td .ui-state-active,
+    .ui-datepicker td .ui-state-hover,
+    .jkl-range-slider .ui-slider-range {
+        background-color: <?php echo $colors[2]; ?>;
+    }
+    #jkl-reviews-types a.active {
+        background-color: <?php echo $colors[2]; ?>;
+    }
+    #jkl-rating-add-alert {
+        // background-color: <?php // echo $colors[4]; ?>;
+    }
+</style>
+
+<div id="jkl-reviews-meta-nav">
+    <h2 class="nav-tab-wrapper current">
+        <a class="nav-tab nav-tab-active" href="javascript:;">Product Info</a>
+        <a class="nav-tab" href="javascript:;">Details</a>
+        <a class="nav-tab" href="javascript:;">Rating</a>
+        <a class="nav-tab" href="javascript:;">Giveaway</a>
+    </h2>
+
+    <!-- REVIEW META BOX -->
+    <div id="jkl-review-info" class="inside">
+
+        <!-- Review Types Icon menu -->
+        <section id="jkl-reviews-types" class="group">
+            <?php 
+            /**
+             * Loop through our $review_info array and retrieve just the key value ($review_type) 
+             * that represents the 'slug' for each type to use when creating our classes, ids, etc
+             * 
+             * @link http://stackoverflow.com/questions/8440352/retrieve-key-value-of-multidimensional-array-in-php
+             */
+            foreach( $review_info as $review_type => $data ) { 
+
+                    echo "<a id='$review_type-type' class='$review_type-type'>";
+                    echo "<i class='fa fa-" . get_fa_icon( $review_type ) . " fa-2x'></i>";
+                    echo "<span>" . ucwords( $review_type ) . "</span>";
+                    echo "</a>";
+
+            } 
+            ?>
+        </section><!-- #jkl-reviews-types Icons Menu -->
+        
+        <!-- Default helper text -->
+        <p class="jkl-review-helper note"><?php _e( 'Select your Review Type from the menu above.', 'jkl-reviews' ); ?></p>
+
+        <?php
+            // Include the template parts for rendering the tabbed content
+            include_once( 'tab-info.php' );
+            include_once( 'tab-details.php' );
+            include_once( 'tab-rating.php' );
+            include_once( 'tab-giveaway.php' );
+
+            // Add a nonce field for security
+            wp_nonce_field( 'jkl-reviews-save', 'jkl_reviews_nonce' );
+        ?>
+        
+    </div><!-- END REVIEW META BOX #jkl-review-info -->
+</div>
+
+<?php
+
+// FUNCTIONS
+
+/**
+ * Takes a string that represents the 'slug' of the Review Type and returns a string
+ * with the appropriate FontAwesome string for that Review Type
+ * 
+ * @since   2.0.1
+ * 
+ * @param   string  $string Takes a string that represents the 'slug' of the Review Type
+ * @return  string
+ * 
+ * @TODO:   Put inside the constructor for this class?
+ */
+function get_fa_icon( $string ) {
+    
+    switch( $string ) {
+        case 'book' :
+            return 'book';
+            break;
+        case 'audio' :
+            return 'headphones';
+            break;
+        case 'video' :
+            return 'youtube-play';
+            break;
+        case 'course' :
+            return 'pencil-square-o';
+            break;
+        case 'product' :
+            return 'archive';
+            break;
+        case 'service' :
+            return 'gift';
+            break;
+        case 'travel' : 
+            return 'plane';
+            break;
+        default: 
+            return 'star';
+    }
+    
+} // END get_fa_icon( $string )
+
 /**
  * Store all Review Meta strings in an array of arrays to access more easily.
  * 
@@ -21,7 +171,9 @@ $colors      = $_wp_admin_css_colors[$admin_color]->colors;
  * 
  * @TODO:   Put inside the constructor for this class?
  */
-$review_info = array(
+function get_review_labels_array() {
+    
+    return array(
     
     // 1) Book Type
     'book'      => array(
@@ -177,8 +329,30 @@ $review_info = array(
         'labeled'           => __( 'Add Label?', 'jkl-reviews' ),       // jkl-review-details-labeled
         'label'             => __( 'Domestic', 'jkl-reviews' )          // jkl-review-details-label
     ),
-    
-    // 8) Other Type
+        
+    // 8) Restaurant Type
+//    'food'      => array(
+//        'cover'             => __( 'Image', 'jkl-reviews' ),            // jkl-review-cover
+//        'id-num'            => __( 'ID Number', 'jkl-reviews' ),        // jkl-review-id-num
+//        'title'             => __( 'Dish name', 'jkl-reviews' ),            // jkl-review-title
+//        'author'            => __( 'Chef', 'jkl-reviews' ),      // jkl-review-author
+//        'publisher'         => __( 'Restaurant', 'jkl-reviews' ),         // jkl-review-publisher
+//        'genre'             => __( 'Dish type', 'jkl-reviews' ),      // jkl-review-genre
+//        'series'            => __( 'Special type', 'jkl-reviews' ),        // jkl-review-series
+//        'date'              => __( 'Date consumed', 'jkl-reviews' ),      // jkl-review-date
+//        'length'            => __( 'Portion size', 'jkl-reviews' ),    // jkl-review-length
+//        'format'            => __( '***Format', 'jkl-reviews' ),        // jkl-review-format
+//        'description'       => __( 'Description', 'jkl-reviews' ),      // jkl-review-description
+//        'detailed'          => __( 'Add Details?', 'jkl-reviews' ),
+//        'details-1-label'   => __( 'Ingredients', 'jkl-reviews' ),      // jkl-review-details-1-label
+//        'details-2-label'   => __( 'Recommendation', 'jkl-reviews' ),      // jkl-review-details-2-label
+//        'details-1'         => array(),                                 // jkl-review-details-1[]
+//        'details-2'         => array(),                                 // jkl-review-details-2[]
+//        'labeled'           => __( 'Add Label?', 'jkl-reviews' ),       // jkl-review-details-labeled
+//        'label'             => __( 'Domestic', 'jkl-reviews' )          // jkl-review-details-label
+//    ),
+        
+    // 9) Other Type
     'other'     => array(
         'cover'             => __( 'Image', 'jkl-reviews' ),            // jkl-review-cover
         'id-num'            => __( 'ID Number', 'jkl-reviews' ),        // jkl-review-id-num
@@ -201,11 +375,14 @@ $review_info = array(
     )
     
 ); // END $review_info array
+}
 
 /*
  * Return the appropriate Material Disclosure based on the type selected in the Meta Box
  */
-$disclosure_note = array(
+function get_disclosure_array() {
+    
+    return array(
         'none' =>           __( 'I have received no compensation of any kind for '
                                     . 'writing this post, nor do I have any connection '
                                     . 'with the brands, products, or services mentioned.', 'jkl-reviews/languages' ),
@@ -225,124 +402,5 @@ $disclosure_note = array(
                                     . 'alt="FTC Disclosure Guidelines">FTC\'s 16 CFR, Part 255</a>: '
                                     . '"Guides Concerning the Use of Endorsements and '
                                     . 'Testimonials in Advertising."', 'jkl-reviews/languages' )
-); // END $disclosure_note
-
-/**
- * Takes a string that represents the 'slug' of the Review Type and returns a string
- * with the appropriate FontAwesome string for that Review Type
- * 
- * @since   2.0.1
- * 
- * @param   string  $string Takes a string that represents the 'slug' of the Review Type
- * @return  string
- * 
- * @TODO:   Put inside the constructor for this class?
- */
-function get_fa_icon( $string ) {
-    
-    switch( $string ) {
-        case 'book' :
-            return 'book';
-            break;
-        case 'audio' :
-            return 'headphones';
-            break;
-        case 'video' :
-            return 'youtube-play';
-            break;
-        case 'course' :
-            return 'pencil-square-o';
-            break;
-        case 'product' :
-            return 'archive';
-            break;
-        case 'service' :
-            return 'gift';
-            break;
-        case 'travel' : 
-            return 'plane';
-            break;
-        default: 
-            return 'star';
-    }
-    
-} // END get_fa_icon( $string )
-
-?>
-
-<style>
-    /**
-     * @TODO: Later, put this in a 'head' call as a function?
-     */
-    #jkl-reviews-types a,
-    .ui-datepicker th,
-    .jkl-range-slider .ui-slider-handle {
-        background-color: <?php echo $colors[1]; ?>;
-    }
-    .ui-datepicker thead,
-    .ui-datepicker .ui-datepicker-header,
-    .ui-datepicker .ui-datepicker-header .ui-state-hover,
-    .ui-datepicker-title select {
-        background: <?php echo $colors[0]; ?>;
-    }
-    #jkl-reviews-types a:hover,
-    .ui-datepicker td .ui-state-active,
-    .ui-datepicker td .ui-state-hover,
-    .jkl-range-slider .ui-slider-range {
-        background-color: <?php echo $colors[2]; ?>;
-    }
-    #jkl-reviews-types a.active {
-        background-color: <?php echo $colors[2]; ?>;
-    }
-    #jkl-rating-add-alert {
-        // background-color: <?php // echo $colors[4]; ?>;
-    }
-</style>
-
-<div id="jkl-reviews-meta-nav">
-    <h2 class="nav-tab-wrapper current">
-        <a class="nav-tab nav-tab-active" href="javascript:;">Product Info</a>
-        <a class="nav-tab" href="javascript:;">Details</a>
-        <a class="nav-tab" href="javascript:;">Rating</a>
-        <a class="nav-tab" href="javascript:;">Giveaway</a>
-    </h2>
-
-    <!-- REVIEW META BOX -->
-    <div id="jkl-review-info" class="inside">
-
-        <!-- Review Types Icon menu -->
-        <section id="jkl-reviews-types" class="group">
-            <?php 
-            /**
-             * Loop through our $review_info array and retrieve just the key value ($review_type) 
-             * that represents the 'slug' for each type to use when creating our classes, ids, etc
-             * 
-             * @link http://stackoverflow.com/questions/8440352/retrieve-key-value-of-multidimensional-array-in-php
-             */
-            foreach( $review_info as $review_type => $data ) { 
-
-                    echo "<a id='$review_type-type' class='$review_type-type'>";
-                    echo "<i class='fa fa-" . get_fa_icon( $review_type ) . " fa-2x'></i>";
-                    echo "<span>" . ucwords( $review_type ) . "</span>";
-                    echo "</a>";
-
-            } 
-            ?>
-        </section><!-- #jkl-reviews-types Icons Menu -->
-        
-        <!-- Default helper text -->
-        <p class="jkl-review-helper note"><?php _e( 'Select your Review Type from the menu above.', 'jkl-reviews' ); ?></p>
-
-        <?php
-            // Include the template parts for rendering the tabbed content
-            include_once( 'tab-info.php' );
-            include_once( 'tab-details.php' );
-            include_once( 'tab-rating.php' );
-            include_once( 'tab-giveaway.php' );
-
-            // Add a nonce field for security
-            wp_nonce_field( 'jkl-reviews-save', 'jkl_reviews_nonce' );
-        ?>
-        
-    </div><!-- END REVIEW META BOX #jkl-review-info -->
-</div>
+    ); // END $disclosure_note
+}

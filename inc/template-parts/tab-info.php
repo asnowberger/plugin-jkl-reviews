@@ -46,15 +46,17 @@
  * @param   string  $str_type
  * @param   array   $array
  */
-function jkl_reviews_load_info_part( $str_type, $array ) {
+function jkl_reviews_load_info_part( $str_type, $labels ) {
+
+    $review_meta = get_post_meta( get_the_ID() );
     ?>
 
         <p class="note"><?php _e( sprintf( 'Enter %s information below:', ucwords( $str_type ) ), 'jkl-reviews' ); ?></p>
 
         <!-- Cover image. This should accept and display an image (like a Featured Image) using WP's image Uploader/chooser. -->
-        <label for="jkl-review-cover" class="jkl-label"><?php echo __( sprintf( 'Set %s ', $array['cover'] ), 'jkl-reviews' ); ?></label>
+        <label for="jkl-review-cover" class="jkl-label"><?php echo __( sprintf( 'Set %s ', $labels['cover'] ), 'jkl-reviews' ); ?></label>
         <input type="url" id="jkl-review-cover" name="jkl-review-cover" 
-               value="<?php if( isset( $jklrv_stored_meta['jkl-review-cover'] ) ) echo esc_url( $jklrv_stored_meta['jkl-review-cover'][0] ); ?>" />
+               value="<?php if( isset( $cover ) ) echo esc_url( $cover ); ?>" />
         <button type="submit" id="jkl-review-cover-button" class="button">
             <?php _e( 'Choose Image', 'jkl-review' ); ?>
         </button>
@@ -65,10 +67,10 @@ function jkl_reviews_load_info_part( $str_type, $array ) {
         <!-- Cover image preview. This should only display the cover image IF THERE IS ONE. -->
         <?php //if ( $jklrv_stored_meta['jkl-review-cover'][0] != '' ) { ?>
             <div id="jkl-cover-preview" class="hidden">    
-                <label for="jkl-review-cover-preview" class="jkl-label"><?php echo __( sprintf( '%s Preview ', $array['cover'] ), 'jkl-reviews' ); ?></label>
+                <label for="jkl-review-cover-preview" class="jkl-label"><?php echo __( sprintf( '%s Preview ', $labels['cover'] ), 'jkl-reviews' ); ?></label>
             
                 <a href="#">
-                    <img id="jkl-cover-img" src="<?php echo esc_url( $jklrv_stored_meta['jkl-review-cover'][0] ); ?>" />
+                    <img id="jkl-cover-img" src="<?php echo esc_url( $cover ); ?>" />
                 </a>
             </div>
         <?php //} ?>
@@ -77,55 +79,55 @@ function jkl_reviews_load_info_part( $str_type, $array ) {
         <div class="divider"></div>
 
         <!-- ID Number -->
-        <label for="jkl-review-id-num" class="jkl-label"><?php echo $array['id-num']; ?></label>
+        <label for="jkl-review-id-num" class="jkl-label"><?php echo $labels['id-num']; ?></label>
         <input type="text" class="input-text" id="jkl-review-id-num" name="jkl-review-id-num" 
-               value="<?php if( isset( $jklrv_stored_meta['jkl-review-id-num'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-id-num'][0] ); ?>" />
+               value="<?php if( isset( $review_meta['id-num'] ) ) echo esc_attr( $review_meta['id-num'][0] ); ?>" />
 
         <!-- Title -->
-        <label for="jkl-review-title" class="jkl-label"><?php echo $array['title']; ?></label>
+        <label for="jkl-review-title" class="jkl-label"><?php echo $labels['title']; ?></label>
         <input type="text" class="input-text" id="jkl-review-title" name="jkl-review-title" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-title'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-title'][0] ); ?>" />
 
         <!-- Author -->
-        <label for="jkl-review-author" class="jkl-label"><?php echo $array['author']; ?></label>
+        <label for="jkl-review-author" class="jkl-label"><?php echo $labels['author']; ?></label>
         <input type="text" class="input-text" id="jkl-review-author" name="jkl-review-author" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-author'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-author'][0] ); ?>" />
 
         <!-- Publisher -->
-        <label for="jkl-review-publisher" class="jkl-label"><?php echo $array['publisher']; ?></label>
+        <label for="jkl-review-publisher" class="jkl-label"><?php echo $labels['publisher']; ?></label>
         <input type="text" class="input-text" id="jkl-review-publisher" name="jkl-review-publisher" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-publisher'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-publisher'][0] ); ?>" />
 
         <!-- Genre. Should (eventually) act as WP Tags, separate-able by commas, including the list + X marks to remove categories -->
-        <label for="jkl-review-genre" class="jkl-label"><?php echo $array['genre']; ?></label>
+        <label for="jkl-review-genre" class="jkl-label"><?php echo $labels['genre']; ?></label>
         <input type="text" class="input-text" id="jkl-review-genre" name="jkl-review-genre" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-genre'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-genre'][0] ); ?>" />
         <p><span class="note"><?php _e( 'Separate multiple values with commas.', 'jkl-reviews' ) ?></span></p>
 
         <!-- Series -->
-        <label for="jkl-review-series" class="jkl-label"><?php echo $array['series']; ?></label>
+        <label for="jkl-review-series" class="jkl-label"><?php echo $labels['series']; ?></label>
         <input type="text" class="input-text" id="jkl-review-series" name="jkl-review-series" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-series'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-series'][0] ); ?>" />
 
         <!-- Release Date -->
-        <label for="jkl-review-date" class="jkl-label"><?php echo $array['date']; ?></label>
+        <label for="jkl-review-date" class="jkl-label"><?php echo $labels['date']; ?></label>
         <input type="text" class="input-date" id="jkl-review-date" name="jkl-review-date" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-date'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-date'][0] ); ?>" />
         <i id="jkl-review-date-button" class="fa fa-calendar fa-lg"></i>
         <br>
         
         <!-- Length -->
-        <label for="jkl-review-length" class="jkl-label"><?php echo $array['length']; ?></label>
+        <label for="jkl-review-length" class="jkl-label"><?php echo $labels['length']; ?></label>
         <input type="text" class="input-text" id="jkl-review-length" name="jkl-review-length" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-length'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-length'][0] ); ?>" />
 
         <!-- Format -->
-        <label for="jkl-review-format" class="jkl-label"><?php echo $array['format']; ?></label>
+        <label for="jkl-review-format" class="jkl-label"><?php echo $labels['format']; ?></label>
         <input type="text" class="input-text" id="jkl-review-format" name="jkl-review-format" 
                value="<?php if( isset( $jklrv_stored_meta['jkl-review-format'] ) ) echo esc_attr( $jklrv_stored_meta['jkl-review-format'][0] ); ?>" />
 
         <!-- Description -->
-        <label for=jkl-review-description" class="jkl-label jkl-label-float"><?php echo $array['description']; ?></label>
+        <label for=jkl-review-description" class="jkl-label jkl-label-float"><?php echo $labels['description']; ?></label>
         <?php
             /**
              * Add WYSIWYG Editor for the description rather than a vanilla <textarea>
