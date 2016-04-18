@@ -109,6 +109,15 @@ function jkl_add_review_metabox() {
                                                                 // Priority
                                                                 // Callback_args
     );
+    add_meta_box( 
+            'review_info',                                      // Unique ID
+            __('Review Information', 'jkl-reviews/languages'),  // Title
+            'display_jkl_review_metabox',                       // Callback function
+            'page'                                              // Post type to display on
+                                                                // Context
+                                                                // Priority
+                                                                // Callback_args
+    );
 }
 
 
@@ -606,7 +615,7 @@ function jkl_display_review_box( $content ) {
      * metadata in $jklrv_stored_meta
      */
     global $post;
-    $content = $post->post_content; // Retrieve content... I guess
+    $content = get_the_content(); // Retrieve content... I guess
     
     if ( empty( $jklrv_stored_meta ) ) {
         $jklrv_stored_meta = ''; // Set a default value to avoid PHP errors in Debug mode
@@ -615,8 +624,10 @@ function jkl_display_review_box( $content ) {
 
     // print_r($jklrv_stored_options); // Only for testing
     
+    $jkl_thebox = "";
+    
     // If this is only a single Post and a Review Type is chosen, modify the content and return it
-    if ( is_single() && !empty( $jklrv_stored_meta['jkl_radio'] ) ) {
+    if ( is_singular() && !empty( $jklrv_stored_meta['jkl_radio'] ) ) {
         
         $jklrv_stored_options = get_option( 'jklrv_plugin_options' ); // Retrieve WP Options stored in the Options Page
         $color = $jklrv_stored_options[ 'jklrv_color_scheme' ];
@@ -708,11 +719,15 @@ function jkl_display_review_box( $content ) {
         $jkl_thebox .= '</div>'; // End #jkl_thebox
         
         // Append the Review box to the $content
-        $content = $jkl_thebox . $content;
+        //$content = $jkl_thebox . $content;
+        
     }       
     
-    // Return the content
-    return $content;
+    // Print the box and Return the content
+    //echo $jkl_thebox;
+    return $content . $jkl_thebox;
+    return $jkl_thebox . $content;
+    
 }
 
 
