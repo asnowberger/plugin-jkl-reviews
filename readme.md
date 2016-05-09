@@ -120,6 +120,9 @@ Floor, Boston, MA 02110-1301 USA
 
 ##Changelog
 
+###2.0.0 (in progress)
+* Doing a FULL rewrite in OOP fashion, adding more meta data, restyling, reorganizing, restructuring
+
 ###1.2
 * Added WP Options page
 * Made Material Connection Disclosures box optional with a checkbox
